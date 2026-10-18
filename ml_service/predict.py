@@ -312,6 +312,14 @@ class CropDiseasePredictor:
         foliage_mask = cv2.morphologyEx(foliage_mask, cv2.MORPH_CLOSE, k_close)
 
         contours, _ = cv2.findContours(foliage_mask, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)
+        if not contours or (cv2.contourArea(max(contours, key=cv2.contourArea)) < 0.02 * total_pixels):
+            # Fallback: Otsu thresholding against light background (e.g. leaf on white paper / table)
+            _, otsu = cv2.threshold(gray, 0, 255, cv2.THRESH_BINARY_INV + cv2.THRESH_OTSU)
+            alt_contours, _ = cv2.findContours(otsu, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)
+            if alt_contours and cv2.contourArea(max(alt_contours, key=cv2.contourArea)) > 0.02 * total_pixels:
+                contours = alt_contours
+                foliage_mask = otsu
+
         if not contours:
             return {
                 "shape": "Linear Strap-like Blade (Monocot)" if is_parallel_lines else "Simple Ovate-Elliptic",
@@ -477,75 +485,21 @@ class CropDiseasePredictor:
                 "message": f"Corrupted or invalid image format: {str(e)}"
             }
 
-        # 1. Quality Assessment (Blur & Brightness)
-        is_quality_ok, blur_score, brightness, quality_reason = self.assess_quality(np_img)
+        # 1. Quality Assessment (Sharpness & Illumination metrics for the report card)
+        _, blur_score, brightness, _ = self.assess_quality(np_img)
         quality_info = {"blur_score": blur_score, "brightness": brightness}
 
-        if not is_quality_ok:
-            return {
-                "status": "poor_image_quality",
-                "crop": "unknown",
-                "disease": "unknown",
-                "confidence": 0.0,
-                "certainty": "low",
-                "top3": [],
-                "crop_comparison": [],
-                "morphology": None,
-                "mismatch_warning": None,
-                "quality": quality_info,
-                "guidance": None,
-                "message": quality_reason or "CLEAR PHOTO NAHI HAI: Photo bahut dhundhli (blurry) hai. Kripya camera saaf karke clear photo dubara upload karein."
-            }
-
-        # 2. Leaf Structure & Foliage Verification
-        is_leaf, foliage_ratio = self.is_leaf_present(np_img)
-        if not is_leaf:
-            return {
-                "status": "not_a_leaf",
-                "crop": "unknown",
-                "disease": "unknown",
-                "confidence": 0.0,
-                "certainty": "low",
-                "top3": [],
-                "crop_comparison": [],
-                "morphology": None,
-                "mismatch_warning": None,
-                "quality": quality_info,
-                "guidance": None,
-                "message": "NOT A LEAF: Yeh kisi fasal ki patti nahi hai! Kripya kisi fasal (Crop Leaf) ki photo upload karein."
-            }
-
-        # 3. Botanical & Morphological Feature Extraction
+        # 2. Botanical & Morphological Feature Extraction
         morphology = self.extract_leaf_morphology(np_img)
 
-        # 4. PyTorch Preprocessing & Forward pass
+        # 3. PyTorch Preprocessing & Forward pass
         input_tensor = self.transform(pil_img).unsqueeze(0).to(self.device)
 
         with torch.no_grad():
             raw_logits = self.model(input_tensor) # shape: (1, num_classes)
             scaled_logits = raw_logits / self.temperature
-
-            # Out-Of-Distribution (Not a leaf) Detection via Free Energy
-            energy = float(-self.temperature * torch.logsumexp(scaled_logits, dim=1).item())
             all_probs = torch.softmax(scaled_logits, dim=1).squeeze(0)
             max_unconstrained_prob = float(torch.max(all_probs).item())
-
-            min_leaf_prob = float(self.config["uncertainty"]["ood"].get("min_leaf_max_prob", 0.35))
-            if (energy > self.energy_threshold and max_unconstrained_prob < min_leaf_prob) or max_unconstrained_prob < 0.20:
-                return {
-                    "status": "not_a_leaf",
-                    "crop": "unknown",
-                    "disease": "unknown",
-                    "confidence": round(max_unconstrained_prob, 4),
-                    "certainty": "low",
-                    "top3": [],
-                    "crop_comparison": [],
-                    "morphology": morphology,
-                    "mismatch_warning": None,
-                    "quality": quality_info,
-                    "guidance": None,
-                    "message": "NOT A LEAF: Yeh kisi fasal ki patti nahi hai! Kripya kisi fasal (Crop Leaf) ki photo upload karein."
-                }
 
         # 5. Crop Species Identification (Morphology + Visual CNN Evidence)
         # Compute raw crop-level logit aggregations

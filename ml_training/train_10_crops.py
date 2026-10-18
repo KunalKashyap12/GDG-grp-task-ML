@@ -136,18 +136,23 @@ def main():
         T.Compose([T.Resize((256, 256)), T.RandomHorizontalFlip(p=1.0), T.ColorJitter(brightness=0.1), T.CenterCrop(224), T.ToTensor(), norm]),
     ]
 
-    # Extra views for bell pepper and other user test leaves to ensure strong representations
+    # Extra views for all photos to ensure strong generalization
     extra_aug = [
-        T.Compose([T.Resize((256, 256)), T.RandomResizedCrop(224, scale=(0.8, 1.0)), T.ToTensor(), norm]),
-        T.Compose([T.Resize((256, 256)), T.RandomResizedCrop(224, scale=(0.85, 1.0)), T.RandomHorizontalFlip(p=1.0), T.ToTensor(), norm]),
-        T.Compose([T.Resize((256, 256)), T.RandomResizedCrop(224, scale=(0.75, 0.95)), T.ColorJitter(brightness=0.15), T.ToTensor(), norm]),
-        T.Compose([T.Resize((256, 256)), T.RandomRotation(degrees=45), T.CenterCrop(224), T.ToTensor(), norm]),
+        T.Compose([T.Resize((256, 256)), T.RandomResizedCrop(224, scale=(0.75, 1.0)), T.ToTensor(), norm]),
+        T.Compose([T.Resize((256, 256)), T.RandomResizedCrop(224, scale=(0.8, 1.0)), T.RandomHorizontalFlip(p=1.0), T.ToTensor(), norm]),
+        T.Compose([T.Resize((256, 256)), T.RandomResizedCrop(224, scale=(0.7, 0.95)), T.ColorJitter(brightness=0.2, contrast=0.2), T.ToTensor(), norm]),
+        T.Compose([T.Resize((256, 256)), T.RandomRotation(degrees=(-30, 30)), T.CenterCrop(224), T.ToTensor(), norm]),
+        T.Compose([T.Resize(256), T.CenterCrop(224), T.ColorJitter(brightness=0.25, contrast=0.25, saturation=0.25), T.ToTensor(), norm]),
+        T.Compose([T.Resize(256), T.CenterCrop(224), T.ColorJitter(hue=0.06, saturation=0.15), T.ToTensor(), norm]),
+        T.Compose([T.Resize((256, 256)), T.RandomHorizontalFlip(p=1.0), T.RandomResizedCrop(224, scale=(0.75, 0.95)), T.ToTensor(), norm]),
     ]
 
     # 5. Extract Feature Embeddings
     print("[*] Extracting feature vectors from images across all 39 classes...")
     feature_list = []
     target_list = []
+
+    all_views = aug_views + extra_aug
 
     with torch.no_grad():
         for cls, photo_paths in class_to_photos.items():
@@ -157,23 +162,13 @@ def main():
             for p in photo_paths:
                 try:
                     img = Image.open(p).convert("RGB")
-                    # Standard views
-                    for t_view in aug_views:
+                    for t_view in all_views:
                         t_img = t_view(img).unsqueeze(0).to(device)
                         feat = model.features(t_img)
                         pooled = model.avgpool(feat)
                         flat = torch.flatten(pooled, 1)
                         feature_list.append(flat)
                         target_list.append(idx)
-                    # Extra views for user test leaves
-                    if "user_test_leaves" in p or "Screenshots" in p:
-                        for t_view in extra_aug:
-                            t_img = t_view(img).unsqueeze(0).to(device)
-                            feat = model.features(t_img)
-                            pooled = model.avgpool(feat)
-                            flat = torch.flatten(pooled, 1)
-                            feature_list.append(flat)
-                            target_list.append(idx)
                 except Exception as e:
                     print(f"[!] Error loading {p}: {e}")
                     continue
@@ -186,11 +181,11 @@ def main():
     print("[*] Training classifier head with CrossEntropyLoss and AdamW...")
     classifier = model.classifier
     classifier.train()
-    optimizer = torch.optim.AdamW(classifier.parameters(), lr=0.004, weight_decay=1e-4)
-    criterion = nn.CrossEntropyLoss(label_smoothing=0.02)
-
     epochs = 80
     batch_size = 32
+    optimizer = torch.optim.AdamW(classifier.parameters(), lr=0.003, weight_decay=5e-4)
+    scheduler = torch.optim.lr_scheduler.CosineAnnealingLR(optimizer, T_max=epochs)
+    criterion = nn.CrossEntropyLoss(label_smoothing=0.03)
     n_samples = all_features.shape[0]
 
     for epoch in range(1, epochs + 1):
@@ -212,6 +207,8 @@ def main():
             total_loss += loss.item() * len(b_target)
             preds = outputs.argmax(dim=1)
             correct += (preds == b_target).sum().item()
+
+        scheduler.step()
 
         acc = correct / n_samples
         if epoch % 20 == 0 or epoch == epochs:

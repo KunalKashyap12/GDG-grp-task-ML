@@ -1081,26 +1081,7 @@ def index_page():
       const alertBlurry = document.getElementById('alertBlurry');
       const resultContent = document.getElementById('resultContent');
 
-      // 1. Rejection: Not A Leaf
-      if (data.status === 'not_a_leaf') {
-        alertNotALeaf.style.display = 'block';
-        alertBlurry.style.display = 'none';
-        resultContent.style.display = 'none';
-        return;
-      }
-
-      // 2. Rejection: Poor Image Quality
-      if (data.status === 'poor_image_quality') {
-        alertBlurry.style.display = 'block';
-        alertNotALeaf.style.display = 'none';
-        resultContent.style.display = 'none';
-        if (data.message) {
-          document.getElementById('blurryDesc').innerText = data.message;
-        }
-        return;
-      }
-
-      // 3. Valid Leaf Prediction: Show Full Diagnostic Report
+      // Always display diagnostic report for uploaded crop leaves
       alertNotALeaf.style.display = 'none';
       alertBlurry.style.display = 'none';
       resultContent.style.display = 'block';
