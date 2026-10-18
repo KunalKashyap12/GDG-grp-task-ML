@@ -1,0 +1,26 @@
+# ML Service Runtime Configuration
+
+server:
+  host: "0.0.0.0"
+  port: 8000
+  max_upload_size_mb: 5
+
+model:
+  path: "model/model.pt"
+  labels_path: "model/labels.json"
+  calibration_path: "model/calibration.json"
+  img_size: 224
+  device: "cpu"  # Force CPU inference for predictable lightweight latency < 1s
+
+uncertainty:
+  confidence_thresholds:
+    high: 0.85
+    medium: 0.60
+  ood:
+    energy_threshold: -5.0 # Max allowable energy score E(x)
+    min_leaf_max_prob: 0.22 # Fallback check for unconstrained max probability
+
+quality:
+  blur_threshold: 100.0   # Variance of Laplacian
+  min_brightness: 40.0   # Average pixel intensity
+  max_brightness: 225.0

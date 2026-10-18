@@ -1,0 +1,10 @@
+{
+  "temperature": 1.0,
+  "pre_ece": 0.015,
+  "post_ece": 0.01,
+  "energy_threshold": -4.8,
+  "confidence_thresholds": {
+    "high": 0.75,
+    "medium": 0.5
+  }
+}

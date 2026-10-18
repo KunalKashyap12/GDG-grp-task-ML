@@ -1,0 +1,44 @@
+version: '3.8'
+
+services:
+  # Fast CPU-optimized ML Inference Engine (FastAPI + PyTorch)
+  ml-service:
+    build:
+      context: ./ml_service
+      dockerfile: Dockerfile
+    container_name: crop-ml-service
+    ports:
+      - "8000:8000"
+    environment:
+      - CONFIG_PATH=config.yaml
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8000/health"]
+      interval: 15s
+      timeout: 5s
+      retries: 3
+      start_period: 10s
+    restart: unless-stopped
+    networks:
+      - crop-network
+
+  # Decision Support Backend (Spring Boot 3 + Java 17)
+  spring-backend:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+    container_name: crop-spring-backend
+    ports:
+      - "8080:8080"
+    environment:
+      - ML_SERVICE_URL=http://ml-service:8000
+      - SPRING_PROFILES_ACTIVE=prod
+    depends_on:
+      ml-service:
+        condition: service_healthy
+    restart: unless-stopped
+    networks:
+      - crop-network
+
+networks:
+  crop-network:
+    driver: bridge

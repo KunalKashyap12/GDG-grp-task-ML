@@ -1,0 +1,66 @@
+# ML Training & Uncertainty Configuration
+
+data:
+  raw_dir: "data/raw"
+  manifest_dir: "data/manifests"
+  manifest_path: "data/manifests/manifest.csv"
+  processed_dir: "data/processed"
+  train_dir: "data/processed/train"
+  val_dir: "data/processed/val"
+  test_lab_dir: "data/processed/test_lab"
+  test_field_dir: "data/processed/test_field"
+  max_images_per_class: 1500
+  val_split: 0.15
+  test_split: 0.15
+  phash_threshold: 4  # Perceptual hash Hamming distance for near-duplicate rejection
+
+model:
+  architecture: "mobilenet_v3_large"
+  pretrained: true
+  img_size: 224
+  num_classes: 36
+
+training:
+  seed: 42
+  batch_size: 64
+  num_workers: 4
+  use_amp: true # Mixed precision (torch.cuda.amp.autocast) for free Colab T4
+  weight_decay: 0.0001
+  label_smoothing: 0.1
+  stage1:
+    epochs: 5
+    lr: 0.001
+    freeze_backbone: true
+  stage2:
+    epochs: 15
+    lr: 0.0001
+    freeze_backbone: false
+  early_stopping:
+    patience: 5
+    min_delta: 0.001
+
+calibration:
+  temperature: 1.0  # Will be optimized and saved to calibration.json
+  method: "temperature_scaling"
+  max_iter: 100
+  lr: 0.01
+
+uncertainty:
+  confidence_thresholds:
+    high: 0.85
+    medium: 0.60
+  ood:
+    energy_threshold: -5.0 # Energy E(x) = -T * log(sum(exp(z_i/T)))
+    max_entropy: 2.8
+
+quality:
+  blur_threshold: 100.0   # Variance of Laplacian
+  min_brightness: 40.0   # Average grayscale pixel intensity
+  max_brightness: 225.0
+
+artifacts:
+  model_dir: "ml_service/model"
+  model_path: "ml_service/model/model.pt"
+  labels_path: "ml_service/model/labels.json"
+  calibration_path: "ml_service/model/calibration.json"
+  metrics_report: "ml_training/evaluation_report.json"

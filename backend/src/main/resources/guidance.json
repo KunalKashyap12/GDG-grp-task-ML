@@ -1,0 +1,431 @@
+{
+  "Apple___Apple_scab": {
+    "disease_name": "Apple Scab (Venturia inaequalis)",
+    "category": "Fungal",
+    "urgency": "High",
+    "preventive_measures": [
+      "Rake and destroy fallen leaves in autumn to eliminate overwintering fungal ascospores.",
+      "Prune dense canopies during dormancy to improve sunlight penetration and air movement.",
+      "Apply protective sulfur or copper-based sprays during the green-tip bud stage."
+    ],
+    "treatment_summary": "Apply captan or myclobutanil early in the infection cycle. Maintain leaf dryness through drip irrigation."
+  },
+  "Apple___Black_rot": {
+    "disease_name": "Apple Black Rot / Frogeye Leaf Spot (Botryosphaeria obtusa)",
+    "category": "Fungal",
+    "urgency": "High",
+    "preventive_measures": [
+      "Prune out dead wood, fire blight cankers, and mummified fruit lingering on trees.",
+      "Disinfect pruning tools with 70% isopropyl alcohol between branch cuts.",
+      "Avoid tree mechanical stress and insect wounds during summer."
+    ],
+    "treatment_summary": "Apply thiophanate-methyl or captan starting at petal fall through cover sprays."
+  },
+  "Apple___Cedar_apple_rust": {
+    "disease_name": "Cedar Apple Rust (Gymnosporangium juniperi-virginianae)",
+    "category": "Fungal",
+    "urgency": "Medium",
+    "preventive_measures": [
+      "Remove nearby eastern red cedar and juniper hosts within 1-2 miles if possible.",
+      "Select resistant apple rootstocks (e.g., Enterprise, Freedom, Liberty).",
+      "Inspect nearby junipers in spring for gelatinous orange spore horns."
+    ],
+    "treatment_summary": "Spray preventative fungicides (myclobutanil or mancozeb) when apple buds show pink."
+  },
+  "Apple___Healthy": {
+    "disease_name": "Healthy Apple Foliage",
+    "category": "Healthy",
+    "urgency": "None",
+    "preventive_measures": [
+      "Continue balanced N-P-K fertilization and seasonal soil organic mulching.",
+      "Conduct regular scouting for early signs of codling moth and foliar spotting.",
+      "Maintain consistent soil moisture levels with automated drip irrigation."
+    ],
+    "treatment_summary": "No curative treatment required. Maintain standard cultural orchard practices."
+  },
+  "Bell_Pepper___Bacterial_spot": {
+    "disease_name": "Bacterial Spot of Pepper (Xanthomonas campestris)",
+    "category": "Bacterial",
+    "urgency": "High",
+    "preventive_measures": [
+      "Plant only certified disease-free, hot-water treated seeds or resistant cultivars.",
+      "Avoid overhead sprinkler irrigation that splashes bacteria across adjacent foliage.",
+      "Rotate fields away from solanaceous crops (peppers, tomatoes, eggplants) for at least 2 years."
+    ],
+    "treatment_summary": "Apply fixed copper bactericides combined with mancozeb upon initial spot detection."
+  },
+  "Bell_Pepper___Healthy": {
+    "disease_name": "Healthy Bell Pepper Foliage",
+    "category": "Healthy",
+    "urgency": "None",
+    "preventive_measures": [
+      "Maintain raised beds with organic mulch to stabilize soil temperature and moisture.",
+      "Ensure adequate calcium supply in soil to prevent concurrent blossom-end rot.",
+      "Scout lower leaf surfaces weekly for aphid and thrips vectors."
+    ],
+    "treatment_summary": "No chemical treatment needed. Maintain optimal plant nutrition and canopy airflow."
+  },
+  "Cotton___Bacterial_blight": {
+    "disease_name": "Cotton Bacterial Blight / Angular Leaf Spot (Xanthomonas citri)",
+    "category": "Bacterial",
+    "urgency": "High",
+    "preventive_measures": [
+      "Utilize acid-delinted certified seeds and resistant transgenic cotton varieties.",
+      "Plow under infected crop residues immediately following harvest to accelerate decomposition.",
+      "Avoid field cultivation and worker transit when foliage is damp from morning dew."
+    ],
+    "treatment_summary": "Foliar copper oxychloride sprays can slow progression if applied at early vegetative stages."
+  },
+  "Cotton___Curl_virus": {
+    "disease_name": "Cotton Leaf Curl Virus (CLCuV)",
+    "category": "Viral",
+    "urgency": "High",
+    "preventive_measures": [
+      "Implement aggressive vector management against sweetpotato whiteflies (Bemisia tabaci).",
+      "Eradicate alternate weed hosts (e.g., Sida, Malvaceous weeds) along border canals.",
+      "Sow early in the planting window with approved resistant hybrid varieties."
+    ],
+    "treatment_summary": "Viral infections are incurable. Rogue infected plants; apply systemic insecticides for vector suppression."
+  },
+  "Cotton___Fusarium_wilt": {
+    "disease_name": "Cotton Fusarium Wilt (Fusarium oxysporum f. sp. vasinfectum)",
+    "category": "Fungal",
+    "urgency": "High",
+    "preventive_measures": [
+      "Implement deep summer plowing to expose fungal resting spores to solar radiation.",
+      "Practice 3 to 5 year crop rotation with non-host grass crops like sorghum or corn.",
+      "Manage root-knot nematode populations which create entry wounds for Fusarium."
+    ],
+    "treatment_summary": "Treat seed with Trichoderma viride or carbendazim. Remove wilted plants from field."
+  },
+  "Cotton___Healthy": {
+    "disease_name": "Healthy Cotton Foliage",
+    "category": "Healthy",
+    "urgency": "None",
+    "preventive_measures": [
+      "Maintain integrated pest management (IPM) monitoring for bollworm and sucking pests.",
+      "Provide balanced potash fertilization to strengthen plant cell wall resistance.",
+      "Ensure uniform irrigation during square formation and peak boll maturation."
+    ],
+    "treatment_summary": "No intervention required. Keep vegetative canopies well-ventilated."
+  },
+  "Grape___Black_rot": {
+    "disease_name": "Grape Black Rot (Guignardia bidwellii)",
+    "category": "Fungal",
+    "urgency": "High",
+    "preventive_measures": [
+      "Remove and incinerate all mummified grape clusters and diseased canes during winter pruning.",
+      "Train grape canopies on vertical trellises to ensure rapid leaf drying after rain.",
+      "Spray protective fungicides starting from early bud swell through 4 weeks post-bloom."
+    ],
+    "treatment_summary": "Apply kresoxim-methyl, mancozeb, or tebuconazole during critical spring infection windows."
+  },
+  "Grape___Esca_Black_Measles": {
+    "disease_name": "Grapevine Esca / Black Measles (Complex Fungal Trunk Disease)",
+    "category": "Fungal",
+    "urgency": "High",
+    "preventive_measures": [
+      "Protect large pruning wounds immediately with wound sealants or Trichoderma formulations.",
+      "Avoid pruning during wet or humid weather when fungal airborne spores are prevalent.",
+      "Disinfect pruning shears regularly to prevent vine-to-vine vascular contamination."
+    ],
+    "treatment_summary": "No single chemical cure exists for trunk diseases. Perform trunk renewal or surgical excision."
+  },
+  "Grape___Leaf_blight": {
+    "disease_name": "Grape Leaf Blight / Isariopsis Leaf Spot (Pseudocercospora cladosporioides)",
+    "category": "Fungal",
+    "urgency": "Medium",
+    "preventive_measures": [
+      "Prune lower lateral leaves around fruiting zones to reduce stagnant humidity.",
+      "Collect and compost fallen leaves to eliminate primary inoculum reservoirs.",
+      "Maintain optimal vine canopy architecture."
+    ],
+    "treatment_summary": "Foliar sprays of copper hydroxide, azoxystrobin, or difenoconazole give effective control."
+  },
+  "Grape___Healthy": {
+    "disease_name": "Healthy Grapevine Canopy",
+    "category": "Healthy",
+    "urgency": "None",
+    "preventive_measures": [
+      "Continue shoot thinning and wire tucking to maximize sun exposure.",
+      "Monitor vineyard soil moisture with tensiometers to avoid waterlogging.",
+      "Conduct routine scouting for downy mildew and powdery mildew spores."
+    ],
+    "treatment_summary": "Healthy foliage. Follow standard seasonal viticulture protocol."
+  },
+  "Maize___Common_rust": {
+    "disease_name": "Maize Common Rust (Puccinia sorghi)",
+    "category": "Fungal",
+    "urgency": "Medium",
+    "preventive_measures": [
+      "Plant corn hybrids with high genetic rust tolerance (Rp gene resistance).",
+      "Plant early in the season to evade peak late-summer spore arrival from warm southerly winds.",
+      "Scout upper leaves weekly before the silking and tasseling phases."
+    ],
+    "treatment_summary": "Apply strobilurin or triazole fungicides (e.g. pyraclostrobin + fluxapyroxad) if rust appears before tasseling."
+  },
+  "Maize___Gray_leaf_spot": {
+    "disease_name": "Maize Gray Leaf Spot (Cercospora zeae-maydis)",
+    "category": "Fungal",
+    "urgency": "High",
+    "preventive_measures": [
+      "Practice 1-2 year crop rotation with non-host crops like soybean or clover.",
+      "Employ conventional tillage in high-risk zones to bury infected corn residue.",
+      "Avoid planting susceptible continuous corn in humid bottomland areas."
+    ],
+    "treatment_summary": "Fungicide application (azoxystrobin or propiconazole) recommended if lesions reach the ear leaf at silking."
+  },
+  "Maize___Northern_Leaf_Blight": {
+    "disease_name": "Northern Corn Leaf Blight (Exserohilum turcicum)",
+    "category": "Fungal",
+    "urgency": "High",
+    "preventive_measures": [
+      "Select corn hybrids possessing Ht-resistance genes.",
+      "Rotate infested fields with non-grass crops to allow fungal decomposition.",
+      "Bury old crop residue thoroughly via conservation tillage practices."
+    ],
+    "treatment_summary": "Apply foliar fungicides (e.g. trifloxystrobin + prothioconazole) when cigar-shaped lesions appear below the ear leaf."
+  },
+  "Maize___Healthy": {
+    "disease_name": "Healthy Maize Foliage",
+    "category": "Healthy",
+    "urgency": "None",
+    "preventive_measures": [
+      "Maintain balanced nitrogen side-dressing during knee-high (V6) vegetative stage.",
+      "Ensure proper plant population density to minimize inter-row competition.",
+      "Monitor corn rootworm and armyworm presence during vegetative growth."
+    ],
+    "treatment_summary": "No intervention necessary. Maintain standard agronomic monitoring."
+  },
+  "Potato___Early_blight": {
+    "disease_name": "Potato Early Blight (Alternaria solani)",
+    "category": "Fungal",
+    "urgency": "Medium",
+    "preventive_measures": [
+      "Maintain adequate plant vigor; avoid nitrogen deficiency which renders plants susceptible.",
+      "Use drip or furrow irrigation to minimize foliar wetness periods.",
+      "Allow potato tubers to mature fully and skins to set before harvesting."
+    ],
+    "treatment_summary": "Apply protective chlorothalonil or mancozeb; rotate with boscalid or difenoconazole upon target lesion detection."
+  },
+  "Potato___Late_blight": {
+    "disease_name": "Potato Late Blight (Phytophthora infestans)",
+    "category": "Oomycete",
+    "urgency": "High",
+    "preventive_measures": [
+      "Destroy cull potato piles and volunteer potatoes near fields before planting season.",
+      "Plant only certified disease-free seed tubers.",
+      "Monitor regional blight forecasting systems during cool, damp weather conditions."
+    ],
+    "treatment_summary": "Urgent application required: spray cymoxanil, mandipropamid, or metalaxyl immediately upon first signs."
+  },
+  "Potato___Healthy": {
+    "disease_name": "Healthy Potato Foliage",
+    "category": "Healthy",
+    "urgency": "None",
+    "preventive_measures": [
+      "Hilling rows to ensure proper tuber coverage and prevent greening.",
+      "Uniform moisture management to avoid tuber cracking or hollow heart.",
+      "Scout field borders for Colorado potato beetles and aphids."
+    ],
+    "treatment_summary": "Healthy foliage. Continue scheduled tuber bulking fertilization."
+  },
+  "Rice___Bacterial_leaf_blight": {
+    "disease_name": "Rice Bacterial Leaf Blight (Xanthomonas oryzae pv. oryzae)",
+    "category": "Bacterial",
+    "urgency": "High",
+    "preventive_measures": [
+      "Avoid excessive nitrogenous fertilizer application which fosters succulent susceptible tissues.",
+      "Drain standing field water temporarily during severe localized outbreaks.",
+      "Adopt resistant cultivars (e.g. varieties with Xa genes) and certified seed."
+    ],
+    "treatment_summary": "Spray copper oxychloride + streptomycin sulfate or validamycin at early tillering."
+  },
+  "Rice___Brown_spot": {
+    "disease_name": "Rice Brown Spot (Bipolaris oryzae)",
+    "category": "Fungal",
+    "urgency": "Medium",
+    "preventive_measures": [
+      "Correct soil nutrient deficiencies, especially silicon, potassium, and manganese.",
+      "Treat seeds with hot water (53-54°C for 10-12 mins) or carbendazim before nursery sowing.",
+      "Ensure proper field water retention; avoid severe drought stress in paddy fields."
+    ],
+    "treatment_summary": "Foliar spray with propiconazole, iprodione, or tricyclazole at tillering and panicle emergence."
+  },
+  "Rice___Leaf_blast": {
+    "disease_name": "Rice Blast (Magnaporthe oryzae)",
+    "category": "Fungal",
+    "urgency": "High",
+    "preventive_measures": [
+      "Avoid high seedling densities in nursery beds; maintain proper row spacing.",
+      "Split nitrogen fertilizer into 3-4 split applications rather than heavy early doses.",
+      "Maintain continuous shallow flooding (5-10 cm) to suppress airborne spore establishment."
+    ],
+    "treatment_summary": "Spray tricyclazole, isoprothiolane, or kasugamycin immediately upon noticing spindle-shaped lesions."
+  },
+  "Rice___Healthy": {
+    "disease_name": "Healthy Rice Paddy Canopy",
+    "category": "Healthy",
+    "urgency": "None",
+    "preventive_measures": [
+      "Maintain disciplined alternate wetting and drying (AWD) water management.",
+      "Perform mid-season drainage to enhance root aeration and tillering strength.",
+      "Monitor stem borers and brown planthoppers with pheromone traps."
+    ],
+    "treatment_summary": "Healthy crop. Proceed with routine agronomic care."
+  },
+  "Sugarcane___Mosaic": {
+    "disease_name": "Sugarcane Mosaic Virus (SCMV)",
+    "category": "Viral",
+    "urgency": "High",
+    "preventive_measures": [
+      "Plant healthy certified setts sourced from disease-free seed cane nurseries.",
+      "Subject seed setts to hot-water treatment at 50°C for 2 hours before planting.",
+      "Rogue out and burn mosaic-affected stools in the first 45-60 days of sprouting."
+    ],
+    "treatment_summary": "Incurable viral infection. Suppress aphid vectors (Rhopalosiphum maidis) with recommended systemic insecticides."
+  },
+  "Sugarcane___Red_rot": {
+    "disease_name": "Sugarcane Red Rot (Colletotrichum falcatum)",
+    "category": "Fungal",
+    "urgency": "High",
+    "preventive_measures": [
+      "Avoid using setts exhibiting reddish discoloration or fungal pith at node cuttings.",
+      "Implement 2-year crop rotation with green manure or paddy rice.",
+      "Ensure rapid field drainage during heavy monsoon rains to avoid stagnant root submersion."
+    ],
+    "treatment_summary": "Dip setts in carbendazim solution (0.1%) before planting; rogue and destroy affected clumps immediately."
+  },
+  "Sugarcane___Healthy": {
+    "disease_name": "Healthy Sugarcane Foliage",
+    "category": "Healthy",
+    "urgency": "None",
+    "preventive_measures": [
+      "Provide earthing up at 90 and 120 days to support cane lodging resistance.",
+      "Trash mulching between rows to conserve moisture and suppress weed emergence.",
+      "Maintain balanced micronutrient spraying (zinc, iron) during elongation phase."
+    ],
+    "treatment_summary": "Healthy foliage. Follow standard cane husbandry recommendations."
+  },
+  "Tomato___Bacterial_spot": {
+    "disease_name": "Tomato Bacterial Spot (Xanthomonas perforans)",
+    "category": "Bacterial",
+    "urgency": "High",
+    "preventive_measures": [
+      "Sanitize stakes, cages, and seedling trays with 10% bleach solution before reuse.",
+      "Avoid handling or pruning tomato plants while foliage is wet from rain or dew.",
+      "Use certified disease-free seeds treated with hydrochloric acid or hot water."
+    ],
+    "treatment_summary": "Foliar application of copper hydroxide mixed with mancozeb, or actigard systemic acquired resistance inducer."
+  },
+  "Tomato___Early_blight": {
+    "disease_name": "Tomato Early Blight (Alternaria linariae)",
+    "category": "Fungal",
+    "urgency": "Medium",
+    "preventive_measures": [
+      "Prune bottom 12 inches of foliage once plants are established to prevent soil splash.",
+      "Apply 2-3 inches of clean straw or plastic mulch under tomato vines.",
+      "Rotate nightshade crops on a minimum 3-year schedule."
+    ],
+    "treatment_summary": "Apply biofungicide (Bacillus subtilis) or chemical protectors (chlorothalonil, azoxystrobin) at first concentric ring spot."
+  },
+  "Tomato___Healthy": {
+    "disease_name": "Healthy Tomato Foliage",
+    "category": "Healthy",
+    "urgency": "None",
+    "preventive_measures": [
+      "Maintain consistent soil moisture to prevent blossom-end rot and fruit cracking.",
+      "Support heavy vines with sturdy staking or Florida weave trellising.",
+      "Scout weekly for tomato hornworms, whiteflies, and spider mites."
+    ],
+    "treatment_summary": "Healthy foliage. Maintain balanced fertilization and consistent drip irrigation."
+  },
+  "Tomato___Late_blight": {
+    "disease_name": "Tomato Late Blight (Phytophthora infestans)",
+    "category": "Oomycete",
+    "urgency": "High",
+    "preventive_measures": [
+      "Select late blight resistant varieties (e.g. Mountain Magic, Defiant, Plum Regal).",
+      "Ensure wide plant spacing (24-36 inches) for maximum aeration and quick drying.",
+      "Eliminate volunteer potato and nightshade plants in surrounding field boundaries."
+    ],
+    "treatment_summary": "High urgency: apply systemic fungicides (cyazofamid, fluopicolide, or mandipropamid) immediately to prevent total crop loss."
+  },
+  "Tomato___Leaf_Mold": {
+    "disease_name": "Tomato Leaf Mold (Passalora fulva)",
+    "category": "Fungal",
+    "urgency": "Medium",
+    "preventive_measures": [
+      "Ventilate greenhouses and polytunnels actively to keep relative humidity below 85%.",
+      "Prune suckers and interior leaves to encourage uniform air circulation.",
+      "Water exclusively at soil level using drip emitters; never wet overhead foliage."
+    ],
+    "treatment_summary": "Apply copper octanoate, difenoconazole, or cyprodinil + fludioxonil upon yellowing on upper leaf surfaces."
+  },
+  "Tomato___Septoria_leaf_spot": {
+    "disease_name": "Tomato Septoria Leaf Spot (Septoria lycopersici)",
+    "category": "Fungal",
+    "urgency": "Medium",
+    "preventive_measures": [
+      "Remove diseased lower leaves as soon as small dark circular spots with gray centers appear.",
+      "Thoroughly clean up and compost or burn all tomato vines at season end.",
+      "Mulch heavily around the plant base to form a barrier against soil-borne spores."
+    ],
+    "treatment_summary": "Spray copper fungicides or chlorothalonil on a 7-10 day schedule during wet, warm weather."
+  },
+  "Tomato___Yellow_Leaf_Curl_Virus": {
+    "disease_name": "Tomato Yellow Leaf Curl Virus (TYLCV)",
+    "category": "Viral",
+    "urgency": "High",
+    "preventive_measures": [
+      "Install 50-mesh insect-proof netting in nursery seedling tunnels to exclude whitefly vectors.",
+      "Deploy yellow sticky cards throughout the greenhouse/field to monitor whitefly influx.",
+      "Grow TYLCV-resistant hybrids (e.g. Tycoon, Charger, Chef's Choice)."
+    ],
+    "treatment_summary": "Virus is incurable in plant tissues. Immediately rogue out and bag infected plants. Control whitefly populations."
+  },
+  "Wheat___Brown_rust": {
+    "disease_name": "Wheat Leaf / Brown Rust (Puccinia triticina)",
+    "category": "Fungal",
+    "urgency": "Medium",
+    "preventive_measures": [
+      "Sow certified rust-resistant wheat varieties recommended for your agro-ecological zone.",
+      "Eradicate volunteer wheat plants in fall which serve as a 'green bridge' for spores.",
+      "Avoid late sowing which exposes wheat to higher spring temperatures and heavy spore loads."
+    ],
+    "treatment_summary": "Apply propiconazole, tebuconazole, or azoxystrobin when flag leaf rust pustules exceed 1-2% severity."
+  },
+  "Wheat___Healthy": {
+    "disease_name": "Healthy Wheat Foliage",
+    "category": "Healthy",
+    "urgency": "None",
+    "preventive_measures": [
+      "Ensure balanced basal fertilization and timely crown root initiation (CRI) irrigation.",
+      "Maintain weed-free conditions during early tillering.",
+      "Scout for aphids and cereal leaf beetles."
+    ],
+    "treatment_summary": "Healthy foliage. Follow recommended regional irrigation schedule."
+  },
+  "Wheat___Septoria": {
+    "disease_name": "Wheat Septoria Leaf Blotch (Zymoseptoria tritici)",
+    "category": "Fungal",
+    "urgency": "High",
+    "preventive_measures": [
+      "Practice minimum 1-year rotation away from wheat to break residue-borne pycnidia cycle.",
+      "Select wheat cultivars with high resistance ratings against Septoria tritici.",
+      "Delay autumn sowing slightly in regions with severe endemic Septoria history."
+    ],
+    "treatment_summary": "Apply multi-site protective fungicides (folpet) mixed with SDHI/triazole (fluxapyroxad or mefentrifluconazole) at GS 39."
+  },
+  "Wheat___Yellow_rust": {
+    "disease_name": "Wheat Stripe / Yellow Rust (Puccinia striiformis)",
+    "category": "Fungal",
+    "urgency": "High",
+    "preventive_measures": [
+      "Monitor fields early in cool spring weather (10-15°C) for characteristic yellow stripe patterns.",
+      "Plant genetically diverse seed mixtures or multi-line resistant cultivars.",
+      "Destroy collateral volunteer grass hosts along field headlands."
+    ],
+    "treatment_summary": "High urgency: apply propiconazole or pyraclostrobin immediately upon noticing bright yellow stripe pustules."
+  }
+}
