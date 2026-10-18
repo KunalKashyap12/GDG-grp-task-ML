@@ -52,6 +52,7 @@ gdg-grp-task(ml)/
 ├── ml_training/                     # Complete PyTorch Training Pipeline
 │   ├── config.yaml                  # Hyperparameters, paths, and uncertainty thresholds
 │   ├── mapping.yaml                 # Maps raw folder names across datasets to Crop___Disease
+│   ├── train_10_crops.py            # High-efficiency calibrated transfer learning for 10 crops
 │   ├── 01_merge_datasets.py         # Merges datasets, caps at 1500/class, writes manifest.csv
 │   ├── 02_filter_and_split.py       # pHash deduplication, corrupt filter, train/val/test splits
 │   ├── 03_train.py                  # Two-stage MobileNetV3 transfer learning with AMP & AdamW
@@ -64,6 +65,8 @@ gdg-grp-task(ml)/
 │       ├── augmentations.py         # FieldBackgroundVariation & color/lighting augmentations
 │       ├── dataset.py               # PyTorch Dataset and smoothed inverse class weights
 │       └── metrics.py               # ECE calculation, source breakdown, weakest class finder
+├── tests/                           # Automated Test Suites
+│   └── test_crops_validation.py     # 10 crops botanical morphology & mismatch penalty tests
 ├── ml_service/                      # Production FastAPI ML Inference Microservice
 │   ├── app.py                       # FastAPI application (POST /predict, GET /classes, GET /health)
 │   ├── predict.py                   # CPU-optimized predictor, quality check, crop conditioning
