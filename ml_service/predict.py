@@ -243,15 +243,56 @@ class CropDiseasePredictor:
 
         return True, round(blur_score, 2), round(brightness, 2), None
 
-    def is_leaf_present(self, image_cv: np.ndarray) -> Tuple[bool, float]:
-        """Validates vegetation presence using the Excess Green Index (ExG)."""
+    def is_leaf_present(self, image_cv: np.ndarray) -> Tuple[bool, float, Optional[str]]:
+        """
+        Validates whether the image contains authentic foliar / vegetation characteristics
+        of a plant or crop leaf. Rejects non-plant images (documents, screenshots, objects, people).
+        """
         if len(image_cv.shape) != 3:
-            return False, 0.0
+            return False, 0.0, "Input image must be a 3-channel color photograph."
+
+        h, w = image_cv.shape[:2]
+        total_pixels = h * w
         b, g, r = [image_cv[:, :, i].astype(np.float32) for i in range(3)]
+        hsv = cv2.cvtColor(image_cv, cv2.COLOR_BGR2HSV)
+
+        # 1. Detect Chlorophyll & Foliar Pigments (Green, Yellow-chlorotic, Rust, Necrotic leaf tissue):
         exg = 2 * g - r - b
-        foliage = (exg > 7.0) | ((g >= r - 10) & (g > b + 14))
-        ratio = float(np.count_nonzero(foliage)) / float(image_cv.shape[0] * image_cv.shape[1])
-        return ratio >= 0.08, round(ratio, 4)
+        green_foliage = (exg > 3.0) & (g >= b - 15) & (g >= r - 15)
+        yellow_foliage = (hsv[:, :, 0] >= 15) & (hsv[:, :, 0] <= 95) & (hsv[:, :, 1] >= 25) & (hsv[:, :, 2] >= 30)
+        rust_foliage = (hsv[:, :, 0] >= 10) & (hsv[:, :, 0] <= 26) & (hsv[:, :, 1] >= 80) & (hsv[:, :, 2] >= 70)
+        necrotic_spots = (hsv[:, :, 0] >= 10) & (hsv[:, :, 0] <= 35) & (hsv[:, :, 1] >= 20) & (hsv[:, :, 2] >= 20) & (hsv[:, :, 2] <= 180)
+
+        foliage = green_foliage | yellow_foliage | rust_foliage | necrotic_spots
+        foliage_pixels = int(np.count_nonzero(foliage))
+        foliage_ratio = float(foliage_pixels) / float(total_pixels)
+
+        # 2. Document / Screenshot / Neutral UI Detection:
+        neutral = (np.abs(r - g) < 14) & (np.abs(g - b) < 14) & (np.abs(r - b) < 14)
+        neutral_ratio = float(np.count_nonzero(neutral)) / float(total_pixels)
+
+        # If foliage is negligible (< 6% of the frame):
+        if foliage_ratio < 0.06:
+            return False, round(foliage_ratio, 4), "NOT A LEAF: Yeh kisi fasal ki patti nahi hai! Kripya kisi fasal (Crop Leaf) ki photo upload karein."
+
+        # If neutral/grayscale background dominates (> 85%) and foliage is below 12%, it's a document/screenshot:
+        if neutral_ratio > 0.85 and foliage_ratio < 0.12:
+            return False, round(foliage_ratio, 4), "NOT A LEAF: Yeh document ya screenshot lag raha hai. Kripya kisi fasal ki patti ki saaf photo upload karein."
+
+        # 3. Check for largest connected organic contour
+        foliage_mask = foliage.astype(np.uint8) * 255
+        k = cv2.getStructuringElement(cv2.MORPH_ELLIPSE, (5, 5))
+        foliage_clean = cv2.morphologyEx(foliage_mask, cv2.MORPH_OPEN, k)
+        contours, _ = cv2.findContours(foliage_clean, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)
+        if not contours:
+            return False, round(foliage_ratio, 4), "NOT A LEAF: Foliar structure not recognized. Kripya patti ki photo upload karein."
+
+        largest_c = max(contours, key=cv2.contourArea)
+        largest_area_ratio = float(cv2.contourArea(largest_c)) / float(total_pixels)
+        if largest_area_ratio < 0.03:
+            return False, round(foliage_ratio, 4), "NOT A LEAF: Patti ka mukhya hissa nahi mila. Kripya pass se patti ki photo lein."
+
+        return True, round(foliage_ratio, 4), None
 
     def extract_leaf_morphology(self, image_cv: np.ndarray) -> Dict[str, Any]:
         """
@@ -489,10 +530,28 @@ class CropDiseasePredictor:
         _, blur_score, brightness, _ = self.assess_quality(np_img)
         quality_info = {"blur_score": blur_score, "brightness": brightness}
 
-        # 2. Botanical & Morphological Feature Extraction
+        # 2. Leaf Structure & Foliage Verification
+        is_leaf, foliage_ratio, leaf_rejection_msg = self.is_leaf_present(np_img)
+        if not is_leaf:
+            return {
+                "status": "not_a_leaf",
+                "crop": "unknown",
+                "disease": "unknown",
+                "confidence": 0.0,
+                "certainty": "low",
+                "top3": [],
+                "crop_comparison": [],
+                "morphology": None,
+                "mismatch_warning": None,
+                "quality": quality_info,
+                "guidance": None,
+                "message": leaf_rejection_msg or "NOT A LEAF: Yeh kisi fasal ki patti nahi hai! Kripya kisi fasal (Crop Leaf) ki photo upload karein."
+            }
+
+        # 3. Botanical & Morphological Feature Extraction
         morphology = self.extract_leaf_morphology(np_img)
 
-        # 3. PyTorch Preprocessing & Forward pass
+        # 4. PyTorch Preprocessing & Forward pass
         input_tensor = self.transform(pil_img).unsqueeze(0).to(self.device)
 
         with torch.no_grad():
@@ -500,6 +559,23 @@ class CropDiseasePredictor:
             scaled_logits = raw_logits / self.temperature
             all_probs = torch.softmax(scaled_logits, dim=1).squeeze(0)
             max_unconstrained_prob = float(torch.max(all_probs).item())
+
+            # Out-Of-Distribution (Not a leaf) Detection: if unconstrained maximum probability is < 0.06
+            if max_unconstrained_prob < 0.06:
+                return {
+                    "status": "not_a_leaf",
+                    "crop": "unknown",
+                    "disease": "unknown",
+                    "confidence": round(max_unconstrained_prob, 4),
+                    "certainty": "low",
+                    "top3": [],
+                    "crop_comparison": [],
+                    "morphology": None,
+                    "mismatch_warning": None,
+                    "quality": quality_info,
+                    "guidance": None,
+                    "message": "NOT A LEAF: Image features do not match any recognized crop leaf foliage."
+                }
 
         # 5. Crop Species Identification (Morphology + Visual CNN Evidence)
         # Compute raw crop-level logit aggregations
@@ -516,29 +592,31 @@ class CropDiseasePredictor:
         lesion_pct = morphology.get("lesion_pct", 0.0)
         has_rust = morphology.get("has_rust_pustules", False)
         is_linear = morphology.get("is_linear_blade", False) or (geom == "linear_strap")
-
         crop_priors: Dict[str, float] = {c: 1.0 for c in crop_scores_raw.keys()}
 
-        if has_rust and is_linear:
-            # Monocot cereal grass with rust pustules (Wheat, Maize)
-            crop_priors["Wheat"] = crop_priors.get("Wheat", 1.0) * 1.5
-            crop_priors["Maize"] = crop_priors.get("Maize", 1.0) * 1.3
-        elif has_rust and not is_linear and solidity >= 0.82:
-            # Broadleaf tree leaf with rust pustules: Cedar Apple Rust on Apple
-            crop_priors["Apple"] = crop_priors.get("Apple", 1.0) * 1.4
-        elif geom == "simple_ovate" and solidity >= 0.82 and not is_linear:
-            # Simple ovate entire leaf: typical for Bell Pepper or Apple
-            crop_priors["Bell_Pepper"] = crop_priors.get("Bell_Pepper", 1.0) * 1.3
-            crop_priors["Apple"] = crop_priors.get("Apple", 1.0) * 1.1
-        elif geom == "compound_lobed" and solidity < 0.78:
-            crop_priors["Tomato"] = crop_priors.get("Tomato", 1.0) * 1.3
-            crop_priors["Potato"] = crop_priors.get("Potato", 1.0) * 1.2
-        elif geom == "linear_strap" or is_linear:
+        # Botanical morphological fusion (Geometry + Shape + Venation + Lesions)
+        if is_linear:
+            # Monocot cereal grass blades (Wheat, Maize, Rice, Sugarcane)
+            for broadleaf in ["Bell_Pepper", "Apple", "Cotton", "Grape", "Potato", "Tomato"]:
+                crop_priors[broadleaf] = crop_priors.get(broadleaf, 1.0) * 0.20
             for monocot in ["Wheat", "Maize", "Rice", "Sugarcane"]:
-                crop_priors[monocot] = crop_priors.get(monocot, 1.0) * 1.4
-        elif geom == "palmate_lobed":
-            crop_priors["Grape"] = crop_priors.get("Grape", 1.0) * 1.4
-            crop_priors["Cotton"] = crop_priors.get("Cotton", 1.0) * 1.4
+                crop_priors[monocot] = crop_priors.get(monocot, 1.0) * 1.80
+            if has_rust:
+                crop_priors["Wheat"] = crop_priors.get("Wheat", 1.0) * 2.20
+                crop_priors["Maize"] = crop_priors.get("Maize", 1.0) * 1.50
+        else:
+            # Dicot broadleaf foliage (Apple, Bell Pepper, Cotton, Grape, Potato, Tomato)
+            for monocot in ["Wheat", "Rice", "Sugarcane"]:
+                crop_priors[monocot] = crop_priors.get(monocot, 1.0) * 0.20
+            if geom == "compound_lobed":
+                crop_priors["Tomato"] = crop_priors.get("Tomato", 1.0) * 1.60
+                crop_priors["Potato"] = crop_priors.get("Potato", 1.0) * 1.50
+            elif geom == "palmate_lobed":
+                crop_priors["Grape"] = crop_priors.get("Grape", 1.0) * 1.70
+                crop_priors["Cotton"] = crop_priors.get("Cotton", 1.0) * 1.60
+            elif geom == "simple_ovate":
+                crop_priors["Apple"] = crop_priors.get("Apple", 1.0) * 1.40
+                crop_priors["Bell_Pepper"] = crop_priors.get("Bell_Pepper", 1.0) * 1.40
 
         # Compute fused and calibrated crop distribution
         # Use log-prior fusion: fused = raw_score * prior
@@ -636,25 +714,9 @@ class CropDiseasePredictor:
         sub_logits = scaled_logits[0, effective_indices]
         sub_probs = torch.softmax(sub_logits, dim=0).cpu().numpy()
         top_sub_order = np.argsort(sub_probs)[::-1]
-        raw_disease_prob = float(sub_probs[top_sub_order[0]])
+        # Selected disease within effective crop
         top_class_name = self.classes[effective_indices[top_sub_order[0]]]
-
-        # If leaf has visible bacterial / necrotic lesions on bell pepper, ensure bacterial spot matches
-        if effective_crop == "Bell_Pepper" and lesion_pct > 0.8:
-            for rank_idx, idx in enumerate(effective_indices):
-                if "bacterial_spot" in self.classes[idx].lower():
-                    top_class_name = self.classes[idx]
-                    raw_disease_prob = max(raw_disease_prob, 0.88)
-                    break
-
-        # If effective crop is Wheat and rust pustules are detected, select matching Wheat Rust
-        if effective_crop == "Wheat" and has_rust:
-            for rank_idx, idx in enumerate(effective_indices):
-                cls_l = self.classes[idx].lower()
-                if "brown_rust" in cls_l or "yellow_rust" in cls_l:
-                    top_class_name = self.classes[idx]
-                    raw_disease_prob = max(raw_disease_prob, 0.90)
-                    break
+        raw_disease_prob = float(sub_probs[top_sub_order[0]])
 
         # Apply mismatch penalty if manual override mismatched
         if is_mismatch:

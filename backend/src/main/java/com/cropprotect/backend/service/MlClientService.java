@@ -33,6 +33,7 @@ public class MlClientService {
      * Submits image and optional crop hint to FastAPI ML service (/predict).
      * Includes timeout handling, 1 automatic retry on network drops, and error translation.
      */
+    @SuppressWarnings("null")
     public MlPredictionResponse predict(MultipartFile file, String cropHint) {
         log.debug("Submitting prediction request to ML service. File: {}, CropHint: {}", file.getOriginalFilename(), cropHint);
 

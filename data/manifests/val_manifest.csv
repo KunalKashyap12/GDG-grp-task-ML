@@ -1,30 +1,440 @@
-path,label,source,type
-C:\Users\HP\OneDrive\Desktop\gdg-grp-task(ml)\data\synthetic_raw\PlantVillage\Apple___Apple_scab\sample_004.jpg,Apple___Apple_scab,PlantVillage,lab
-C:\Users\HP\OneDrive\Desktop\gdg-grp-task(ml)\data\synthetic_raw\PlantVillage\Apple___Black_rot\sample_004.jpg,Apple___Black_rot,PlantVillage,lab
-C:\Users\HP\OneDrive\Desktop\gdg-grp-task(ml)\data\synthetic_raw\PlantVillage\Apple___Cedar_apple_rust\sample_004.jpg,Apple___Cedar_apple_rust,PlantVillage,lab
-C:\Users\HP\OneDrive\Desktop\gdg-grp-task(ml)\data\synthetic_raw\PlantVillage\Bell_Pepper___Bacterial_spot\sample_004.jpg,Bell_Pepper___Bacterial_spot,PlantVillage,lab
-C:\Users\HP\OneDrive\Desktop\gdg-grp-task(ml)\data\synthetic_raw\Kaggle_Cotton\Cotton___Bacterial_blight\sample_003.jpg,Cotton___Bacterial_blight,Kaggle_Cotton,field
-C:\Users\HP\OneDrive\Desktop\gdg-grp-task(ml)\data\synthetic_raw\Kaggle_Cotton\Cotton___Curl_virus\sample_003.jpg,Cotton___Curl_virus,Kaggle_Cotton,field
-C:\Users\HP\OneDrive\Desktop\gdg-grp-task(ml)\data\synthetic_raw\Kaggle_Cotton\Cotton___Fusarium_wilt\sample_003.jpg,Cotton___Fusarium_wilt,Kaggle_Cotton,field
-C:\Users\HP\OneDrive\Desktop\gdg-grp-task(ml)\data\synthetic_raw\PlantVillage\Grape___Black_rot\sample_004.jpg,Grape___Black_rot,PlantVillage,lab
-C:\Users\HP\OneDrive\Desktop\gdg-grp-task(ml)\data\synthetic_raw\PlantVillage\Grape___Esca_Black_Measles\sample_006.jpg,Grape___Esca_Black_Measles,PlantVillage,lab
-C:\Users\HP\OneDrive\Desktop\gdg-grp-task(ml)\data\synthetic_raw\PlantVillage\Grape___Leaf_blight\sample_004.jpg,Grape___Leaf_blight,PlantVillage,lab
-C:\Users\HP\OneDrive\Desktop\gdg-grp-task(ml)\data\synthetic_raw\PlantVillage\Maize___Common_rust\sample_004.jpg,Maize___Common_rust,PlantVillage,lab
-C:\Users\HP\OneDrive\Desktop\gdg-grp-task(ml)\data\synthetic_raw\PlantVillage\Maize___Gray_leaf_spot\sample_004.jpg,Maize___Gray_leaf_spot,PlantVillage,lab
-C:\Users\HP\OneDrive\Desktop\gdg-grp-task(ml)\data\synthetic_raw\PlantVillage\Maize___Northern_Leaf_Blight\sample_004.jpg,Maize___Northern_Leaf_Blight,PlantVillage,lab
-C:\Users\HP\OneDrive\Desktop\gdg-grp-task(ml)\data\synthetic_raw\PlantVillage\Potato___Early_blight\sample_004.jpg,Potato___Early_blight,PlantVillage,lab
-C:\Users\HP\OneDrive\Desktop\gdg-grp-task(ml)\data\synthetic_raw\PlantVillage\Potato___Late_blight\sample_004.jpg,Potato___Late_blight,PlantVillage,lab
-C:\Users\HP\OneDrive\Desktop\gdg-grp-task(ml)\data\synthetic_raw\Kaggle_Rice\Rice___Bacterial_leaf_blight\sample_003.jpg,Rice___Bacterial_leaf_blight,Kaggle_Rice,field
-C:\Users\HP\OneDrive\Desktop\gdg-grp-task(ml)\data\synthetic_raw\Kaggle_Rice\Rice___Brown_spot\sample_003.jpg,Rice___Brown_spot,Kaggle_Rice,field
-C:\Users\HP\OneDrive\Desktop\gdg-grp-task(ml)\data\synthetic_raw\Kaggle_Rice\Rice___Leaf_blast\sample_003.jpg,Rice___Leaf_blast,Kaggle_Rice,field
-C:\Users\HP\OneDrive\Desktop\gdg-grp-task(ml)\data\synthetic_raw\Kaggle_Sugarcane\Sugarcane___Mosaic\sample_003.jpg,Sugarcane___Mosaic,Kaggle_Sugarcane,field
-C:\Users\HP\OneDrive\Desktop\gdg-grp-task(ml)\data\synthetic_raw\Kaggle_Sugarcane\Sugarcane___Red_rot\sample_003.jpg,Sugarcane___Red_rot,Kaggle_Sugarcane,field
-C:\Users\HP\OneDrive\Desktop\gdg-grp-task(ml)\data\synthetic_raw\PlantVillage\Tomato___Bacterial_spot\sample_004.jpg,Tomato___Bacterial_spot,PlantVillage,lab
-C:\Users\HP\OneDrive\Desktop\gdg-grp-task(ml)\data\synthetic_raw\PlantVillage\Tomato___Early_blight\sample_004.jpg,Tomato___Early_blight,PlantVillage,lab
-C:\Users\HP\OneDrive\Desktop\gdg-grp-task(ml)\data\synthetic_raw\PlantVillage\Tomato___Late_blight\sample_004.jpg,Tomato___Late_blight,PlantVillage,lab
-C:\Users\HP\OneDrive\Desktop\gdg-grp-task(ml)\data\synthetic_raw\PlantVillage\Tomato___Leaf_Mold\sample_004.jpg,Tomato___Leaf_Mold,PlantVillage,lab
-C:\Users\HP\OneDrive\Desktop\gdg-grp-task(ml)\data\synthetic_raw\PlantVillage\Tomato___Septoria_leaf_spot\sample_004.jpg,Tomato___Septoria_leaf_spot,PlantVillage,lab
-C:\Users\HP\OneDrive\Desktop\gdg-grp-task(ml)\data\synthetic_raw\PlantVillage\Tomato___Yellow_Leaf_Curl_Virus\sample_004.jpg,Tomato___Yellow_Leaf_Curl_Virus,PlantVillage,lab
-C:\Users\HP\OneDrive\Desktop\gdg-grp-task(ml)\data\synthetic_raw\Kaggle_Wheat\Wheat___Brown_rust\sample_003.jpg,Wheat___Brown_rust,Kaggle_Wheat,field
-C:\Users\HP\OneDrive\Desktop\gdg-grp-task(ml)\data\synthetic_raw\Kaggle_Wheat\Wheat___Septoria\sample_003.jpg,Wheat___Septoria,Kaggle_Wheat,field
-C:\Users\HP\OneDrive\Desktop\gdg-grp-task(ml)\data\synthetic_raw\Kaggle_Wheat\Wheat___Yellow_rust\sample_003.jpg,Wheat___Yellow_rust,Kaggle_Wheat,field
+path,label
+C:\Users\HP\OneDrive\Desktop\gdg-grp-task(ml)\data\sample_real_leaves\Apple___Healthy_0.jpg,Apple___Apple_scab
+C:\Users\HP\OneDrive\Desktop\gdg-grp-task(ml)\data\sample_real_leaves\Apple___Healthy_0.jpg,Apple___Black_rot
+C:\Users\HP\OneDrive\Desktop\gdg-grp-task(ml)\data\sample_real_leaves\Apple___Cedar_apple_rust_1.jpg,Apple___Cedar_apple_rust
+C:\Users\HP\OneDrive\Desktop\gdg-grp-task(ml)\data\sample_real_leaves\Apple___Black_rot_0.jpg,Apple___Cedar_apple_rust
+C:\Users\HP\OneDrive\Desktop\gdg-grp-task(ml)\data\sample_real_leaves\Apple___Healthy_0.jpg,Apple___Healthy
+C:\Users\HP\OneDrive\Desktop\gdg-grp-task(ml)\data\sample_real_leaves\Apple___Black_rot_1.jpg,Apple___Healthy
+C:\Users\HP\OneDrive\Desktop\gdg-grp-task(ml)\data\sample_real_leaves\Apple___Black_rot_0.jpg,Apple___Healthy
+C:\Users\HP\OneDrive\Desktop\gdg-grp-task(ml)\data\sample_real_leaves\Apple___Healthy_0.jpg,Apple___Healthy
+C:\Users\HP\OneDrive\Desktop\gdg-grp-task(ml)\data\sample_real_leaves\Apple___Healthy_1.jpg,Apple___Healthy
+C:\Users\HP\OneDrive\Desktop\gdg-grp-task(ml)\data\sample_real_leaves\Bell_Pepper___Healthy_1.jpg,Bell_Pepper___Bacterial_spot
+C:\Users\HP\OneDrive\Desktop\gdg-grp-task(ml)\data\sample_real_leaves\Bell_Pepper___Healthy_0.jpg,Bell_Pepper___Healthy
+C:\Users\HP\OneDrive\Desktop\gdg-grp-task(ml)\data\raw\Kaggle_Cotton\cotton\bacterial_blight\bact20.jpg,Cotton___Bacterial_blight
+C:\Users\HP\OneDrive\Desktop\gdg-grp-task(ml)\data\raw\Kaggle_Cotton\cotton\bacterial_blight\bact9.jpg,Cotton___Bacterial_blight
+C:\Users\HP\OneDrive\Desktop\gdg-grp-task(ml)\data\raw\Kaggle_Cotton\cotton\bacterial_blight\bact207.png,Cotton___Bacterial_blight
+C:\Users\HP\OneDrive\Desktop\gdg-grp-task(ml)\data\raw\Kaggle_Cotton\cotton\bacterial_blight\bact281.jpg,Cotton___Bacterial_blight
+C:\Users\HP\OneDrive\Desktop\gdg-grp-task(ml)\data\raw\Kaggle_Cotton\cotton\bacterial_blight\bact352.png,Cotton___Bacterial_blight
+C:\Users\HP\OneDrive\Desktop\gdg-grp-task(ml)\data\raw\Kaggle_Cotton\cotton\bacterial_blight\bact97.jpg,Cotton___Bacterial_blight
+C:\Users\HP\OneDrive\Desktop\gdg-grp-task(ml)\data\raw\Kaggle_Cotton\cotton\bacterial_blight\bact186.png,Cotton___Bacterial_blight
+C:\Users\HP\OneDrive\Desktop\gdg-grp-task(ml)\data\raw\Kaggle_Cotton\cotton\bacterial_blight\bact134.png,Cotton___Bacterial_blight
+C:\Users\HP\OneDrive\Desktop\gdg-grp-task(ml)\data\raw\Kaggle_Cotton\cotton\bacterial_blight\bact60.jpg,Cotton___Bacterial_blight
+C:\Users\HP\OneDrive\Desktop\gdg-grp-task(ml)\data\raw\Kaggle_Cotton\cotton\bacterial_blight\bact92.jpg,Cotton___Bacterial_blight
+C:\Users\HP\OneDrive\Desktop\gdg-grp-task(ml)\data\raw\Kaggle_Cotton\cotton\bacterial_blight\2015-angular-leaf-spot-colquitt-county-2.jpg,Cotton___Bacterial_blight
+C:\Users\HP\OneDrive\Desktop\gdg-grp-task(ml)\data\raw\Kaggle_Cotton\cotton\bacterial_blight\bact261.png,Cotton___Bacterial_blight
+C:\Users\HP\OneDrive\Desktop\gdg-grp-task(ml)\data\raw\Kaggle_Cotton\cotton\bacterial_blight\bact130.jpg,Cotton___Bacterial_blight
+C:\Users\HP\OneDrive\Desktop\gdg-grp-task(ml)\data\raw\Kaggle_Cotton\cotton\bacterial_blight\bact107.jpg,Cotton___Bacterial_blight
+C:\Users\HP\OneDrive\Desktop\gdg-grp-task(ml)\data\raw\Kaggle_Cotton\cotton\bacterial_blight\bact285.jpg,Cotton___Bacterial_blight
+C:\Users\HP\OneDrive\Desktop\gdg-grp-task(ml)\data\raw\Kaggle_Cotton\cotton\bacterial_blight\bact422.jpg,Cotton___Bacterial_blight
+C:\Users\HP\OneDrive\Desktop\gdg-grp-task(ml)\data\raw\Kaggle_Cotton\cotton\bacterial_blight\bact28.jpg,Cotton___Bacterial_blight
+C:\Users\HP\OneDrive\Desktop\gdg-grp-task(ml)\data\raw\Kaggle_Cotton\cotton\bacterial_blight\bact435.jpg,Cotton___Bacterial_blight
+C:\Users\HP\OneDrive\Desktop\gdg-grp-task(ml)\data\raw\Kaggle_Cotton\cotton\bacterial_blight\bact69.jpg,Cotton___Bacterial_blight
+C:\Users\HP\OneDrive\Desktop\gdg-grp-task(ml)\data\raw\Kaggle_Cotton\cotton\bacterial_blight\bact114.jpg,Cotton___Bacterial_blight
+C:\Users\HP\OneDrive\Desktop\gdg-grp-task(ml)\data\raw\Kaggle_Cotton\cotton\bacterial_blight\bact104.jpg,Cotton___Bacterial_blight
+C:\Users\HP\OneDrive\Desktop\gdg-grp-task(ml)\data\raw\Kaggle_Cotton\cotton\bacterial_blight\bact423.jpg,Cotton___Bacterial_blight
+C:\Users\HP\OneDrive\Desktop\gdg-grp-task(ml)\data\raw\Kaggle_Cotton\cotton\bacterial_blight\bact325.jpg,Cotton___Bacterial_blight
+C:\Users\HP\OneDrive\Desktop\gdg-grp-task(ml)\data\raw\Kaggle_Cotton\cotton\bacterial_blight\bact296.jpg,Cotton___Bacterial_blight
+C:\Users\HP\OneDrive\Desktop\gdg-grp-task(ml)\data\raw\Kaggle_Cotton\cotton\bacterial_blight\bact169.jpg,Cotton___Bacterial_blight
+C:\Users\HP\OneDrive\Desktop\gdg-grp-task(ml)\data\raw\Kaggle_Cotton\cotton\bacterial_blight\bact132.jpg,Cotton___Bacterial_blight
+C:\Users\HP\OneDrive\Desktop\gdg-grp-task(ml)\data\raw\Kaggle_Cotton\cotton\bacterial_blight\bact441.jpg,Cotton___Bacterial_blight
+C:\Users\HP\OneDrive\Desktop\gdg-grp-task(ml)\data\raw\Kaggle_Cotton\cotton\bacterial_blight\bact147.png,Cotton___Bacterial_blight
+C:\Users\HP\OneDrive\Desktop\gdg-grp-task(ml)\data\raw\Kaggle_Cotton\cotton\bacterial_blight\bact269.jpg,Cotton___Bacterial_blight
+C:\Users\HP\OneDrive\Desktop\gdg-grp-task(ml)\data\raw\Kaggle_Cotton\cotton\bacterial_blight\bact373.jpg,Cotton___Bacterial_blight
+C:\Users\HP\OneDrive\Desktop\gdg-grp-task(ml)\data\raw\Kaggle_Cotton\cotton\curl_virus\curl_1.jpg,Cotton___Curl_virus
+C:\Users\HP\OneDrive\Desktop\gdg-grp-task(ml)\data\raw\Kaggle_Cotton\cotton\curl_virus\curl293.jpg,Cotton___Curl_virus
+C:\Users\HP\OneDrive\Desktop\gdg-grp-task(ml)\data\raw\Kaggle_Cotton\cotton\curl_virus\curl147.jpg,Cotton___Curl_virus
+C:\Users\HP\OneDrive\Desktop\gdg-grp-task(ml)\data\raw\Kaggle_Cotton\cotton\curl_virus\curl281.jpg,Cotton___Curl_virus
+C:\Users\HP\OneDrive\Desktop\gdg-grp-task(ml)\data\raw\Kaggle_Cotton\cotton\curl_virus\curl105.jpg,Cotton___Curl_virus
+C:\Users\HP\OneDrive\Desktop\gdg-grp-task(ml)\data\raw\Kaggle_Cotton\cotton\curl_virus\curl210.jpg,Cotton___Curl_virus
+C:\Users\HP\OneDrive\Desktop\gdg-grp-task(ml)\data\raw\Kaggle_Cotton\cotton\curl_virus\curl48.jpg,Cotton___Curl_virus
+C:\Users\HP\OneDrive\Desktop\gdg-grp-task(ml)\data\raw\Kaggle_Cotton\cotton\curl_virus\curl426.jpg,Cotton___Curl_virus
+C:\Users\HP\OneDrive\Desktop\gdg-grp-task(ml)\data\raw\Kaggle_Cotton\cotton\curl_virus\curl213.jpg,Cotton___Curl_virus
+C:\Users\HP\OneDrive\Desktop\gdg-grp-task(ml)\data\raw\Kaggle_Cotton\cotton\curl_virus\curl359.jpg,Cotton___Curl_virus
+C:\Users\HP\OneDrive\Desktop\gdg-grp-task(ml)\data\raw\Kaggle_Cotton\cotton\curl_virus\curl349.jpg,Cotton___Curl_virus
+C:\Users\HP\OneDrive\Desktop\gdg-grp-task(ml)\data\raw\Kaggle_Cotton\cotton\curl_virus\curl297.jpg,Cotton___Curl_virus
+C:\Users\HP\OneDrive\Desktop\gdg-grp-task(ml)\data\raw\Kaggle_Cotton\cotton\curl_virus\curl292.jpg,Cotton___Curl_virus
+C:\Users\HP\OneDrive\Desktop\gdg-grp-task(ml)\data\raw\Kaggle_Cotton\cotton\curl_virus\curl278.jpg,Cotton___Curl_virus
+C:\Users\HP\OneDrive\Desktop\gdg-grp-task(ml)\data\raw\Kaggle_Cotton\cotton\curl_virus\curl183.jpg,Cotton___Curl_virus
+C:\Users\HP\OneDrive\Desktop\gdg-grp-task(ml)\data\raw\Kaggle_Cotton\cotton\curl_virus\curl74.jpg,Cotton___Curl_virus
+C:\Users\HP\OneDrive\Desktop\gdg-grp-task(ml)\data\raw\Kaggle_Cotton\cotton\curl_virus\curl289.jpg,Cotton___Curl_virus
+C:\Users\HP\OneDrive\Desktop\gdg-grp-task(ml)\data\raw\Kaggle_Cotton\cotton\curl_virus\curl79.jpg,Cotton___Curl_virus
+C:\Users\HP\OneDrive\Desktop\gdg-grp-task(ml)\data\raw\Kaggle_Cotton\cotton\curl_virus\curl62.png,Cotton___Curl_virus
+C:\Users\HP\OneDrive\Desktop\gdg-grp-task(ml)\data\raw\Kaggle_Cotton\cotton\curl_virus\curl140.jpg,Cotton___Curl_virus
+C:\Users\HP\OneDrive\Desktop\gdg-grp-task(ml)\data\raw\Kaggle_Cotton\cotton\curl_virus\curl205.jpg,Cotton___Curl_virus
+C:\Users\HP\OneDrive\Desktop\gdg-grp-task(ml)\data\raw\Kaggle_Cotton\cotton\curl_virus\curl85.jpg,Cotton___Curl_virus
+C:\Users\HP\OneDrive\Desktop\gdg-grp-task(ml)\data\raw\Kaggle_Cotton\cotton\curl_virus\curl303.jpg,Cotton___Curl_virus
+C:\Users\HP\OneDrive\Desktop\gdg-grp-task(ml)\data\raw\Kaggle_Cotton\cotton\curl_virus\curl264.jpg,Cotton___Curl_virus
+C:\Users\HP\OneDrive\Desktop\gdg-grp-task(ml)\data\raw\Kaggle_Cotton\cotton\curl_virus\curl164.jpg,Cotton___Curl_virus
+C:\Users\HP\OneDrive\Desktop\gdg-grp-task(ml)\data\raw\Kaggle_Cotton\cotton\curl_virus\curl83.jpg,Cotton___Curl_virus
+C:\Users\HP\OneDrive\Desktop\gdg-grp-task(ml)\data\raw\Kaggle_Cotton\cotton\curl_virus\curl185.jpg,Cotton___Curl_virus
+C:\Users\HP\OneDrive\Desktop\gdg-grp-task(ml)\data\raw\Kaggle_Cotton\cotton\curl_virus\curl50.png,Cotton___Curl_virus
+C:\Users\HP\OneDrive\Desktop\gdg-grp-task(ml)\data\raw\Kaggle_Cotton\cotton\curl_virus\curl414.png,Cotton___Curl_virus
+C:\Users\HP\OneDrive\Desktop\gdg-grp-task(ml)\data\raw\Kaggle_Cotton\cotton\curl_virus\curl408.jpg,Cotton___Curl_virus
+C:\Users\HP\OneDrive\Desktop\gdg-grp-task(ml)\data\raw\Kaggle_Cotton\cotton\healthy\h401.jpg,Cotton___Fusarium_wilt
+C:\Users\HP\OneDrive\Desktop\gdg-grp-task(ml)\data\raw\Kaggle_Cotton\cotton\healthy\h176.jpg,Cotton___Fusarium_wilt
+C:\Users\HP\OneDrive\Desktop\gdg-grp-task(ml)\data\raw\Kaggle_Cotton\cotton\bacterial_blight\bact166.jpg,Cotton___Fusarium_wilt
+C:\Users\HP\OneDrive\Desktop\gdg-grp-task(ml)\data\raw\Kaggle_Cotton\cotton\healthy\h51.jpg,Cotton___Fusarium_wilt
+C:\Users\HP\OneDrive\Desktop\gdg-grp-task(ml)\data\raw\Kaggle_Cotton\cotton\bacterial_blight\bact259.png,Cotton___Fusarium_wilt
+C:\Users\HP\OneDrive\Desktop\gdg-grp-task(ml)\data\raw\Kaggle_Cotton\cotton\healthy\h42.jpg,Cotton___Fusarium_wilt
+C:\Users\HP\OneDrive\Desktop\gdg-grp-task(ml)\data\raw\Kaggle_Cotton\cotton\curl_virus\curl360.jpg,Cotton___Fusarium_wilt
+C:\Users\HP\OneDrive\Desktop\gdg-grp-task(ml)\data\raw\Kaggle_Cotton\cotton\healthy\h35.jpg,Cotton___Healthy
+C:\Users\HP\OneDrive\Desktop\gdg-grp-task(ml)\data\raw\Kaggle_Cotton\cotton\healthy\h300.jpg,Cotton___Healthy
+C:\Users\HP\OneDrive\Desktop\gdg-grp-task(ml)\data\raw\Kaggle_Cotton\cotton\healthy\h355.jpg,Cotton___Healthy
+C:\Users\HP\OneDrive\Desktop\gdg-grp-task(ml)\data\raw\Kaggle_Cotton\cotton\healthy\h299.jpg,Cotton___Healthy
+C:\Users\HP\OneDrive\Desktop\gdg-grp-task(ml)\data\raw\Kaggle_Cotton\cotton\healthy\h328.jpg,Cotton___Healthy
+C:\Users\HP\OneDrive\Desktop\gdg-grp-task(ml)\data\raw\Kaggle_Cotton\cotton\healthy\h70.jpg,Cotton___Healthy
+C:\Users\HP\OneDrive\Desktop\gdg-grp-task(ml)\data\raw\Kaggle_Cotton\cotton\healthy\h68.jpg,Cotton___Healthy
+C:\Users\HP\OneDrive\Desktop\gdg-grp-task(ml)\data\raw\Kaggle_Cotton\cotton\healthy\h41.jpg,Cotton___Healthy
+C:\Users\HP\OneDrive\Desktop\gdg-grp-task(ml)\data\raw\Kaggle_Cotton\cotton\healthy\h211.jpg,Cotton___Healthy
+C:\Users\HP\OneDrive\Desktop\gdg-grp-task(ml)\data\raw\Kaggle_Cotton\cotton\healthy\h13.jpg,Cotton___Healthy
+C:\Users\HP\OneDrive\Desktop\gdg-grp-task(ml)\data\raw\Kaggle_Cotton\cotton\healthy\h101.jpg,Cotton___Healthy
+C:\Users\HP\OneDrive\Desktop\gdg-grp-task(ml)\data\raw\Kaggle_Cotton\cotton\healthy\h294.jpg,Cotton___Healthy
+C:\Users\HP\OneDrive\Desktop\gdg-grp-task(ml)\data\raw\Kaggle_Cotton\cotton\healthy\h304.jpg,Cotton___Healthy
+C:\Users\HP\OneDrive\Desktop\gdg-grp-task(ml)\data\raw\Kaggle_Cotton\cotton\healthy\h82.jpg,Cotton___Healthy
+C:\Users\HP\OneDrive\Desktop\gdg-grp-task(ml)\data\raw\Kaggle_Cotton\cotton\healthy\h373.jpg,Cotton___Healthy
+C:\Users\HP\OneDrive\Desktop\gdg-grp-task(ml)\data\raw\Kaggle_Cotton\cotton\healthy\h333.jpg,Cotton___Healthy
+C:\Users\HP\OneDrive\Desktop\gdg-grp-task(ml)\data\raw\Kaggle_Cotton\cotton\healthy\h390.jpg,Cotton___Healthy
+C:\Users\HP\OneDrive\Desktop\gdg-grp-task(ml)\data\raw\Kaggle_Cotton\cotton\healthy\h212.jpg,Cotton___Healthy
+C:\Users\HP\OneDrive\Desktop\gdg-grp-task(ml)\data\raw\Kaggle_Cotton\cotton\healthy\h392.jpg,Cotton___Healthy
+C:\Users\HP\OneDrive\Desktop\gdg-grp-task(ml)\data\raw\Kaggle_Cotton\cotton\healthy\h46.jpg,Cotton___Healthy
+C:\Users\HP\OneDrive\Desktop\gdg-grp-task(ml)\data\raw\Kaggle_Cotton\cotton\healthy\h59.jpg,Cotton___Healthy
+C:\Users\HP\OneDrive\Desktop\gdg-grp-task(ml)\data\raw\Kaggle_Cotton\cotton\healthy\h335.jpg,Cotton___Healthy
+C:\Users\HP\OneDrive\Desktop\gdg-grp-task(ml)\data\raw\Kaggle_Cotton\cotton\healthy\h323.jpg,Cotton___Healthy
+C:\Users\HP\OneDrive\Desktop\gdg-grp-task(ml)\data\raw\Kaggle_Cotton\cotton\healthy\h427.jpg,Cotton___Healthy
+C:\Users\HP\OneDrive\Desktop\gdg-grp-task(ml)\data\raw\Kaggle_Cotton\cotton\healthy\h248.jpg,Cotton___Healthy
+C:\Users\HP\OneDrive\Desktop\gdg-grp-task(ml)\data\raw\Kaggle_Cotton\cotton\healthy\h380.jpg,Cotton___Healthy
+C:\Users\HP\OneDrive\Desktop\gdg-grp-task(ml)\data\raw\Kaggle_Cotton\cotton\healthy\h238.jpg,Cotton___Healthy
+C:\Users\HP\OneDrive\Desktop\gdg-grp-task(ml)\data\raw\Kaggle_Cotton\cotton\healthy\h241.jpg,Cotton___Healthy
+C:\Users\HP\OneDrive\Desktop\gdg-grp-task(ml)\data\raw\Kaggle_Cotton\cotton\healthy\h37.jpg,Cotton___Healthy
+C:\Users\HP\OneDrive\Desktop\gdg-grp-task(ml)\data\raw\Kaggle_Cotton\cotton\healthy\h271.jpg,Cotton___Healthy
+C:\Users\HP\OneDrive\Desktop\gdg-grp-task(ml)\data\sample_real_leaves\Grape___Esca_Black_Measles_0.jpg,Grape___Black_rot
+C:\Users\HP\OneDrive\Desktop\gdg-grp-task(ml)\data\sample_real_leaves\Grape___Leaf_blight_0.jpg,Grape___Esca_Black_Measles
+C:\Users\HP\OneDrive\Desktop\gdg-grp-task(ml)\data\sample_real_leaves\Grape___Esca_Black_Measles_0.jpg,Grape___Healthy
+C:\Users\HP\OneDrive\Desktop\gdg-grp-task(ml)\data\sample_real_leaves\Grape___Healthy_0.jpg,Grape___Healthy
+C:\Users\HP\OneDrive\Desktop\gdg-grp-task(ml)\data\sample_real_leaves\Grape___Healthy_0.jpg,Grape___Leaf_blight
+C:\Users\HP\OneDrive\Desktop\gdg-grp-task(ml)\data\sample_real_leaves\Grape___Healthy_0.jpg,Grape___Leaf_blight
+C:\Users\HP\OneDrive\Desktop\gdg-grp-task(ml)\data\sample_real_leaves\Grape___Healthy_1.jpg,Grape___Leaf_blight
+C:\Users\HP\OneDrive\Desktop\gdg-grp-task(ml)\data\sample_real_leaves\Grape___Healthy_0.jpg,Grape___Leaf_blight
+C:\Users\HP\OneDrive\Desktop\gdg-grp-task(ml)\data\sample_real_leaves\Grape___Leaf_blight_0.jpg,Grape___Leaf_blight
+C:\Users\HP\OneDrive\Desktop\gdg-grp-task(ml)\data\sample_real_leaves\Maize___Gray_leaf_spot_1.jpg,Maize___Common_rust
+C:\Users\HP\OneDrive\Desktop\gdg-grp-task(ml)\data\sample_real_leaves\Maize___Healthy_0.jpg,Maize___Gray_leaf_spot
+C:\Users\HP\OneDrive\Desktop\gdg-grp-task(ml)\data\sample_real_leaves\Maize___Northern_Leaf_Blight_0.jpg,Maize___Healthy
+C:\Users\HP\OneDrive\Desktop\gdg-grp-task(ml)\data\sample_real_leaves\Maize___Healthy_0.jpg,Maize___Healthy
+C:\Users\HP\OneDrive\Desktop\gdg-grp-task(ml)\data\sample_real_leaves\Maize___Healthy_1.jpg,Maize___Northern_Leaf_Blight
+C:\Users\HP\OneDrive\Desktop\gdg-grp-task(ml)\data\sample_real_leaves\Maize___Northern_Leaf_Blight_1.jpg,Maize___Northern_Leaf_Blight
+C:\Users\HP\OneDrive\Desktop\gdg-grp-task(ml)\data\sample_real_leaves\Maize___Healthy_0.jpg,Maize___Northern_Leaf_Blight
+C:\Users\HP\OneDrive\Desktop\gdg-grp-task(ml)\data\sample_real_leaves\Maize___Northern_Leaf_Blight_1.jpg,Maize___Northern_Leaf_Blight
+C:\Users\HP\OneDrive\Desktop\gdg-grp-task(ml)\data\sample_real_leaves\Maize___Northern_Leaf_Blight_1.jpg,Maize___Northern_Leaf_Blight
+C:\Users\HP\OneDrive\Desktop\gdg-grp-task(ml)\data\raw\PlantVillage\PlantVillage\PlantVillage\Potato___Early_blight\34f42d6e-6e09-46cb-800b-5da5fdb5e8b8___RS_Early.B 8110.JPG,Potato___Early_blight
+C:\Users\HP\OneDrive\Desktop\gdg-grp-task(ml)\data\raw\PlantVillage\PlantVillage\Potato___Early_blight\ea403e5a-34b3-4b06-a94d-65ad2e78831f___RS_Early.B 8136.JPG,Potato___Early_blight
+C:\Users\HP\OneDrive\Desktop\gdg-grp-task(ml)\data\raw\PlantVillage\PlantVillage\Potato___Early_blight\6dfdd5be-0999-4a5c-a35d-c760043fec23___RS_Early.B 8701.JPG,Potato___Early_blight
+C:\Users\HP\OneDrive\Desktop\gdg-grp-task(ml)\data\raw\PlantVillage\PlantVillage\Potato___Early_blight\f9461507-6875-43f7-800d-502ffdb8ec05___RS_Early.B 7604.JPG,Potato___Early_blight
+C:\Users\HP\OneDrive\Desktop\gdg-grp-task(ml)\data\raw\PlantVillage\PlantVillage\PlantVillage\Potato___Early_blight\b472654c-a32f-4c8f-b424-da6e415febf9___RS_Early.B 8930.JPG,Potato___Early_blight
+C:\Users\HP\OneDrive\Desktop\gdg-grp-task(ml)\data\raw\PlantVillage\PlantVillage\Potato___Early_blight\5aee3e9f-0469-42e7-8ae7-56f7a1900fd5___RS_Early.B 9091.JPG,Potato___Early_blight
+C:\Users\HP\OneDrive\Desktop\gdg-grp-task(ml)\data\raw\PlantVillage\PlantVillage\Potato___Early_blight\2cafa90e-af46-4d0a-9137-9780d816b96a___RS_Early.B 7731.JPG,Potato___Early_blight
+C:\Users\HP\OneDrive\Desktop\gdg-grp-task(ml)\data\raw\PlantVillage\PlantVillage\PlantVillage\Potato___Early_blight\37d94308-8783-4657-9ca6-eaca86e1015a___RS_Early.B 7825.JPG,Potato___Early_blight
+C:\Users\HP\OneDrive\Desktop\gdg-grp-task(ml)\data\raw\PlantVillage\PlantVillage\PlantVillage\Potato___Early_blight\fdc691b0-2b15-4cb6-8f5d-c4e5654389e0___RS_Early.B 7935.JPG,Potato___Early_blight
+C:\Users\HP\OneDrive\Desktop\gdg-grp-task(ml)\data\raw\PlantVillage\PlantVillage\Potato___Early_blight\3d3c01e1-8cde-4c0f-9468-67dd287a2dc0___RS_Early.B 7761.JPG,Potato___Early_blight
+C:\Users\HP\OneDrive\Desktop\gdg-grp-task(ml)\data\raw\PlantVillage\PlantVillage\PlantVillage\Potato___Early_blight\048d18ae-98b1-484d-97da-5a0e69b9ebc1___RS_Early.B 6845.JPG,Potato___Early_blight
+C:\Users\HP\OneDrive\Desktop\gdg-grp-task(ml)\data\raw\PlantVillage\PlantVillage\PlantVillage\Potato___Early_blight\2b3e46d9-09dd-4966-99c6-fe44c741b94c___RS_Early.B 8290.JPG,Potato___Early_blight
+C:\Users\HP\OneDrive\Desktop\gdg-grp-task(ml)\data\raw\PlantVillage\PlantVillage\Potato___Early_blight\1d038d64-7f3c-4b4d-9b3d-7736f97b59a0___RS_Early.B 7994.JPG,Potato___Early_blight
+C:\Users\HP\OneDrive\Desktop\gdg-grp-task(ml)\data\raw\PlantVillage\PlantVillage\PlantVillage\Potato___Early_blight\ea87f5c8-69f9-44e0-997b-bb896350765e___RS_Early.B 7798.JPG,Potato___Early_blight
+C:\Users\HP\OneDrive\Desktop\gdg-grp-task(ml)\data\raw\PlantVillage\PlantVillage\Potato___Early_blight\6f8dfa1b-8c6f-4be6-93ff-e9180dde7357___RS_Early.B 6914.JPG,Potato___Early_blight
+C:\Users\HP\OneDrive\Desktop\gdg-grp-task(ml)\data\raw\PlantVillage\PlantVillage\Potato___Early_blight\e217c2fe-b0d5-45e6-a7fa-98f253444d54___RS_Early.B 7067.JPG,Potato___Early_blight
+C:\Users\HP\OneDrive\Desktop\gdg-grp-task(ml)\data\raw\PlantVillage\PlantVillage\Potato___Early_blight\7ea05f87-83d3-405e-84ee-f637426f4bab___RS_Early.B 6715.JPG,Potato___Early_blight
+C:\Users\HP\OneDrive\Desktop\gdg-grp-task(ml)\data\raw\PlantVillage\PlantVillage\Potato___Early_blight\f9580dc3-d5d9-4990-a64d-3974a9d1c687___RS_Early.B 8755.JPG,Potato___Early_blight
+C:\Users\HP\OneDrive\Desktop\gdg-grp-task(ml)\data\raw\PlantVillage\PlantVillage\Potato___Early_blight\107827b3-faa5-457c-97fd-3e34d2657f6b___RS_Early.B 7162.JPG,Potato___Early_blight
+C:\Users\HP\OneDrive\Desktop\gdg-grp-task(ml)\data\raw\PlantVillage\PlantVillage\Potato___Early_blight\38757e70-6278-4961-b1f3-19fccbb085f5___RS_Early.B 6968.JPG,Potato___Early_blight
+C:\Users\HP\OneDrive\Desktop\gdg-grp-task(ml)\data\raw\PlantVillage\PlantVillage\Potato___Early_blight\08bbd7f1-169d-4e38-946f-8d91589b263e___RS_Early.B 7106.JPG,Potato___Early_blight
+C:\Users\HP\OneDrive\Desktop\gdg-grp-task(ml)\data\raw\PlantVillage\PlantVillage\PlantVillage\Potato___Early_blight\dcc9e3a4-04dc-46fd-9bc9-739334aa23d9___RS_Early.B 6799.JPG,Potato___Early_blight
+C:\Users\HP\OneDrive\Desktop\gdg-grp-task(ml)\data\raw\PlantVillage\PlantVillage\PlantVillage\Potato___Early_blight\3db185d7-7c05-42f9-b508-7a3883e50660___RS_Early.B 7011.JPG,Potato___Early_blight
+C:\Users\HP\OneDrive\Desktop\gdg-grp-task(ml)\data\raw\PlantVillage\PlantVillage\PlantVillage\Potato___Early_blight\9c77f930-5d28-4b1f-8274-30c2c2dc82fb___RS_Early.B 8347.JPG,Potato___Early_blight
+C:\Users\HP\OneDrive\Desktop\gdg-grp-task(ml)\data\raw\PlantVillage\PlantVillage\Potato___Early_blight\c59f2dde-4805-4f63-b47a-79fe9cd9364b___RS_Early.B 7510.JPG,Potato___Early_blight
+C:\Users\HP\OneDrive\Desktop\gdg-grp-task(ml)\data\raw\PlantVillage\PlantVillage\PlantVillage\Potato___Early_blight\c2cc82b8-9f74-4e40-9792-c121a89a84c0___RS_Early.B 8524.JPG,Potato___Early_blight
+C:\Users\HP\OneDrive\Desktop\gdg-grp-task(ml)\data\raw\PlantVillage\PlantVillage\PlantVillage\Potato___Early_blight\caf7512b-4e4e-44fc-ae7d-8544168cf903___RS_Early.B 7120.JPG,Potato___Early_blight
+C:\Users\HP\OneDrive\Desktop\gdg-grp-task(ml)\data\raw\PlantVillage\PlantVillage\PlantVillage\Potato___Early_blight\f536e055-666e-41cc-8ee2-c1af2fbf754a___RS_Early.B 8104.JPG,Potato___Early_blight
+C:\Users\HP\OneDrive\Desktop\gdg-grp-task(ml)\data\raw\PlantVillage\PlantVillage\Potato___Early_blight\d063f825-aa36-4cfd-a227-4c3f30760aa2___RS_Early.B 8307.JPG,Potato___Early_blight
+C:\Users\HP\OneDrive\Desktop\gdg-grp-task(ml)\data\raw\PlantVillage\PlantVillage\Potato___Early_blight\b14e0de2-ab48-45b5-9d4d-e45e7c88b68f___RS_Early.B 8554.JPG,Potato___Early_blight
+C:\Users\HP\OneDrive\Desktop\gdg-grp-task(ml)\data\raw\PlantVillage\PlantVillage\PlantVillage\Potato___healthy\9a6eb7c4-6b43-477a-89e0-69f62ef67991___RS_HL 1846.JPG,Potato___Healthy
+C:\Users\HP\OneDrive\Desktop\gdg-grp-task(ml)\data\raw\PlantVillage\PlantVillage\PlantVillage\Potato___healthy\f66af6c0-6fc6-4020-b1de-a73685d497c2___RS_HL 4181.JPG,Potato___Healthy
+C:\Users\HP\OneDrive\Desktop\gdg-grp-task(ml)\data\raw\PlantVillage\PlantVillage\Potato___healthy\bb04f738-1848-4dda-8834-384a48b335cd___RS_HL 1765.JPG,Potato___Healthy
+C:\Users\HP\OneDrive\Desktop\gdg-grp-task(ml)\data\raw\PlantVillage\PlantVillage\Potato___healthy\111cd9d8-4d27-4225-be9e-d29b21cf56b9___RS_HL 5419.JPG,Potato___Healthy
+C:\Users\HP\OneDrive\Desktop\gdg-grp-task(ml)\data\raw\PlantVillage\PlantVillage\PlantVillage\Potato___healthy\bb328d40-e4e6-4b84-a92a-e7cb3922c19d___RS_HL 1829.JPG,Potato___Healthy
+C:\Users\HP\OneDrive\Desktop\gdg-grp-task(ml)\data\raw\PlantVillage\PlantVillage\PlantVillage\Potato___healthy\dbe4f332-9189-4b76-b30c-f0c9a55e48d3___RS_HL 1841.JPG,Potato___Healthy
+C:\Users\HP\OneDrive\Desktop\gdg-grp-task(ml)\data\raw\PlantVillage\PlantVillage\Potato___healthy\aa04db6d-645f-4e8a-88dc-c9f9396f0800___RS_HL 1975.JPG,Potato___Healthy
+C:\Users\HP\OneDrive\Desktop\gdg-grp-task(ml)\data\raw\PlantVillage\PlantVillage\PlantVillage\Potato___healthy\7e7b6ab4-9adb-4a3b-abfb-8716b0039879___RS_HL 1921.JPG,Potato___Healthy
+C:\Users\HP\OneDrive\Desktop\gdg-grp-task(ml)\data\raw\PlantVillage\PlantVillage\Potato___healthy\f4b5ec24-d318-4309-8294-9126450d5d7f___RS_HL 1824.JPG,Potato___Healthy
+C:\Users\HP\OneDrive\Desktop\gdg-grp-task(ml)\data\raw\PlantVillage\PlantVillage\PlantVillage\Potato___healthy\170f1f57-0fd4-421f-9c82-3b1804be63ad___RS_HL 1771.JPG,Potato___Healthy
+C:\Users\HP\OneDrive\Desktop\gdg-grp-task(ml)\data\raw\PlantVillage\PlantVillage\Potato___healthy\415ac4a2-8f16-4052-880e-1e1f208965f0___RS_HL 1884.JPG,Potato___Healthy
+C:\Users\HP\OneDrive\Desktop\gdg-grp-task(ml)\data\raw\PlantVillage\PlantVillage\PlantVillage\Potato___healthy\a5050bde-febc-4931-b31d-45c9652df318___RS_HL 5373.JPG,Potato___Healthy
+C:\Users\HP\OneDrive\Desktop\gdg-grp-task(ml)\data\raw\PlantVillage\PlantVillage\Potato___healthy\b35b9f8b-daca-4d12-a5be-defe68d0acc5___RS_HL 1903.JPG,Potato___Healthy
+C:\Users\HP\OneDrive\Desktop\gdg-grp-task(ml)\data\raw\PlantVillage\PlantVillage\PlantVillage\Potato___healthy\b8b7b98a-eb1a-4213-9b0b-aeef4df427e8___RS_HL 1858.JPG,Potato___Healthy
+C:\Users\HP\OneDrive\Desktop\gdg-grp-task(ml)\data\raw\PlantVillage\PlantVillage\PlantVillage\Potato___healthy\22322780-95b4-4b45-b626-26b22965d55e___RS_HL 1880.JPG,Potato___Healthy
+C:\Users\HP\OneDrive\Desktop\gdg-grp-task(ml)\data\raw\PlantVillage\PlantVillage\Potato___healthy\38faf81d-c83b-42ca-b4c3-e3bbfa070589___RS_HL 1805.JPG,Potato___Healthy
+C:\Users\HP\OneDrive\Desktop\gdg-grp-task(ml)\data\raw\PlantVillage\PlantVillage\Potato___healthy\ad9b6cf4-e065-496d-91c7-5713ce14e19e___RS_HL 1926.JPG,Potato___Healthy
+C:\Users\HP\OneDrive\Desktop\gdg-grp-task(ml)\data\raw\PlantVillage\PlantVillage\PlantVillage\Potato___healthy\929107f1-4ae9-4dae-8319-ae7cf4804236___RS_HL 1932.JPG,Potato___Healthy
+C:\Users\HP\OneDrive\Desktop\gdg-grp-task(ml)\data\raw\PlantVillage\PlantVillage\PlantVillage\Potato___healthy\f4be3632-42a1-415a-9f7e-1d5ecb9f49d7___RS_HL 1783.JPG,Potato___Healthy
+C:\Users\HP\OneDrive\Desktop\gdg-grp-task(ml)\data\raw\PlantVillage\PlantVillage\PlantVillage\Potato___healthy\d325e580-5faa-4aea-927d-2700f52cc343___RS_HL 1872.JPG,Potato___Healthy
+C:\Users\HP\OneDrive\Desktop\gdg-grp-task(ml)\data\raw\PlantVillage\PlantVillage\PlantVillage\Potato___healthy\03da9931-e514-4cc7-b04a-8f474a133ce5___RS_HL 1830.JPG,Potato___Healthy
+C:\Users\HP\OneDrive\Desktop\gdg-grp-task(ml)\data\raw\PlantVillage\PlantVillage\PlantVillage\Potato___healthy\a02b6205-b40a-4178-8b34-3494f84b9d1f___RS_HL 1958.JPG,Potato___Healthy
+C:\Users\HP\OneDrive\Desktop\gdg-grp-task(ml)\data\raw\PlantVillage\PlantVillage\PlantVillage\Potato___healthy\77c75478-e1f0-4aaa-9cbc-af1fed928a74___RS_HL 1748.JPG,Potato___Healthy
+C:\Users\HP\OneDrive\Desktop\gdg-grp-task(ml)\data\raw\PlantVillage\PlantVillage\Potato___healthy\b0fe9fe9-52e7-40e4-b4c0-769f1a0c7fb9___RS_HL 4175.JPG,Potato___Healthy
+C:\Users\HP\OneDrive\Desktop\gdg-grp-task(ml)\data\raw\PlantVillage\PlantVillage\PlantVillage\Potato___healthy\4bbccfb6-5720-4c80-9b37-0c3ed8999c9f___RS_HL 1791.JPG,Potato___Healthy
+C:\Users\HP\OneDrive\Desktop\gdg-grp-task(ml)\data\raw\PlantVillage\PlantVillage\Potato___healthy\b536ea91-c5f8-413b-87f3-a22ac3d959d1___RS_HL 1825.JPG,Potato___Healthy
+C:\Users\HP\OneDrive\Desktop\gdg-grp-task(ml)\data\raw\PlantVillage\PlantVillage\Potato___healthy\3a00204c-5e53-4e5d-95a6-f8819031744e___RS_HL 5420.JPG,Potato___Healthy
+C:\Users\HP\OneDrive\Desktop\gdg-grp-task(ml)\data\raw\PlantVillage\PlantVillage\Potato___healthy\00fc2ee5-729f-4757-8aeb-65c3355874f2___RS_HL 1864.JPG,Potato___Healthy
+C:\Users\HP\OneDrive\Desktop\gdg-grp-task(ml)\data\raw\PlantVillage\PlantVillage\PlantVillage\Potato___healthy\b42621c3-f751-46e1-a8d2-83ed85b90554___RS_HL 1740.JPG,Potato___Healthy
+C:\Users\HP\OneDrive\Desktop\gdg-grp-task(ml)\data\raw\PlantVillage\PlantVillage\Potato___healthy\5fcbde8f-52af-4963-b324-ff7f4dd6bd4c___RS_HL 1762.JPG,Potato___Healthy
+C:\Users\HP\OneDrive\Desktop\gdg-grp-task(ml)\data\raw\PlantVillage\PlantVillage\Potato___Late_blight\9e979a65-61bf-4d07-a444-7c22ae1a58b1___RS_LB 4886.JPG,Potato___Late_blight
+C:\Users\HP\OneDrive\Desktop\gdg-grp-task(ml)\data\raw\PlantVillage\PlantVillage\PlantVillage\Potato___Late_blight\82967117-2bcc-4949-b060-738e7b66b755___RS_LB 4744.JPG,Potato___Late_blight
+C:\Users\HP\OneDrive\Desktop\gdg-grp-task(ml)\data\raw\PlantVillage\PlantVillage\PlantVillage\Potato___Late_blight\5fa21fbf-774d-48ec-916d-c1d7b8c11c82___RS_LB 4795.JPG,Potato___Late_blight
+C:\Users\HP\OneDrive\Desktop\gdg-grp-task(ml)\data\raw\PlantVillage\PlantVillage\PlantVillage\Potato___Late_blight\84e85005-c647-4381-8762-c487074c9571___RS_LB 5186.JPG,Potato___Late_blight
+C:\Users\HP\OneDrive\Desktop\gdg-grp-task(ml)\data\raw\PlantVillage\PlantVillage\Potato___Late_blight\29d84246-f2a5-4c18-8ddc-2f2d38046ae2___RS_LB 2625.JPG,Potato___Late_blight
+C:\Users\HP\OneDrive\Desktop\gdg-grp-task(ml)\data\raw\PlantVillage\PlantVillage\PlantVillage\Potato___Late_blight\ae52f85f-bce0-4fb9-a109-009e099a72e6___RS_LB 4972.JPG,Potato___Late_blight
+C:\Users\HP\OneDrive\Desktop\gdg-grp-task(ml)\data\raw\PlantVillage\PlantVillage\PlantVillage\Potato___Late_blight\0f824e18-3821-486c-81a1-f1f64cf6e767___RS_LB 4894.JPG,Potato___Late_blight
+C:\Users\HP\OneDrive\Desktop\gdg-grp-task(ml)\data\raw\PlantVillage\PlantVillage\PlantVillage\Potato___Late_blight\4f249e3b-92a0-43e5-a70d-fe3045630437___RS_LB 3913.JPG,Potato___Late_blight
+C:\Users\HP\OneDrive\Desktop\gdg-grp-task(ml)\data\raw\PlantVillage\PlantVillage\PlantVillage\Potato___Late_blight\b9aecfc3-98d5-467a-8773-ee2905918c71___RS_LB 5161.JPG,Potato___Late_blight
+C:\Users\HP\OneDrive\Desktop\gdg-grp-task(ml)\data\raw\PlantVillage\PlantVillage\Potato___Late_blight\4885a2b1-fc77-4b1a-ad55-3fa4b3fe4e1e___RS_LB 4425.JPG,Potato___Late_blight
+C:\Users\HP\OneDrive\Desktop\gdg-grp-task(ml)\data\raw\PlantVillage\PlantVillage\Potato___Late_blight\20e59080-5a86-4aa8-b5b1-d886a4b273b7___RS_LB 3165.JPG,Potato___Late_blight
+C:\Users\HP\OneDrive\Desktop\gdg-grp-task(ml)\data\raw\PlantVillage\PlantVillage\PlantVillage\Potato___Late_blight\531a9b98-e034-4a76-81f0-55f597552f6a___RS_LB 5021.JPG,Potato___Late_blight
+C:\Users\HP\OneDrive\Desktop\gdg-grp-task(ml)\data\raw\PlantVillage\PlantVillage\PlantVillage\Potato___Late_blight\4d56ef9d-bc69-489c-92de-d2fad01d762d___RS_LB 3890.JPG,Potato___Late_blight
+C:\Users\HP\OneDrive\Desktop\gdg-grp-task(ml)\data\raw\PlantVillage\PlantVillage\Potato___Late_blight\58475c1a-a4c2-43bd-b361-60523b5c62d2___RS_LB 3912.JPG,Potato___Late_blight
+C:\Users\HP\OneDrive\Desktop\gdg-grp-task(ml)\data\raw\PlantVillage\PlantVillage\PlantVillage\Potato___Late_blight\2c1218c8-eaea-4f5a-be4b-34e34a705063___RS_LB 2530.JPG,Potato___Late_blight
+C:\Users\HP\OneDrive\Desktop\gdg-grp-task(ml)\data\raw\PlantVillage\PlantVillage\PlantVillage\Potato___Late_blight\74277267-6a9f-44d0-95fe-7f52f89630a0___RS_LB 5074.JPG,Potato___Late_blight
+C:\Users\HP\OneDrive\Desktop\gdg-grp-task(ml)\data\raw\PlantVillage\PlantVillage\PlantVillage\Potato___Late_blight\146c4ea6-cf74-4607-9b8e-19c69c85ec86___RS_LB 4641.JPG,Potato___Late_blight
+C:\Users\HP\OneDrive\Desktop\gdg-grp-task(ml)\data\raw\PlantVillage\PlantVillage\Potato___Late_blight\c101232e-6487-495c-ad3a-27cd1e5fb2b9___RS_LB 2573.JPG,Potato___Late_blight
+C:\Users\HP\OneDrive\Desktop\gdg-grp-task(ml)\data\raw\PlantVillage\PlantVillage\PlantVillage\Potato___Late_blight\73366261-64f3-4219-a43a-97cda85474a9___RS_LB 3332.JPG,Potato___Late_blight
+C:\Users\HP\OneDrive\Desktop\gdg-grp-task(ml)\data\raw\PlantVillage\PlantVillage\PlantVillage\Potato___Late_blight\6522615a-cbe1-4770-a137-25a2c081e1d9___RS_LB 2917.JPG,Potato___Late_blight
+C:\Users\HP\OneDrive\Desktop\gdg-grp-task(ml)\data\raw\PlantVillage\PlantVillage\Potato___Late_blight\d01b2206-84b5-41f6-9a40-b238282940bd___RS_LB 2631.JPG,Potato___Late_blight
+C:\Users\HP\OneDrive\Desktop\gdg-grp-task(ml)\data\raw\PlantVillage\PlantVillage\PlantVillage\Potato___Late_blight\e26ad557-11c8-44fd-aad1-dea51c613742___RS_LB 5115.JPG,Potato___Late_blight
+C:\Users\HP\OneDrive\Desktop\gdg-grp-task(ml)\data\raw\PlantVillage\PlantVillage\Potato___Late_blight\17515ff9-075f-45a2-b8e6-1b8ba25c293d___RS_LB 4980.JPG,Potato___Late_blight
+C:\Users\HP\OneDrive\Desktop\gdg-grp-task(ml)\data\raw\PlantVillage\PlantVillage\PlantVillage\Potato___Late_blight\b03529cf-21fd-4c94-a948-461a8d17e01c___RS_LB 4828.JPG,Potato___Late_blight
+C:\Users\HP\OneDrive\Desktop\gdg-grp-task(ml)\data\raw\PlantVillage\PlantVillage\PlantVillage\Potato___Late_blight\f62c0408-af09-4883-a780-7bd335e60443___RS_LB 5258.JPG,Potato___Late_blight
+C:\Users\HP\OneDrive\Desktop\gdg-grp-task(ml)\data\raw\PlantVillage\PlantVillage\Potato___Late_blight\a7dad20a-b0c0-408b-a961-17928319e17f___RS_LB 4645.JPG,Potato___Late_blight
+C:\Users\HP\OneDrive\Desktop\gdg-grp-task(ml)\data\sample_real_leaves\Potato___Late_blight_0.jpg,Potato___Late_blight
+C:\Users\HP\OneDrive\Desktop\gdg-grp-task(ml)\data\raw\PlantVillage\PlantVillage\Potato___Late_blight\56aa566a-41be-4109-91bc-0cc99c385b7f___RS_LB 3843.JPG,Potato___Late_blight
+C:\Users\HP\OneDrive\Desktop\gdg-grp-task(ml)\data\raw\PlantVillage\PlantVillage\PlantVillage\Potato___Late_blight\b101bc59-5734-4c39-896f-de29d98b1dce___RS_LB 4702.JPG,Potato___Late_blight
+C:\Users\HP\OneDrive\Desktop\gdg-grp-task(ml)\data\raw\PlantVillage\PlantVillage\PlantVillage\Potato___Late_blight\87c99be5-a930-410f-8529-e79e030cba0c___RS_LB 5294.JPG,Potato___Late_blight
+C:\Users\HP\OneDrive\Desktop\gdg-grp-task(ml)\data\raw\Kaggle_Rice\rice_leaf_diseases\Bacterial leaf blight\DSC_0395.JPG,Rice___Bacterial_leaf_blight
+C:\Users\HP\OneDrive\Desktop\gdg-grp-task(ml)\data\raw\Kaggle_Rice\rice_leaf_diseases\Bacterial leaf blight\DSC_0370.jpg,Rice___Bacterial_leaf_blight
+C:\Users\HP\OneDrive\Desktop\gdg-grp-task(ml)\data\raw\Kaggle_Rice\rice_leaf_diseases\Bacterial leaf blight\DSC_0405.JPG,Rice___Bacterial_leaf_blight
+C:\Users\HP\OneDrive\Desktop\gdg-grp-task(ml)\data\raw\Kaggle_Rice\rice_leaf_diseases\Bacterial leaf blight\DSC_0367.JPG,Rice___Bacterial_leaf_blight
+C:\Users\HP\OneDrive\Desktop\gdg-grp-task(ml)\data\raw\Kaggle_Rice\rice_leaf_diseases\Bacterial leaf blight\DSC_0404.JPG,Rice___Bacterial_leaf_blight
+C:\Users\HP\OneDrive\Desktop\gdg-grp-task(ml)\data\raw\Kaggle_Rice\rice_leaf_diseases\Bacterial leaf blight\DSC_0380.JPG,Rice___Bacterial_leaf_blight
+C:\Users\HP\OneDrive\Desktop\gdg-grp-task(ml)\data\raw\Kaggle_Rice\rice_leaf_diseases\Brown spot\DSC_0116.jpg,Rice___Brown_spot
+C:\Users\HP\OneDrive\Desktop\gdg-grp-task(ml)\data\raw\Kaggle_Rice\rice_leaf_diseases\Brown spot\DSC_0113.jpg,Rice___Brown_spot
+C:\Users\HP\OneDrive\Desktop\gdg-grp-task(ml)\data\raw\Kaggle_Rice\rice_leaf_diseases\Brown spot\DSC_0100.jpg,Rice___Brown_spot
+C:\Users\HP\OneDrive\Desktop\gdg-grp-task(ml)\data\raw\Kaggle_Rice\rice_leaf_diseases\Brown spot\DSC_0118.jpg,Rice___Brown_spot
+C:\Users\HP\OneDrive\Desktop\gdg-grp-task(ml)\data\raw\Kaggle_Rice\rice_leaf_diseases\Brown spot\DSC_0301.JPG,Rice___Brown_spot
+C:\Users\HP\OneDrive\Desktop\gdg-grp-task(ml)\data\raw\Kaggle_Rice\rice_leaf_diseases\Brown spot\DSC_0303.JPG,Rice___Brown_spot
+C:\Users\HP\OneDrive\Desktop\gdg-grp-task(ml)\data\raw\Kaggle_Rice\rice_leaf_diseases\Brown spot\DSC_0303.JPG,Rice___Healthy
+C:\Users\HP\OneDrive\Desktop\gdg-grp-task(ml)\data\raw\Kaggle_Rice\rice_leaf_diseases\Brown spot\DSC_0105.jpg,Rice___Healthy
+C:\Users\HP\OneDrive\Desktop\gdg-grp-task(ml)\data\raw\Kaggle_Rice\rice_leaf_diseases\Bacterial leaf blight\DSC_0405.JPG,Rice___Healthy
+C:\Users\HP\OneDrive\Desktop\gdg-grp-task(ml)\data\raw\Kaggle_Rice\rice_leaf_diseases\Bacterial leaf blight\DSC_0399.JPG,Rice___Healthy
+C:\Users\HP\OneDrive\Desktop\gdg-grp-task(ml)\data\raw\Kaggle_Rice\rice_leaf_diseases\Bacterial leaf blight\DSC_0406.JPG,Rice___Healthy
+C:\Users\HP\OneDrive\Desktop\gdg-grp-task(ml)\data\raw\Kaggle_Rice\rice_leaf_diseases\Brown spot\DSC_0332.JPG,Rice___Healthy
+C:\Users\HP\OneDrive\Desktop\gdg-grp-task(ml)\data\raw\Kaggle_Rice\rice_leaf_diseases\Bacterial leaf blight\DSC_0703.JPG,Rice___Healthy
+C:\Users\HP\OneDrive\Desktop\gdg-grp-task(ml)\data\raw\Kaggle_Rice\rice_leaf_diseases\Brown spot\DSC_0307.JPG,Rice___Leaf_blast
+C:\Users\HP\OneDrive\Desktop\gdg-grp-task(ml)\data\raw\Kaggle_Rice\rice_leaf_diseases\Bacterial leaf blight\DSC_0365.JPG,Rice___Leaf_blast
+C:\Users\HP\OneDrive\Desktop\gdg-grp-task(ml)\data\raw\Kaggle_Rice\rice_leaf_diseases\Bacterial leaf blight\DSC_0401.JPG,Rice___Leaf_blast
+C:\Users\HP\OneDrive\Desktop\gdg-grp-task(ml)\data\raw\Kaggle_Rice\rice_leaf_diseases\Brown spot\DSC_0113.jpg,Rice___Leaf_blast
+C:\Users\HP\OneDrive\Desktop\gdg-grp-task(ml)\data\raw\Kaggle_Rice\rice_leaf_diseases\Brown spot\DSC_0292.JPG,Rice___Leaf_blast
+C:\Users\HP\OneDrive\Desktop\gdg-grp-task(ml)\data\raw\Kaggle_Rice\rice_leaf_diseases\Brown spot\DSC_0296.jpg,Rice___Leaf_blast
+C:\Users\HP\OneDrive\Desktop\gdg-grp-task(ml)\data\raw\Kaggle_Rice\rice_leaf_diseases\Brown spot\DSC_0303.JPG,Rice___Leaf_blast
+C:\Users\HP\OneDrive\Desktop\gdg-grp-task(ml)\data\raw\Kaggle_Sugarcane\Healthy\healthy (354).jpeg,Sugarcane___Healthy
+C:\Users\HP\OneDrive\Desktop\gdg-grp-task(ml)\data\raw\Kaggle_Sugarcane\Healthy\healthy (358).jpeg,Sugarcane___Healthy
+C:\Users\HP\OneDrive\Desktop\gdg-grp-task(ml)\data\raw\Kaggle_Sugarcane\Healthy\healthy (449).jpeg,Sugarcane___Healthy
+C:\Users\HP\OneDrive\Desktop\gdg-grp-task(ml)\data\raw\Kaggle_Sugarcane\Healthy\healthy (489).jpeg,Sugarcane___Healthy
+C:\Users\HP\OneDrive\Desktop\gdg-grp-task(ml)\data\raw\Kaggle_Sugarcane\Healthy\healthy (188).jpeg,Sugarcane___Healthy
+C:\Users\HP\OneDrive\Desktop\gdg-grp-task(ml)\data\raw\Kaggle_Sugarcane\Healthy\healthy (322).jpeg,Sugarcane___Healthy
+C:\Users\HP\OneDrive\Desktop\gdg-grp-task(ml)\data\raw\Kaggle_Sugarcane\Healthy\healthy (508).jpeg,Sugarcane___Healthy
+C:\Users\HP\OneDrive\Desktop\gdg-grp-task(ml)\data\raw\Kaggle_Sugarcane\Healthy\healthy (144).jpeg,Sugarcane___Healthy
+C:\Users\HP\OneDrive\Desktop\gdg-grp-task(ml)\data\raw\Kaggle_Sugarcane\Healthy\healthy (55).jpeg,Sugarcane___Healthy
+C:\Users\HP\OneDrive\Desktop\gdg-grp-task(ml)\data\raw\Kaggle_Sugarcane\Healthy\healthy (268).jpeg,Sugarcane___Healthy
+C:\Users\HP\OneDrive\Desktop\gdg-grp-task(ml)\data\raw\Kaggle_Sugarcane\Healthy\healthy (237).jpeg,Sugarcane___Healthy
+C:\Users\HP\OneDrive\Desktop\gdg-grp-task(ml)\data\raw\Kaggle_Sugarcane\Healthy\healthy (507).jpeg,Sugarcane___Healthy
+C:\Users\HP\OneDrive\Desktop\gdg-grp-task(ml)\data\raw\Kaggle_Sugarcane\Healthy\healthy (82).jpeg,Sugarcane___Healthy
+C:\Users\HP\OneDrive\Desktop\gdg-grp-task(ml)\data\raw\Kaggle_Sugarcane\Healthy\healthy (425).jpeg,Sugarcane___Healthy
+C:\Users\HP\OneDrive\Desktop\gdg-grp-task(ml)\data\raw\Kaggle_Sugarcane\Healthy\healthy (51).jpeg,Sugarcane___Healthy
+C:\Users\HP\OneDrive\Desktop\gdg-grp-task(ml)\data\raw\Kaggle_Sugarcane\Healthy\healthy (1).jpeg,Sugarcane___Healthy
+C:\Users\HP\OneDrive\Desktop\gdg-grp-task(ml)\data\raw\Kaggle_Sugarcane\Healthy\healthy (295).jpeg,Sugarcane___Healthy
+C:\Users\HP\OneDrive\Desktop\gdg-grp-task(ml)\data\raw\Kaggle_Sugarcane\Healthy\healthy (101).jpeg,Sugarcane___Healthy
+C:\Users\HP\OneDrive\Desktop\gdg-grp-task(ml)\data\raw\Kaggle_Sugarcane\Healthy\healthy (8).jpeg,Sugarcane___Healthy
+C:\Users\HP\OneDrive\Desktop\gdg-grp-task(ml)\data\raw\Kaggle_Sugarcane\Healthy\healthy (61).jpeg,Sugarcane___Healthy
+C:\Users\HP\OneDrive\Desktop\gdg-grp-task(ml)\data\raw\Kaggle_Sugarcane\Healthy\healthy (412).jpeg,Sugarcane___Healthy
+C:\Users\HP\OneDrive\Desktop\gdg-grp-task(ml)\data\raw\Kaggle_Sugarcane\Healthy\healthy (365).jpeg,Sugarcane___Healthy
+C:\Users\HP\OneDrive\Desktop\gdg-grp-task(ml)\data\raw\Kaggle_Sugarcane\Healthy\healthy (361).jpeg,Sugarcane___Healthy
+C:\Users\HP\OneDrive\Desktop\gdg-grp-task(ml)\data\raw\Kaggle_Sugarcane\Healthy\healthy (366).jpeg,Sugarcane___Healthy
+C:\Users\HP\OneDrive\Desktop\gdg-grp-task(ml)\data\raw\Kaggle_Sugarcane\Healthy\healthy (165).jpeg,Sugarcane___Healthy
+C:\Users\HP\OneDrive\Desktop\gdg-grp-task(ml)\data\raw\Kaggle_Sugarcane\Healthy\healthy (106).jpeg,Sugarcane___Healthy
+C:\Users\HP\OneDrive\Desktop\gdg-grp-task(ml)\data\raw\Kaggle_Sugarcane\Healthy\healthy (320).jpeg,Sugarcane___Healthy
+C:\Users\HP\OneDrive\Desktop\gdg-grp-task(ml)\data\raw\Kaggle_Sugarcane\Healthy\healthy (47).jpeg,Sugarcane___Healthy
+C:\Users\HP\OneDrive\Desktop\gdg-grp-task(ml)\data\raw\Kaggle_Sugarcane\Healthy\healthy (424).jpeg,Sugarcane___Healthy
+C:\Users\HP\OneDrive\Desktop\gdg-grp-task(ml)\data\raw\Kaggle_Sugarcane\Healthy\healthy (344).jpeg,Sugarcane___Healthy
+C:\Users\HP\OneDrive\Desktop\gdg-grp-task(ml)\data\raw\Kaggle_Sugarcane\Mosaic\mosaic (50).jpeg,Sugarcane___Mosaic
+C:\Users\HP\OneDrive\Desktop\gdg-grp-task(ml)\data\raw\Kaggle_Sugarcane\Mosaic\mosaic (73).jpeg,Sugarcane___Mosaic
+C:\Users\HP\OneDrive\Desktop\gdg-grp-task(ml)\data\raw\Kaggle_Sugarcane\Mosaic\mosaic (86).jpeg,Sugarcane___Mosaic
+C:\Users\HP\OneDrive\Desktop\gdg-grp-task(ml)\data\raw\Kaggle_Sugarcane\Mosaic\mosaic (206).jpeg,Sugarcane___Mosaic
+C:\Users\HP\OneDrive\Desktop\gdg-grp-task(ml)\data\raw\Kaggle_Sugarcane\Mosaic\mosaic (125).jpeg,Sugarcane___Mosaic
+C:\Users\HP\OneDrive\Desktop\gdg-grp-task(ml)\data\raw\Kaggle_Sugarcane\Mosaic\mosaic (292).jpeg,Sugarcane___Mosaic
+C:\Users\HP\OneDrive\Desktop\gdg-grp-task(ml)\data\raw\Kaggle_Sugarcane\Mosaic\mosaic (245).jpeg,Sugarcane___Mosaic
+C:\Users\HP\OneDrive\Desktop\gdg-grp-task(ml)\data\raw\Kaggle_Sugarcane\Mosaic\mosaic (236).jpeg,Sugarcane___Mosaic
+C:\Users\HP\OneDrive\Desktop\gdg-grp-task(ml)\data\raw\Kaggle_Sugarcane\Mosaic\mosaic (149).jpeg,Sugarcane___Mosaic
+C:\Users\HP\OneDrive\Desktop\gdg-grp-task(ml)\data\raw\Kaggle_Sugarcane\Mosaic\mosaic (25).jpeg,Sugarcane___Mosaic
+C:\Users\HP\OneDrive\Desktop\gdg-grp-task(ml)\data\raw\Kaggle_Sugarcane\Mosaic\mosaic (174).jpeg,Sugarcane___Mosaic
+C:\Users\HP\OneDrive\Desktop\gdg-grp-task(ml)\data\raw\Kaggle_Sugarcane\Mosaic\mosaic (119).jpeg,Sugarcane___Mosaic
+C:\Users\HP\OneDrive\Desktop\gdg-grp-task(ml)\data\raw\Kaggle_Sugarcane\Mosaic\mosaic (212).jpeg,Sugarcane___Mosaic
+C:\Users\HP\OneDrive\Desktop\gdg-grp-task(ml)\data\raw\Kaggle_Sugarcane\Mosaic\mosaic (90).jpeg,Sugarcane___Mosaic
+C:\Users\HP\OneDrive\Desktop\gdg-grp-task(ml)\data\raw\Kaggle_Sugarcane\Mosaic\mosaic (276).jpeg,Sugarcane___Mosaic
+C:\Users\HP\OneDrive\Desktop\gdg-grp-task(ml)\data\raw\Kaggle_Sugarcane\Mosaic\mosaic (213).jpeg,Sugarcane___Mosaic
+C:\Users\HP\OneDrive\Desktop\gdg-grp-task(ml)\data\raw\Kaggle_Sugarcane\Mosaic\mosaic (55).jpeg,Sugarcane___Mosaic
+C:\Users\HP\OneDrive\Desktop\gdg-grp-task(ml)\data\raw\Kaggle_Sugarcane\Mosaic\mosaic (344).jpeg,Sugarcane___Mosaic
+C:\Users\HP\OneDrive\Desktop\gdg-grp-task(ml)\data\raw\Kaggle_Sugarcane\Mosaic\mosaic (227).jpeg,Sugarcane___Mosaic
+C:\Users\HP\OneDrive\Desktop\gdg-grp-task(ml)\data\raw\Kaggle_Sugarcane\Mosaic\mosaic (338).jpeg,Sugarcane___Mosaic
+C:\Users\HP\OneDrive\Desktop\gdg-grp-task(ml)\data\raw\Kaggle_Sugarcane\Mosaic\mosaic (3).jpeg,Sugarcane___Mosaic
+C:\Users\HP\OneDrive\Desktop\gdg-grp-task(ml)\data\raw\Kaggle_Sugarcane\Mosaic\mosaic (304).jpeg,Sugarcane___Mosaic
+C:\Users\HP\OneDrive\Desktop\gdg-grp-task(ml)\data\raw\Kaggle_Sugarcane\Mosaic\mosaic (84).jpeg,Sugarcane___Mosaic
+C:\Users\HP\OneDrive\Desktop\gdg-grp-task(ml)\data\raw\Kaggle_Sugarcane\Mosaic\mosaic (309).jpeg,Sugarcane___Mosaic
+C:\Users\HP\OneDrive\Desktop\gdg-grp-task(ml)\data\raw\Kaggle_Sugarcane\Mosaic\mosaic (208).jpeg,Sugarcane___Mosaic
+C:\Users\HP\OneDrive\Desktop\gdg-grp-task(ml)\data\raw\Kaggle_Sugarcane\Mosaic\mosaic (1).jpeg,Sugarcane___Mosaic
+C:\Users\HP\OneDrive\Desktop\gdg-grp-task(ml)\data\raw\Kaggle_Sugarcane\Mosaic\mosaic (402).jpeg,Sugarcane___Mosaic
+C:\Users\HP\OneDrive\Desktop\gdg-grp-task(ml)\data\raw\Kaggle_Sugarcane\Mosaic\mosaic (199).jpeg,Sugarcane___Mosaic
+C:\Users\HP\OneDrive\Desktop\gdg-grp-task(ml)\data\raw\Kaggle_Sugarcane\Mosaic\mosaic (13).jpeg,Sugarcane___Mosaic
+C:\Users\HP\OneDrive\Desktop\gdg-grp-task(ml)\data\raw\Kaggle_Sugarcane\Mosaic\mosaic (408).jpeg,Sugarcane___Mosaic
+C:\Users\HP\OneDrive\Desktop\gdg-grp-task(ml)\data\raw\Kaggle_Sugarcane\RedRot\redrot (48).jpeg,Sugarcane___Red_rot
+C:\Users\HP\OneDrive\Desktop\gdg-grp-task(ml)\data\raw\Kaggle_Sugarcane\RedRot\redrot (185).jpeg,Sugarcane___Red_rot
+C:\Users\HP\OneDrive\Desktop\gdg-grp-task(ml)\data\raw\Kaggle_Sugarcane\RedRot\redrot (53).jpeg,Sugarcane___Red_rot
+C:\Users\HP\OneDrive\Desktop\gdg-grp-task(ml)\data\raw\Kaggle_Sugarcane\RedRot\redrot (514).jpeg,Sugarcane___Red_rot
+C:\Users\HP\OneDrive\Desktop\gdg-grp-task(ml)\data\raw\Kaggle_Sugarcane\RedRot\redrot (422).jpeg,Sugarcane___Red_rot
+C:\Users\HP\OneDrive\Desktop\gdg-grp-task(ml)\data\raw\Kaggle_Sugarcane\RedRot\redrot (368).jpeg,Sugarcane___Red_rot
+C:\Users\HP\OneDrive\Desktop\gdg-grp-task(ml)\data\raw\Kaggle_Sugarcane\RedRot\redrot (89).jpeg,Sugarcane___Red_rot
+C:\Users\HP\OneDrive\Desktop\gdg-grp-task(ml)\data\raw\Kaggle_Sugarcane\RedRot\redrot (353).jpeg,Sugarcane___Red_rot
+C:\Users\HP\OneDrive\Desktop\gdg-grp-task(ml)\data\raw\Kaggle_Sugarcane\RedRot\redrot (506).jpeg,Sugarcane___Red_rot
+C:\Users\HP\OneDrive\Desktop\gdg-grp-task(ml)\data\raw\Kaggle_Sugarcane\RedRot\redrot (437).jpeg,Sugarcane___Red_rot
+C:\Users\HP\OneDrive\Desktop\gdg-grp-task(ml)\data\raw\Kaggle_Sugarcane\RedRot\redrot (13).jpeg,Sugarcane___Red_rot
+C:\Users\HP\OneDrive\Desktop\gdg-grp-task(ml)\data\raw\Kaggle_Sugarcane\RedRot\redrot (161).jpeg,Sugarcane___Red_rot
+C:\Users\HP\OneDrive\Desktop\gdg-grp-task(ml)\data\raw\Kaggle_Sugarcane\RedRot\redrot (401).jpeg,Sugarcane___Red_rot
+C:\Users\HP\OneDrive\Desktop\gdg-grp-task(ml)\data\raw\Kaggle_Sugarcane\RedRot\redrot (494).jpeg,Sugarcane___Red_rot
+C:\Users\HP\OneDrive\Desktop\gdg-grp-task(ml)\data\raw\Kaggle_Sugarcane\RedRot\redrot (81).jpeg,Sugarcane___Red_rot
+C:\Users\HP\OneDrive\Desktop\gdg-grp-task(ml)\data\raw\Kaggle_Sugarcane\RedRot\redrot (22).jpeg,Sugarcane___Red_rot
+C:\Users\HP\OneDrive\Desktop\gdg-grp-task(ml)\data\raw\Kaggle_Sugarcane\RedRot\redrot (444).jpeg,Sugarcane___Red_rot
+C:\Users\HP\OneDrive\Desktop\gdg-grp-task(ml)\data\raw\Kaggle_Sugarcane\RedRot\redrot (142).jpeg,Sugarcane___Red_rot
+C:\Users\HP\OneDrive\Desktop\gdg-grp-task(ml)\data\raw\Kaggle_Sugarcane\RedRot\redrot (469).jpeg,Sugarcane___Red_rot
+C:\Users\HP\OneDrive\Desktop\gdg-grp-task(ml)\data\raw\Kaggle_Sugarcane\RedRot\redrot (242).jpeg,Sugarcane___Red_rot
+C:\Users\HP\OneDrive\Desktop\gdg-grp-task(ml)\data\raw\Kaggle_Sugarcane\RedRot\redrot (8).jpeg,Sugarcane___Red_rot
+C:\Users\HP\OneDrive\Desktop\gdg-grp-task(ml)\data\raw\Kaggle_Sugarcane\RedRot\redrot (18).jpeg,Sugarcane___Red_rot
+C:\Users\HP\OneDrive\Desktop\gdg-grp-task(ml)\data\raw\Kaggle_Sugarcane\RedRot\redrot (263).jpeg,Sugarcane___Red_rot
+C:\Users\HP\OneDrive\Desktop\gdg-grp-task(ml)\data\raw\Kaggle_Sugarcane\RedRot\redrot (283).jpeg,Sugarcane___Red_rot
+C:\Users\HP\OneDrive\Desktop\gdg-grp-task(ml)\data\raw\Kaggle_Sugarcane\RedRot\redrot (166).jpeg,Sugarcane___Red_rot
+C:\Users\HP\OneDrive\Desktop\gdg-grp-task(ml)\data\raw\Kaggle_Sugarcane\RedRot\redrot (286).jpeg,Sugarcane___Red_rot
+C:\Users\HP\OneDrive\Desktop\gdg-grp-task(ml)\data\raw\Kaggle_Sugarcane\RedRot\redrot (184).jpeg,Sugarcane___Red_rot
+C:\Users\HP\OneDrive\Desktop\gdg-grp-task(ml)\data\raw\Kaggle_Sugarcane\RedRot\redrot (121).jpeg,Sugarcane___Red_rot
+C:\Users\HP\OneDrive\Desktop\gdg-grp-task(ml)\data\raw\Kaggle_Sugarcane\RedRot\redrot (124).jpeg,Sugarcane___Red_rot
+C:\Users\HP\OneDrive\Desktop\gdg-grp-task(ml)\data\raw\Kaggle_Sugarcane\RedRot\redrot (485).jpeg,Sugarcane___Red_rot
+C:\Users\HP\OneDrive\Desktop\gdg-grp-task(ml)\data\sample_real_leaves\real_tomato_early_blight.jpg,Tomato___Bacterial_spot
+C:\Users\HP\OneDrive\Desktop\gdg-grp-task(ml)\data\sample_real_leaves\real_tomato_healthy.jpg,Tomato___Bacterial_spot
+C:\Users\HP\OneDrive\Desktop\gdg-grp-task(ml)\data\sample_real_leaves\Tomato___Septoria_leaf_spot_0.jpg,Tomato___Early_blight
+C:\Users\HP\OneDrive\Desktop\gdg-grp-task(ml)\data\sample_real_leaves\Tomato___Yellow_Leaf_Curl_Virus_0.jpg,Tomato___Early_blight
+C:\Users\HP\OneDrive\Desktop\gdg-grp-task(ml)\data\sample_real_leaves\Tomato___Late_blight_1.jpg,Tomato___Early_blight
+C:\Users\HP\OneDrive\Desktop\gdg-grp-task(ml)\data\sample_real_leaves\Tomato___Late_blight_0.jpg,Tomato___Early_blight
+C:\Users\HP\OneDrive\Desktop\gdg-grp-task(ml)\data\sample_real_leaves\Tomato___Late_blight_0.jpg,Tomato___Healthy
+C:\Users\HP\OneDrive\Desktop\gdg-grp-task(ml)\data\sample_real_leaves\Tomato___Healthy_0.jpg,Tomato___Healthy
+C:\Users\HP\OneDrive\Desktop\gdg-grp-task(ml)\data\sample_real_leaves\Tomato___Septoria_leaf_spot_0.jpg,Tomato___Healthy
+C:\Users\HP\OneDrive\Desktop\gdg-grp-task(ml)\data\sample_real_leaves\Tomato___Healthy_1.jpg,Tomato___Healthy
+C:\Users\HP\OneDrive\Desktop\gdg-grp-task(ml)\data\sample_real_leaves\real_tomato_late_blight.jpg,Tomato___Healthy
+C:\Users\HP\OneDrive\Desktop\gdg-grp-task(ml)\data\sample_real_leaves\real_tomato_late_blight.jpg,Tomato___Healthy
+C:\Users\HP\OneDrive\Desktop\gdg-grp-task(ml)\data\sample_real_leaves\Tomato___Early_blight_0.jpg,Tomato___Healthy
+C:\Users\HP\OneDrive\Desktop\gdg-grp-task(ml)\data\sample_real_leaves\Tomato___Septoria_leaf_spot_0.jpg,Tomato___Late_blight
+C:\Users\HP\OneDrive\Desktop\gdg-grp-task(ml)\data\sample_real_leaves\Tomato___Late_blight_1.jpg,Tomato___Late_blight
+C:\Users\HP\OneDrive\Desktop\gdg-grp-task(ml)\data\sample_real_leaves\Tomato___Late_blight_0.jpg,Tomato___Late_blight
+C:\Users\HP\OneDrive\Desktop\gdg-grp-task(ml)\data\sample_real_leaves\Tomato___Septoria_leaf_spot_1.jpg,Tomato___Late_blight
+C:\Users\HP\OneDrive\Desktop\gdg-grp-task(ml)\data\sample_real_leaves\real_tomato_early_blight.jpg,Tomato___Late_blight
+C:\Users\HP\OneDrive\Desktop\gdg-grp-task(ml)\data\sample_real_leaves\Tomato___Early_blight_0.jpg,Tomato___Late_blight
+C:\Users\HP\OneDrive\Desktop\gdg-grp-task(ml)\data\sample_real_leaves\real_tomato_late_blight.jpg,Tomato___Late_blight
+C:\Users\HP\OneDrive\Desktop\gdg-grp-task(ml)\data\sample_real_leaves\Tomato___Septoria_leaf_spot_0.jpg,Tomato___Leaf_Mold
+C:\Users\HP\OneDrive\Desktop\gdg-grp-task(ml)\data\sample_real_leaves\Tomato___Septoria_leaf_spot_1.jpg,Tomato___Leaf_Mold
+C:\Users\HP\OneDrive\Desktop\gdg-grp-task(ml)\data\sample_real_leaves\Tomato___Septoria_leaf_spot_1.jpg,Tomato___Leaf_Mold
+C:\Users\HP\OneDrive\Desktop\gdg-grp-task(ml)\data\sample_real_leaves\Tomato___Healthy_0.jpg,Tomato___Leaf_Mold
+C:\Users\HP\OneDrive\Desktop\gdg-grp-task(ml)\data\sample_real_leaves\real_tomato_early_blight.jpg,Tomato___Leaf_Mold
+C:\Users\HP\OneDrive\Desktop\gdg-grp-task(ml)\data\sample_real_leaves\Tomato___Healthy_1.jpg,Tomato___Leaf_Mold
+C:\Users\HP\OneDrive\Desktop\gdg-grp-task(ml)\data\sample_real_leaves\Tomato___Yellow_Leaf_Curl_Virus_1.jpg,Tomato___Leaf_Mold
+C:\Users\HP\OneDrive\Desktop\gdg-grp-task(ml)\data\sample_real_leaves\real_tomato_healthy.jpg,Tomato___Septoria_leaf_spot
+C:\Users\HP\OneDrive\Desktop\gdg-grp-task(ml)\data\sample_real_leaves\real_tomato_late_blight.jpg,Tomato___Septoria_leaf_spot
+C:\Users\HP\OneDrive\Desktop\gdg-grp-task(ml)\data\sample_real_leaves\real_tomato_early_blight.jpg,Tomato___Septoria_leaf_spot
+C:\Users\HP\OneDrive\Desktop\gdg-grp-task(ml)\data\sample_real_leaves\Tomato___Healthy_0.jpg,Tomato___Septoria_leaf_spot
+C:\Users\HP\OneDrive\Desktop\gdg-grp-task(ml)\data\sample_real_leaves\Tomato___Healthy_0.jpg,Tomato___Septoria_leaf_spot
+C:\Users\HP\OneDrive\Desktop\gdg-grp-task(ml)\data\sample_real_leaves\Tomato___Early_blight_0.jpg,Tomato___Septoria_leaf_spot
+C:\Users\HP\OneDrive\Desktop\gdg-grp-task(ml)\data\sample_real_leaves\Tomato___Yellow_Leaf_Curl_Virus_1.jpg,Tomato___Septoria_leaf_spot
+C:\Users\HP\OneDrive\Desktop\gdg-grp-task(ml)\data\sample_real_leaves\Tomato___Late_blight_0.jpg,Tomato___Yellow_Leaf_Curl_Virus
+C:\Users\HP\OneDrive\Desktop\gdg-grp-task(ml)\data\sample_real_leaves\Tomato___Yellow_Leaf_Curl_Virus_0.jpg,Tomato___Yellow_Leaf_Curl_Virus
+C:\Users\HP\OneDrive\Desktop\gdg-grp-task(ml)\data\sample_real_leaves\Tomato___Healthy_1.jpg,Tomato___Yellow_Leaf_Curl_Virus
+C:\Users\HP\OneDrive\Desktop\gdg-grp-task(ml)\data\sample_real_leaves\Tomato___Healthy_1.jpg,Tomato___Yellow_Leaf_Curl_Virus
+C:\Users\HP\OneDrive\Desktop\gdg-grp-task(ml)\data\sample_real_leaves\Tomato___Septoria_leaf_spot_1.jpg,Tomato___Yellow_Leaf_Curl_Virus
+C:\Users\HP\OneDrive\Desktop\gdg-grp-task(ml)\data\sample_real_leaves\Tomato___Septoria_leaf_spot_0.jpg,Tomato___Yellow_Leaf_Curl_Virus
+C:\Users\HP\OneDrive\Desktop\gdg-grp-task(ml)\data\sample_real_leaves\Tomato___Late_blight_0.jpg,Tomato___Yellow_Leaf_Curl_Virus
+C:\Users\HP\OneDrive\Desktop\gdg-grp-task(ml)\data\raw\Kaggle_Wheat\wheat_leaf\Healthy\loh(79).JPG,Wheat___Brown_rust
+C:\Users\HP\OneDrive\Desktop\gdg-grp-task(ml)\data\raw\Kaggle_Wheat\wheat_leaf\stripe_rust\lolr(153).JPG,Wheat___Brown_rust
+C:\Users\HP\OneDrive\Desktop\gdg-grp-task(ml)\data\raw\Kaggle_Wheat\wheat_leaf\stripe_rust\lolr(175).JPG,Wheat___Brown_rust
+C:\Users\HP\OneDrive\Desktop\gdg-grp-task(ml)\data\raw\Kaggle_Wheat\wheat_leaf\stripe_rust\lolr(91).JPG,Wheat___Brown_rust
+C:\Users\HP\OneDrive\Desktop\gdg-grp-task(ml)\data\raw\Kaggle_Wheat\wheat_leaf\stripe_rust\lolr(92).JPG,Wheat___Brown_rust
+C:\Users\HP\OneDrive\Desktop\gdg-grp-task(ml)\data\raw\Kaggle_Wheat\wheat_leaf\stripe_rust\lolr(159).JPG,Wheat___Brown_rust
+C:\Users\HP\OneDrive\Desktop\gdg-grp-task(ml)\data\raw\Kaggle_Wheat\wheat_leaf\stripe_rust\lolr(196).JPG,Wheat___Brown_rust
+C:\Users\HP\OneDrive\Desktop\gdg-grp-task(ml)\data\raw\Kaggle_Wheat\wheat_leaf\Healthy\loh(78).JPG,Wheat___Healthy
+C:\Users\HP\OneDrive\Desktop\gdg-grp-task(ml)\data\raw\Kaggle_Wheat\wheat_leaf\Healthy\loh(53).JPG,Wheat___Healthy
+C:\Users\HP\OneDrive\Desktop\gdg-grp-task(ml)\data\raw\Kaggle_Wheat\wheat_leaf\Healthy\loh(67).JPG,Wheat___Healthy
+C:\Users\HP\OneDrive\Desktop\gdg-grp-task(ml)\data\raw\Kaggle_Wheat\wheat_leaf\Healthy\loh(57).JPG,Wheat___Healthy
+C:\Users\HP\OneDrive\Desktop\gdg-grp-task(ml)\data\raw\Kaggle_Wheat\wheat_leaf\Healthy\loh(6).JPG,Wheat___Healthy
+C:\Users\HP\OneDrive\Desktop\gdg-grp-task(ml)\data\raw\Kaggle_Wheat\wheat_leaf\Healthy\loh(49).JPG,Wheat___Healthy
+C:\Users\HP\OneDrive\Desktop\gdg-grp-task(ml)\data\raw\Kaggle_Wheat\wheat_leaf\Healthy\loh(51).JPG,Wheat___Healthy
+C:\Users\HP\OneDrive\Desktop\gdg-grp-task(ml)\data\raw\Kaggle_Wheat\wheat_leaf\Healthy\loh(76).JPG,Wheat___Healthy
+C:\Users\HP\OneDrive\Desktop\gdg-grp-task(ml)\data\raw\Kaggle_Wheat\wheat_leaf\Healthy\loh(86).JPG,Wheat___Healthy
+C:\Users\HP\OneDrive\Desktop\gdg-grp-task(ml)\data\raw\Kaggle_Wheat\wheat_leaf\Healthy\loh(43).JPG,Wheat___Healthy
+C:\Users\HP\OneDrive\Desktop\gdg-grp-task(ml)\data\raw\Kaggle_Wheat\wheat_leaf\Healthy\loh(61).JPG,Wheat___Healthy
+C:\Users\HP\OneDrive\Desktop\gdg-grp-task(ml)\data\raw\Kaggle_Wheat\wheat_leaf\Healthy\loh(41).JPG,Wheat___Healthy
+C:\Users\HP\OneDrive\Desktop\gdg-grp-task(ml)\data\raw\Kaggle_Wheat\wheat_leaf\Healthy\loh(27).JPG,Wheat___Healthy
+C:\Users\HP\OneDrive\Desktop\gdg-grp-task(ml)\data\raw\Kaggle_Wheat\wheat_leaf\Healthy\loh(99).JPG,Wheat___Healthy
+C:\Users\HP\OneDrive\Desktop\gdg-grp-task(ml)\data\raw\Kaggle_Wheat\wheat_leaf\Healthy\loh(24).JPG,Wheat___Healthy
+C:\Users\HP\OneDrive\Desktop\gdg-grp-task(ml)\data\raw\Kaggle_Wheat\wheat_leaf\septoria\los(16).JPG,Wheat___Septoria
+C:\Users\HP\OneDrive\Desktop\gdg-grp-task(ml)\data\raw\Kaggle_Wheat\wheat_leaf\septoria\los(87).JPG,Wheat___Septoria
+C:\Users\HP\OneDrive\Desktop\gdg-grp-task(ml)\data\raw\Kaggle_Wheat\wheat_leaf\septoria\los(83).JPG,Wheat___Septoria
+C:\Users\HP\OneDrive\Desktop\gdg-grp-task(ml)\data\raw\Kaggle_Wheat\wheat_leaf\septoria\los(46).JPG,Wheat___Septoria
+C:\Users\HP\OneDrive\Desktop\gdg-grp-task(ml)\data\raw\Kaggle_Wheat\wheat_leaf\septoria\los(4).JPG,Wheat___Septoria
+C:\Users\HP\OneDrive\Desktop\gdg-grp-task(ml)\data\raw\Kaggle_Wheat\wheat_leaf\septoria\los(93).JPG,Wheat___Septoria
+C:\Users\HP\OneDrive\Desktop\gdg-grp-task(ml)\data\raw\Kaggle_Wheat\wheat_leaf\septoria\los(54).JPG,Wheat___Septoria
+C:\Users\HP\OneDrive\Desktop\gdg-grp-task(ml)\data\raw\Kaggle_Wheat\wheat_leaf\septoria\los(50).JPG,Wheat___Septoria
+C:\Users\HP\OneDrive\Desktop\gdg-grp-task(ml)\data\raw\Kaggle_Wheat\wheat_leaf\septoria\los(96).JPG,Wheat___Septoria
+C:\Users\HP\OneDrive\Desktop\gdg-grp-task(ml)\data\raw\Kaggle_Wheat\wheat_leaf\septoria\los(18).JPG,Wheat___Septoria
+C:\Users\HP\OneDrive\Desktop\gdg-grp-task(ml)\data\raw\Kaggle_Wheat\wheat_leaf\septoria\los(42).JPG,Wheat___Septoria
+C:\Users\HP\OneDrive\Desktop\gdg-grp-task(ml)\data\raw\Kaggle_Wheat\wheat_leaf\septoria\los(88).JPG,Wheat___Septoria
+C:\Users\HP\OneDrive\Desktop\gdg-grp-task(ml)\data\raw\Kaggle_Wheat\wheat_leaf\septoria\los(64).JPG,Wheat___Septoria
+C:\Users\HP\OneDrive\Desktop\gdg-grp-task(ml)\data\raw\Kaggle_Wheat\wheat_leaf\septoria\los(26).JPG,Wheat___Septoria
+C:\Users\HP\OneDrive\Desktop\gdg-grp-task(ml)\data\raw\Kaggle_Wheat\wheat_leaf\stripe_rust\lolr(179).JPG,Wheat___Yellow_rust
+C:\Users\HP\OneDrive\Desktop\gdg-grp-task(ml)\data\raw\Kaggle_Wheat\wheat_leaf\stripe_rust\lolr(27).JPG,Wheat___Yellow_rust
+C:\Users\HP\OneDrive\Desktop\gdg-grp-task(ml)\data\raw\Kaggle_Wheat\wheat_leaf\stripe_rust\lolr(98).JPG,Wheat___Yellow_rust
+C:\Users\HP\OneDrive\Desktop\gdg-grp-task(ml)\data\raw\Kaggle_Wheat\wheat_leaf\stripe_rust\lolr(111).JPG,Wheat___Yellow_rust
+C:\Users\HP\OneDrive\Desktop\gdg-grp-task(ml)\data\raw\Kaggle_Wheat\wheat_leaf\stripe_rust\lolr(194).JPG,Wheat___Yellow_rust
+C:\Users\HP\OneDrive\Desktop\gdg-grp-task(ml)\data\raw\Kaggle_Wheat\wheat_leaf\stripe_rust\lolr(7).JPG,Wheat___Yellow_rust
+C:\Users\HP\OneDrive\Desktop\gdg-grp-task(ml)\data\raw\Kaggle_Wheat\wheat_leaf\stripe_rust\lolr(105).JPG,Wheat___Yellow_rust
+C:\Users\HP\OneDrive\Desktop\gdg-grp-task(ml)\data\raw\Kaggle_Wheat\wheat_leaf\stripe_rust\lolr(95).JPG,Wheat___Yellow_rust
+C:\Users\HP\OneDrive\Desktop\gdg-grp-task(ml)\data\raw\Kaggle_Wheat\wheat_leaf\stripe_rust\lolr(41).JPG,Wheat___Yellow_rust
+C:\Users\HP\OneDrive\Desktop\gdg-grp-task(ml)\data\raw\Kaggle_Wheat\wheat_leaf\stripe_rust\lolr(70).JPG,Wheat___Yellow_rust
+C:\Users\HP\OneDrive\Desktop\gdg-grp-task(ml)\data\raw\Kaggle_Wheat\wheat_leaf\stripe_rust\lolr(34).JPG,Wheat___Yellow_rust
+C:\Users\HP\OneDrive\Desktop\gdg-grp-task(ml)\data\raw\Kaggle_Wheat\wheat_leaf\stripe_rust\lolr(40).JPG,Wheat___Yellow_rust
+C:\Users\HP\OneDrive\Desktop\gdg-grp-task(ml)\data\raw\Kaggle_Wheat\wheat_leaf\stripe_rust\lolr(129).JPG,Wheat___Yellow_rust
+C:\Users\HP\OneDrive\Desktop\gdg-grp-task(ml)\data\raw\Kaggle_Wheat\wheat_leaf\stripe_rust\lolr(202).JPG,Wheat___Yellow_rust
+C:\Users\HP\OneDrive\Desktop\gdg-grp-task(ml)\data\raw\Kaggle_Wheat\wheat_leaf\stripe_rust\lolr(109).JPG,Wheat___Yellow_rust
+C:\Users\HP\OneDrive\Desktop\gdg-grp-task(ml)\data\raw\Kaggle_Wheat\wheat_leaf\stripe_rust\lolr(106).JPG,Wheat___Yellow_rust
+C:\Users\HP\OneDrive\Desktop\gdg-grp-task(ml)\data\raw\Kaggle_Wheat\wheat_leaf\stripe_rust\lolr(3).JPG,Wheat___Yellow_rust
+C:\Users\HP\OneDrive\Desktop\gdg-grp-task(ml)\data\raw\Kaggle_Wheat\wheat_leaf\stripe_rust\lolr(103).JPG,Wheat___Yellow_rust
+C:\Users\HP\OneDrive\Desktop\gdg-grp-task(ml)\data\raw\Kaggle_Wheat\wheat_leaf\stripe_rust\lolr(62).JPG,Wheat___Yellow_rust
+C:\Users\HP\OneDrive\Desktop\gdg-grp-task(ml)\data\raw\Kaggle_Wheat\wheat_leaf\stripe_rust\lolr(72).JPG,Wheat___Yellow_rust
+C:\Users\HP\OneDrive\Desktop\gdg-grp-task(ml)\data\raw\Kaggle_Wheat\wheat_leaf\stripe_rust\lolr(80).JPG,Wheat___Yellow_rust
+C:\Users\HP\OneDrive\Desktop\gdg-grp-task(ml)\data\raw\Kaggle_Wheat\wheat_leaf\stripe_rust\lolr(124).JPG,Wheat___Yellow_rust
+C:\Users\HP\OneDrive\Desktop\gdg-grp-task(ml)\data\raw\Kaggle_Wheat\wheat_leaf\stripe_rust\lolr(115).JPG,Wheat___Yellow_rust
+C:\Users\HP\OneDrive\Desktop\gdg-grp-task(ml)\data\raw\Kaggle_Wheat\wheat_leaf\stripe_rust\lolr(122).JPG,Wheat___Yellow_rust
+C:\Users\HP\OneDrive\Desktop\gdg-grp-task(ml)\data\raw\Kaggle_Wheat\wheat_leaf\stripe_rust\lolr(176).JPG,Wheat___Yellow_rust
+C:\Users\HP\OneDrive\Desktop\gdg-grp-task(ml)\data\raw\Kaggle_Wheat\wheat_leaf\stripe_rust\lolr(11).JPG,Wheat___Yellow_rust
+C:\Users\HP\OneDrive\Desktop\gdg-grp-task(ml)\data\raw\Kaggle_Wheat\wheat_leaf\stripe_rust\lolr(29).JPG,Wheat___Yellow_rust
+C:\Users\HP\OneDrive\Desktop\gdg-grp-task(ml)\data\raw\Kaggle_Wheat\wheat_leaf\stripe_rust\lolr(158).JPG,Wheat___Yellow_rust
+C:\Users\HP\OneDrive\Desktop\gdg-grp-task(ml)\data\raw\Kaggle_Wheat\wheat_leaf\stripe_rust\lolr(166).JPG,Wheat___Yellow_rust
+C:\Users\HP\OneDrive\Desktop\gdg-grp-task(ml)\data\raw\Kaggle_Wheat\wheat_leaf\stripe_rust\lolr(150).JPG,Wheat___Yellow_rust

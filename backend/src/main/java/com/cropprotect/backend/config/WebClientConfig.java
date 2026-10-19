@@ -27,6 +27,7 @@ public class WebClientConfig {
     private int readTimeoutMs;
 
     @Bean
+    @SuppressWarnings("null")
     public WebClient mlWebClient() {
         HttpClient httpClient = HttpClient.create()
                 .option(ChannelOption.CONNECT_TIMEOUT_MILLIS, connectTimeoutMs)

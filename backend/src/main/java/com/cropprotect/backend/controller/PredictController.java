@@ -61,7 +61,8 @@ public class PredictController {
         }
 
         String contentType = image.getContentType();
-        String originalFilename = image.getOriginalFilename() != null ? image.getOriginalFilename().toLowerCase() : "";
+        String rawFilename = image.getOriginalFilename();
+        String originalFilename = (rawFilename != null) ? rawFilename.toLowerCase() : "";
 
         boolean isAllowedType = (contentType != null && ALLOWED_CONTENT_TYPES.contains(contentType.toLowerCase())) ||
                 originalFilename.endsWith(".jpg") || originalFilename.endsWith(".jpeg") || originalFilename.endsWith(".png");
@@ -73,7 +74,7 @@ public class PredictController {
         }
 
         log.info("Processing prediction request: filename={}, size={} bytes, cropHint={}",
-                image.getOriginalFilename(), image.getSize(), cropHint);
+                rawFilename, image.getSize(), cropHint);
 
         // 2. ML Service Call
         MlPredictionResponse mlResponse = mlClientService.predict(image, cropHint);

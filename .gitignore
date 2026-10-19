@@ -56,3 +56,9 @@ Desktop.ini
 npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
+
+# Datasets
+data/raw/
+data/manifests/train_manifest.csv
+data/manifests/val_manifest.csv
+
