@@ -13,11 +13,13 @@ data:
   val_split: 0.15
   test_split: 0.15
   phash_threshold: 4  # Perceptual hash Hamming distance for near-duplicate rejection
+  max_failure_rate: 0.005 # Maximum allowable corrupt/missing image failure rate (default 0.5%)
+  backgrounds_dir: "data/backgrounds" # Directory with outdoor background photos for leaf replacement
 
 model:
   architecture: "mobilenet_v3_large"
   pretrained: true
-  img_size: 224
+  img_size: 224 # Configurable input resolution (e.g., 224, 288, or 320)
   num_classes: 36
 
 training:

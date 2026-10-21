@@ -1,6 +1,8 @@
 # Local Crop Disease Detector & Agricultural Decision Support System
 
-An end-to-end, production-grade Machine Learning and Spring Boot platform for local crop disease detection. A farmer uploads a leaf photo; the system verifies image quality (blur and illumination), runs calibrated neural inference using **MobileNetV3-Large** across 10 crops and 39 classes, detects out-of-distribution non-leaf photos, conditions predictions on optional crop hints, and attaches actionable preventive agricultural guidance with non-binding decision-support disclaimers.
+An end-to-end, production-grade Machine Learning and Spring Boot platform for local crop disease detection. A farmer uploads a leaf photo; the system verifies image quality (blur and illumination), runs neural inference using a pretrained Hugging Face model [**`linkanjarad/mobilenet_v2_1.0_224-plant-disease-identification`**](https://huggingface.co/linkanjarad/mobilenet_v2_1.0_224-plant-disease-identification) (MobileNetV2, PlantVillage, 38 classes across 14 crops, ~99.47% reported accuracy), enforces confidence thresholds (>= 0.60), detects unsupported crops gracefully, and attaches actionable preventive agricultural guidance with non-binding decision-support disclaimers.
+
+The system maintains 100% backward compatibility with the Spring Boot backend via an unchanged API contract and also supports switching back to the legacy custom MobileNetV3 model via configuration (`MODEL_BACKEND=legacy`).
 
 ---
 
@@ -10,7 +12,7 @@ An end-to-end, production-grade Machine Learning and Spring Boot platform for lo
 graph TD
     Client["Farmer / Web Frontend / Mobile App"]
     
-    subgraph SpringBoot["Spring Boot 3 Backend (:8080)"]
+    subgraph SpringBoot["Spring Boot 3 Backend (:8080) - Zero Code Changes"]
         PredictCtrl["PredictController (/api/predict, /api/crops)"]
         MlClient["MlClientService (WebClient + Timeout + 1 Retry)"]
         GuidanceSvc["GuidanceService (guidance.json cache)"]
@@ -19,11 +21,11 @@ graph TD
 
     subgraph FastAPIService["FastAPI ML Service (:8000)"]
         FastAPIApp["app.py (POST /predict, GET /classes, GET /health)"]
-        QualityCheck["OpenCV Quality Filter (Laplacian Blur & Brightness)"]
-        MobileNet["MobileNetV3-Large Backbone (< 1s CPU Inference)"]
-        TempScale["Temperature Scaling (T=1.25, ECE Reduction)"]
-        EnergyOOD["Free Energy Out-of-Distribution Detector"]
-        CropFilter["Crop Hint Renormalization"]
+        QualityCheck["OpenCV Quality Gate (Laplacian Blur & Brightness)"]
+        HFInference["Hugging Face MobileNetV2 Pipeline (linkanjarad/...-plant-disease-identification)"]
+        ConfidencePolicy["Confidence Threshold Gate (>= 0.60 required for status='ok')"]
+        CropGate["Crop Support Gate (Unsupported crops: Rice, Wheat, Cotton, Sugarcane -> low_confidence)"]
+        TopK["Top-3 Softmax Predictions & Label Parsing"]
     end
 
     Client -->|"POST /api/predict (Multipart: image, optional crop)"| PredictCtrl
@@ -31,11 +33,11 @@ graph TD
     PredictCtrl -->|"Forward Image"| MlClient
     MlClient -->|"POST /predict"| FastAPIApp
     FastAPIApp --> QualityCheck
-    QualityCheck -->|"Pass"| MobileNet
-    MobileNet --> TempScale
-    TempScale --> EnergyOOD
-    EnergyOOD --> CropFilter
-    CropFilter -->|"Normalized Probabilities"| FastAPIApp
+    QualityCheck -->|"Pass"| HFInference
+    HFInference --> ConfidencePolicy
+    ConfidencePolicy --> CropGate
+    CropGate --> TopK
+    TopK -->|"Compliant JSON Response"| FastAPIApp
     FastAPIApp -->|"ML Result JSON"| MlClient
     MlClient --> PredictCtrl
     PredictCtrl -->|"Lookup Disease Guidance"| GuidanceSvc
@@ -45,93 +47,42 @@ graph TD
 
 ---
 
-## Directory Structure
+## Configuration & Environment Variables
 
-```text
-gdg-grp-task(ml)/
-├── ml_training/                     # Complete PyTorch Training Pipeline
-│   ├── config.yaml                  # Hyperparameters, paths, and uncertainty thresholds
-│   ├── mapping.yaml                 # Maps raw folder names across datasets to Crop___Disease
-│   ├── train_10_crops.py            # High-efficiency calibrated transfer learning for 10 crops
-│   ├── 01_merge_datasets.py         # Merges datasets, caps at 1500/class, writes manifest.csv
-│   ├── 02_filter_and_split.py       # pHash deduplication, corrupt filter, train/val/test splits
-│   ├── 03_train.py                  # Two-stage MobileNetV3 transfer learning with AMP & AdamW
-│   ├── 04_evaluate.py               # Lab vs field evaluation, confusion matrix, weakest classes
-│   ├── 05_calibrate.py              # Temperature scaling calibration, reliability diagram, ECE
-│   ├── colab_run.py                 # Free Google Colab T4 GPU automated execution script
-│   └── utils/
-│       ├── __init__.py
-│       ├── quality.py               # Variance of Laplacian blur and brightness assessment
-│       ├── augmentations.py         # FieldBackgroundVariation & color/lighting augmentations
-│       ├── dataset.py               # PyTorch Dataset and smoothed inverse class weights
-│       └── metrics.py               # ECE calculation, source breakdown, weakest class finder
-├── tests/                           # Automated Test Suites
-│   └── test_crops_validation.py     # 10 crops botanical morphology & mismatch penalty tests
-├── ml_service/                      # Production FastAPI ML Inference Microservice
-│   ├── app.py                       # FastAPI application (POST /predict, GET /classes, GET /health)
-│   ├── predict.py                   # CPU-optimized predictor, quality check, crop conditioning
-│   ├── config.yaml                  # Runtime service configuration
-│   ├── requirements.txt             # Pinned Python dependencies
-│   ├── Dockerfile                   # Container definition for ML inference service
-│   └── model/
-│       ├── model.pt                 # Trained MobileNetV3 PyTorch checkpoint
-│       ├── labels.json              # Class index mapping (39 classes)
-│       └── calibration.json         # Learned temperature parameter T and energy threshold
-├── backend/                         # Java Spring Boot 3 Decision Support Backend
-│   ├── pom.xml                      # Maven configuration with Java 17 and Spring Boot 3.3.4
-│   ├── Dockerfile                   # Multi-stage container build
-│   └── src/
-│       ├── main/
-│       │   ├── java/com/cropprotect/backend/
-│       │   │   ├── BackendApplication.java
-│       │   │   ├── config/
-│       │   │   │   ├── WebClientConfig.java      # WebClient timeouts & 16MB buffer
-│       │   │   │   └── CorsConfig.java           # Cross-origin request mapping
-│       │   │   ├── controller/
-│       │   │   │   └── PredictController.java    # POST /api/predict & GET /api/crops
-│       │   │   ├── dto/
-│       │   │   │   ├── TopPrediction.java
-│       │   │   │   ├── QualityInfo.java
-│       │   │   │   ├── MlPredictionResponse.java
-│       │   │   │   ├── GuidanceInfo.java
-│       │   │   │   ├── FinalPredictionResponse.java
-│       │   │   │   ├── CropsCatalogResponse.java
-│       │   │   │   └── ErrorResponse.java
-│       │   │   ├── exception/
-│       │   │   │   ├── GlobalExceptionHandler.java
-│       │   │   │   ├── MlServiceException.java
-│       │   │   │   └── InvalidImageException.java
-│       │   │   └── service/
-│       │   │       ├── GuidanceService.java      # Loads and indexes guidance.json
-│       │   │       └── MlClientService.java      # WebClient integration + 1 retry
-│       │   └── resources/
-│       │       ├── application.yml               # Server port, multipart limits, ML URL
-│       │       └── guidance.json                 # Agronomic guidance for all 39 classes
-│       └── test/
-│           └── java/com/cropprotect/backend/
-│               └── PredictControllerTest.java    # MockMvc unit & integration test suite
-├── docker-compose.yml               # Orchestrates ml-service and spring-backend
-├── test_client.py                   # Sends 20 unseen images covering edge cases to the API
-├── MODEL_CARD.md                    # Model specifications, metrics, and limitations
-└── README.md                        # Documentation and run instructions
-```
+The ML microservice is configurable via environment variables or [`ml_service/config.yaml`](file:///c:/Users/HP/OneDrive/Desktop/gdg-grp-task%28ml%29/ml_service/config.yaml):
+
+| Variable | Default Value | Description |
+| :--- | :--- | :--- |
+| `MODEL_NAME` | `linkanjarad/mobilenet_v2_1.0_224-plant-disease-identification` | Hugging Face Hub model ID or local directory containing model weights and preprocessor config. |
+| `MODEL_BACKEND` | `huggingface` | ML backend engine: `huggingface` (default, MobileNetV2 38-class) or `legacy` (custom PyTorch MobileNetV3 39-class). |
+| `CONFIDENCE_THRESHOLD` | `0.60` | Minimum top-1 probability for `status="ok"`. Below this, `status="low_confidence"` is returned. |
+| `CONFIG_PATH` | `config.yaml` | Path to runtime YAML configuration file. |
 
 ---
 
-## Supported Crops and Standardized Classes (39 Classes)
+## Supported Crops and Standardized Classes (14 Crops, 38 Classes)
 
-Every class strictly follows the `Crop___Disease` naming convention across training, labels, the ML service, and the Spring Boot guidance catalog:
+The Hugging Face PlantVillage model dynamically derives its classes from `model.config.id2label` across 14 crops. Labels are parsed into standard crop and disease representations:
 
 1. **Apple** (4): `Apple___Apple_scab`, `Apple___Black_rot`, `Apple___Cedar_apple_rust`, `Apple___Healthy`
-2. **Bell Pepper** (2): `Bell_Pepper___Bacterial_spot`, `Bell_Pepper___Healthy`
-3. **Cotton** (4): `Cotton___Bacterial_blight`, `Cotton___Curl_virus`, `Cotton___Fusarium_wilt`, `Cotton___Healthy`
-4. **Grape** (4): `Grape___Black_rot`, `Grape___Esca_Black_Measles`, `Grape___Leaf_blight`, `Grape___Healthy`
-5. **Maize** (4): `Maize___Common_rust`, `Maize___Gray_leaf_spot`, `Maize___Northern_Leaf_Blight`, `Maize___Healthy`
-6. **Potato** (3): `Potato___Early_blight`, `Potato___Late_blight`, `Potato___Healthy`
-7. **Rice** (4): `Rice___Bacterial_leaf_blight`, `Rice___Brown_spot`, `Rice___Leaf_blast`, `Rice___Healthy`
-8. **Sugarcane** (3): `Sugarcane___Mosaic`, `Sugarcane___Red_rot`, `Sugarcane___Healthy`
-9. **Tomato** (7): `Tomato___Bacterial_spot`, `Tomato___Early_blight`, `Tomato___Healthy`, `Tomato___Late_blight`, `Tomato___Leaf_Mold`, `Tomato___Septoria_leaf_spot`, `Tomato___Yellow_Leaf_Curl_Virus`
-10. **Wheat** (4): `Wheat___Brown_rust`, `Wheat___Healthy`, `Wheat___Septoria`, `Wheat___Yellow_rust`
+2. **Blueberry** (1): `Blueberry___Healthy`
+3. **Cherry** (2): `Cherry___Powdery_mildew`, `Cherry___Healthy`
+4. **Corn (Maize)** (4): `Corn_(maize)___Cercospora_leaf_spot_Gray_leaf_spot`, `Corn_(maize)___Common_rust_`, `Corn_(maize)___Northern_Leaf_Blight`, `Corn_(maize)___Healthy`
+5. **Grape** (4): `Grape___Black_rot`, `Grape___Esca_(Black_Measles)`, `Grape___Leaf_blight_(Isariopsis_Leaf_Spot)`, `Grape___Healthy`
+6. **Orange** (1): `Orange___Haunglongbing_(Citrus_greening)`
+7. **Peach** (2): `Peach___Bacterial_spot`, `Peach___Healthy`
+8. **Pepper (Bell Pepper)** (2): `Pepper,_bell___Bacterial_spot`, `Pepper,_bell___Healthy`
+9. **Potato** (3): `Potato___Early_blight`, `Potato___Late_blight`, `Potato___Healthy`
+10. **Raspberry** (1): `Raspberry___Healthy`
+11. **Soybean** (1): `Soybean___Healthy`
+12. **Squash** (1): `Squash___Powdery_mildew`
+13. **Strawberry** (2): `Strawberry___Leaf_scorch`, `Strawberry___Healthy`
+14. **Tomato** (10): `Tomato___Bacterial_spot`, `Tomato___Early_blight`, `Tomato___Late_blight`, `Tomato___Leaf_Mold`, `Tomato___Septoria_leaf_spot`, `Tomato___Spider_mites_Two-spotted_spider_mite`, `Tomato___Target_Spot`, `Tomato___Tomato_Yellow_Leaf_Curl_Virus`, `Tomato___Tomato_mosaic_virus`, `Tomato___Healthy`
+
+> [!NOTE]
+> **Unsupported Crops Policy**:
+> Crops such as **Rice**, **Wheat**, **Cotton**, and **Sugarcane** are not part of the standard PlantVillage 38-class dataset. If an image is submitted with a crop hint for one of these crops (or if confidence fails to reach 0.60), the service returns `status="low_confidence"` with a helpful message directing the user rather than hallucinating an inaccurate diagnosis.
+> To restore support for Rice, Wheat, Cotton, and Sugarcane, switch back to the legacy model: `MODEL_BACKEND=legacy`.
 
 ---
 
@@ -292,7 +243,7 @@ python test_client.py --direct-ml
     "blur_score": 42.1,
     "brightness": 115.3
   },
-  "message": "Image is blurry (sharpness score 42.1 < 100.0). Hold camera steady.",
+  "message": "CLEAR PHOTO NAHI HAI: Photo bahut dhundhli (blurry) hai (sharpness: 42.1 < 80.0). Kripya camera saaf karke clear photo dubara upload karein.",
   "guidance": null,
   "disclaimer": "Notice: This automated recommendation provides non-binding agricultural decision support...",
   "timestamp": "2026-10-17T07:30:05Z"

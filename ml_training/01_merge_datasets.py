@@ -2,17 +2,19 @@
 Script 01: Merge Datasets
 Reads raw datasets, maps folder names to standardized Crop___Disease labels
 via mapping.yaml, enforces class capping (<=1500 images/class),
-and writes data/manifest.csv.
+and writes data/manifests/manifest.csv.
 """
 
 import os
+import re
 import glob
 import yaml
 import argparse
 import pandas as pd
 from PIL import Image, ImageDraw
 import numpy as np
-from typing import Dict, List
+from typing import Dict, List, Set, Tuple
+
 
 def parse_args():
     parser = argparse.ArgumentParser(description="Merge diverse crop disease datasets into a unified manifest.")
@@ -22,26 +24,27 @@ def parse_args():
     return parser.parse_args()
 
 
+def normalize_name(s: str) -> str:
+    """Normalize folder names by stripping non-alphanumeric chars and converting to lowercase."""
+    return re.sub(r"[^a-z0-9]", "", s.lower())
+
+
 def create_synthetic_image(output_path: str, label: str, source: str, idx: int):
     """Generates synthetic leaf image with realistic variation for instant local testing."""
     os.makedirs(os.path.dirname(output_path), exist_ok=True)
-    # Determine base color based on crop and disease
     is_healthy = "Healthy" in label
-    base_color = (34, 139, 34) if is_healthy else (100, 110, 30) # Forest green or diseased olive
+    base_color = (34, 139, 34) if is_healthy else (100, 110, 30)
 
-    # Add background: lab (gray/black) or field (brown/greenish soil)
     bg_color = (230, 230, 230) if source == "PlantVillage" else (80, 60, 40)
     img = Image.new("RGB", (256, 256), color=bg_color)
     draw = ImageDraw.Draw(img)
 
-    # Draw leaf shape
     draw.ellipse([40, 40, 216, 216], fill=base_color, outline=(20, 80, 20))
     if not is_healthy:
-        # Draw disease spots/lesions
         for _ in range(8):
             rx = int(np.random.randint(60, 190))
             ry = int(np.random.randint(60, 190))
-            draw.ellipse([rx, ry, rx + 14, ry + 14], fill=(139, 69, 19)) # Rust/blight brown spots
+            draw.ellipse([rx, ry, rx + 14, ry + 14], fill=(139, 69, 19))
 
     img.save(output_path)
 
@@ -49,7 +52,6 @@ def create_synthetic_image(output_path: str, label: str, source: str, idx: int):
 def main():
     args = parse_args()
 
-    # Load configurations
     with open(args.config, "r") as f:
         config = yaml.safe_load(f)
     with open(args.mapping, "r") as f:
@@ -64,84 +66,73 @@ def main():
     print(f"[*] Target Classes: {len(target_classes)}")
     print(f"[*] Max images per class cap: {max_per_class}")
 
-    records = []
-    class_counts = {c: 0 for c in target_classes}
-
-    # Iterate over sources defined in mapping.yaml
+    # Build normalized folder -> (target_class, source_name, source_type) lookup
+    folder_lookup: Dict[Tuple[str, str], Tuple[str, str, str]] = {}
     sources_config = mapping.get("sources", {})
     for source_name, source_info in sources_config.items():
         source_type = source_info.get("type", "lab")
-        folder_mappings = source_info.get("folder_mappings", {})
-        source_dir = os.path.join(raw_dir, source_name)
+        for f_name, t_cls in source_info.get("folder_mappings", {}).items():
+            if t_cls in target_classes:
+                folder_lookup[(source_name, normalize_name(f_name))] = (t_cls, source_name, source_type)
+        for tc in target_classes:
+            folder_lookup[(source_name, normalize_name(tc))] = (tc, source_name, source_type)
 
+    records: List[Dict[str, str]] = []
+    seen_filenames: Set[Tuple[str, str]] = set()
+    class_counts = {c: 0 for c in target_classes}
+
+    for source_name, source_info in sources_config.items():
+        source_type = source_info.get("type", "lab")
+        source_dir = os.path.join(raw_dir, source_name)
         if not os.path.exists(source_dir):
-            print(f"[!] Source folder not found: {source_dir} (Skipping or awaiting synthetic generation)")
+            print(f"[!] Source folder not found: {source_dir} (Skipping)")
             continue
 
-        print(f"[*] Scanning source: {source_name} ({source_type})")
-        for folder_name, target_class in folder_mappings.items():
-            if target_class not in target_classes:
-                continue
+        print(f"[*] Scanning source: {source_name} ({source_type}) recursively...")
+        source_added = 0
+        for r, dirs, files in os.walk(source_dir):
+            bname = normalize_name(os.path.basename(r))
+            key = (source_name, bname)
+            if key in folder_lookup:
+                t_cls, src, stype = folder_lookup[key]
+                for f in files:
+                    if f.lower().endswith((".jpg", ".jpeg", ".png")):
+                        dedup_key = (t_cls, f.lower())
+                        if dedup_key in seen_filenames:
+                            continue
+                        seen_filenames.add(dedup_key)
 
-            folder_path = os.path.join(source_dir, folder_name)
-            if not os.path.isdir(folder_path):
-                continue
+                        if class_counts[t_cls] < max_per_class:
+                            img_path = os.path.abspath(os.path.join(r, f))
+                            records.append({
+                                "path": img_path,
+                                "label": t_cls,
+                                "source": src,
+                                "type": stype
+                            })
+                            class_counts[t_cls] += 1
+                            source_added += 1
+        print(f"    -> Added {source_added} valid unique images from {source_name}")
 
-            # Find all image files
-            images = []
-            for ext in ("*.jpg", "*.jpeg", "*.png", "*.JPG", "*.JPEG", "*.PNG"):
-                images.extend(glob.glob(os.path.join(folder_path, ext)))
-
-            for img_path in images:
-                if class_counts[target_class] < max_per_class:
-                    records.append({
-                        "path": os.path.abspath(img_path),
-                        "label": target_class,
-                        "source": source_name,
-                        "type": source_type
-                    })
-                    class_counts[target_class] += 1
-
-    # Check if sample real leaves are available
-    sample_dir = os.path.join(os.path.dirname(raw_dir), "sample_real_leaves")
-    if os.path.isdir(sample_dir):
-        sample_images = glob.glob(os.path.join(sample_dir, "*.jpg")) + glob.glob(os.path.join(sample_dir, "*.png"))
-        if sample_images:
-            print(f"[*] Found {len(sample_images)} real photographic leaf sample(s) in {sample_dir}")
-
-    # If records are empty and synthetic is not explicitly requested, warn the user
-    if len(records) == 0:
-        if args.generate_synthetic:
-            print("[!] WARNING: --generate-synthetic requested. Generating geometric mock images (green circles with spots).")
-            print("[!] NOTE: Real CNN model training requires actual leaf photographs from PlantVillage, PlantDoc, Kaggle!")
-            synthetic_dir = os.path.join(config["data"]["processed_dir"], "synthetic_raw")
-            for cls in target_classes:
-                crop = cls.split("___")[0]
-                if crop in ["Tomato", "Potato", "Maize", "Bell_Pepper", "Grape", "Apple"]:
-                    source_choices = [("PlantVillage", "lab"), ("PlantDoc", "field")]
-                else:
-                    source_choices = [(f"Kaggle_{crop}", "field")]
-
-                needed = max(0, 10 - class_counts[cls])
-                for i in range(needed):
-                    s_name, s_type = source_choices[i % len(source_choices)]
-                    out_file = os.path.join(synthetic_dir, s_name, cls, f"sample_{i:03d}.jpg")
-                    create_synthetic_image(out_file, cls, s_name, i)
-                    records.append({
-                        "path": os.path.abspath(out_file),
-                        "label": cls,
-                        "source": s_name,
-                        "type": s_type
-                    })
-                    class_counts[cls] += 1
-        else:
-            print("\n" + "=" * 70)
-            print("[!] No raw dataset images found in data/raw/.")
-            print("[!] Real leaf photographs are required to train the CNN model.")
-            print("[!] Please download the real datasets with:")
-            print("      python ml_training/download_datasets.py --download-all")
-            print("[!] Or place downloaded folders in data/raw/ (PlantVillage, PlantDoc, Kaggle_Rice, etc.)")
-            print("=" * 70 + "\n")
+    # Generate synthetic samples for missing classes if requested
+    missing_classes = [c for c in target_classes if class_counts[c] == 0]
+    if missing_classes and args.generate_synthetic:
+        print(f"[*] Generating synthetic samples for {len(missing_classes)} unrepresented classes...")
+        synthetic_dir = os.path.join(config["data"]["processed_dir"], "synthetic_raw")
+        for cls in missing_classes:
+            crop = cls.split("___")[0]
+            s_name = "PlantVillage" if crop in ["Tomato", "Potato", "Maize", "Bell_Pepper", "Grape", "Apple"] else f"Kaggle_{crop}"
+            s_type = "lab" if s_name == "PlantVillage" else "field"
+            for i in range(10):
+                out_file = os.path.join(synthetic_dir, s_name, cls, f"sample_{i:03d}.jpg")
+                create_synthetic_image(out_file, cls, s_name, i)
+                records.append({
+                    "path": os.path.abspath(out_file),
+                    "label": cls,
+                    "source": s_name,
+                    "type": s_type
+                })
+                class_counts[cls] += 1
 
     df = pd.DataFrame(records)
     os.makedirs(os.path.dirname(manifest_path), exist_ok=True)
@@ -149,8 +140,10 @@ def main():
 
     print(f"\n[+] Manifest written to: {manifest_path}")
     print(f"[+] Total images merged: {len(df)}")
-    print(f"[+] Distribution across sources:\n{df['source'].value_counts().to_string()}")
-    print(f"[+] Number of active classes represented: {df['label'].nunique()} / {len(target_classes)}")
+    if len(df) > 0:
+        print(f"[+] Distribution across sources:\n{df['source'].value_counts().to_string()}")
+        print(f"[+] Active classes represented: {df['label'].nunique()} / {len(target_classes)}")
+
 
 if __name__ == "__main__":
     main()

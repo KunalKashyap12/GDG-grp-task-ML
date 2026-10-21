@@ -51,18 +51,23 @@ app.add_middleware(
 class TopPrediction(BaseModel):
     label: str
     score: float
+    level: Optional[str] = None
 
 class QualityInfo(BaseModel):
     blur_score: float
     brightness: float
 
 class PredictResponse(BaseModel):
-    status: str = Field(..., description="ok | low_confidence | poor_image_quality | not_a_leaf | error | species_mismatch")
+    status: str = Field(..., description="ok | low_confidence | poor_image_quality | not_a_leaf | error | species_mismatch | unknown")
     crop: str
     disease: str
     confidence: float
     certainty: str = Field(..., description="high | medium | low")
+    level: Optional[str] = Field(None, description="high | medium | low")
     top3: List[TopPrediction]
+    # Two-stage confidences (added in v2 - backward-compatible, not consumed by Spring Boot)
+    crop_confidence: Optional[float] = Field(None, description="Stage-1: P(Crop) — marginal crop probability")
+    disease_confidence: Optional[float] = Field(None, description="Stage-2: P(Disease|Crop) — disease probability conditioned on the identified crop")
     crop_comparison: Optional[List[Dict[str, Any]]] = None
     morphology: Optional[Dict[str, Any]] = None
     mismatch_warning: Optional[str] = None
@@ -70,6 +75,10 @@ class PredictResponse(BaseModel):
     guidance: Optional[Dict[str, Any]] = None
     disclaimer: Optional[str] = None
     message: str
+    raw_top1_class: Optional[str] = None
+    raw_top1_crop: Optional[str] = None
+    prior_flipped: Optional[bool] = None
+
 
 class HealthResponse(BaseModel):
     status: str
@@ -190,6 +199,11 @@ async def predict_crop_disease(
 
     # 3. Execute prediction pipeline
     result = predictor.predict(image_bytes=image_bytes, crop_hint=crop)
+    if result.get("status") == "error":
+        raise HTTPException(
+            status_code=status.HTTP_400_BAD_REQUEST,
+            detail=result.get("message", "Corrupted or invalid image format. Please upload a valid JPG or PNG image.")
+        )
     if "disclaimer" not in result or result["disclaimer"] is None:
         result["disclaimer"] = (
             "Notice: This automated recommendation provides non-binding agricultural decision support. "
@@ -1023,6 +1037,22 @@ def index_page():
       reader.readAsDataURL(file);
     }
 
+    const SAMPLE_CROPS = {
+      'bell-pepper-bacterial-spot': 'Bell_Pepper',
+      'wheat-rust': 'Wheat',
+      'apple-scab': 'Apple',
+      'tomato-early-blight': 'Tomato',
+      'potato-early-blight': 'Potato',
+      'grape-measles': 'Grape',
+      'maize-leaf-spot': 'Maize',
+      'cotton-blight': 'Cotton',
+      'rice-brown-spot': 'Rice',
+      'sugarcane-red-rot': 'Sugarcane',
+      'wheat-yellow-rust': 'Wheat',
+      'apple-cedar-rust': 'Apple',
+      'bell-pepper-healthy': 'Bell_Pepper'
+    };
+
     async function loadSample(sampleName) {
       try {
         const res = await fetch('/samples/' + sampleName);
@@ -1031,6 +1061,9 @@ def index_page():
         const ext = (blob.type === 'image/png') ? '.png' : '.jpg';
         const file = new File([blob], sampleName + ext, { type: blob.type || 'image/jpeg' });
         handleFile(file);
+        if (SAMPLE_CROPS[sampleName]) {
+          document.getElementById('cropSelect').value = SAMPLE_CROPS[sampleName];
+        }
       } catch (err) {
         alert('Could not load sample: ' + err.message);
       }

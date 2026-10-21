@@ -1,19 +1,73 @@
-path,label,source,type
-C:\Users\HP\OneDrive\Desktop\gdg-grp-task(ml)\data\synthetic_raw\PlantVillage\Apple___Apple_scab\sample_002.jpg,Apple___Apple_scab,PlantVillage,lab
-C:\Users\HP\OneDrive\Desktop\gdg-grp-task(ml)\data\synthetic_raw\PlantVillage\Apple___Black_rot\sample_002.jpg,Apple___Black_rot,PlantVillage,lab
-C:\Users\HP\OneDrive\Desktop\gdg-grp-task(ml)\data\synthetic_raw\PlantVillage\Apple___Cedar_apple_rust\sample_002.jpg,Apple___Cedar_apple_rust,PlantVillage,lab
-C:\Users\HP\OneDrive\Desktop\gdg-grp-task(ml)\data\synthetic_raw\PlantVillage\Bell_Pepper___Bacterial_spot\sample_002.jpg,Bell_Pepper___Bacterial_spot,PlantVillage,lab
-C:\Users\HP\OneDrive\Desktop\gdg-grp-task(ml)\data\synthetic_raw\PlantVillage\Grape___Black_rot\sample_002.jpg,Grape___Black_rot,PlantVillage,lab
-C:\Users\HP\OneDrive\Desktop\gdg-grp-task(ml)\data\synthetic_raw\PlantVillage\Grape___Esca_Black_Measles\sample_002.jpg,Grape___Esca_Black_Measles,PlantVillage,lab
-C:\Users\HP\OneDrive\Desktop\gdg-grp-task(ml)\data\synthetic_raw\PlantVillage\Grape___Leaf_blight\sample_002.jpg,Grape___Leaf_blight,PlantVillage,lab
-C:\Users\HP\OneDrive\Desktop\gdg-grp-task(ml)\data\synthetic_raw\PlantVillage\Maize___Common_rust\sample_002.jpg,Maize___Common_rust,PlantVillage,lab
-C:\Users\HP\OneDrive\Desktop\gdg-grp-task(ml)\data\synthetic_raw\PlantVillage\Maize___Gray_leaf_spot\sample_002.jpg,Maize___Gray_leaf_spot,PlantVillage,lab
-C:\Users\HP\OneDrive\Desktop\gdg-grp-task(ml)\data\synthetic_raw\PlantVillage\Maize___Northern_Leaf_Blight\sample_002.jpg,Maize___Northern_Leaf_Blight,PlantVillage,lab
-C:\Users\HP\OneDrive\Desktop\gdg-grp-task(ml)\data\synthetic_raw\PlantVillage\Potato___Early_blight\sample_002.jpg,Potato___Early_blight,PlantVillage,lab
-C:\Users\HP\OneDrive\Desktop\gdg-grp-task(ml)\data\synthetic_raw\PlantVillage\Potato___Late_blight\sample_002.jpg,Potato___Late_blight,PlantVillage,lab
-C:\Users\HP\OneDrive\Desktop\gdg-grp-task(ml)\data\synthetic_raw\PlantVillage\Tomato___Bacterial_spot\sample_002.jpg,Tomato___Bacterial_spot,PlantVillage,lab
-C:\Users\HP\OneDrive\Desktop\gdg-grp-task(ml)\data\synthetic_raw\PlantVillage\Tomato___Early_blight\sample_002.jpg,Tomato___Early_blight,PlantVillage,lab
-C:\Users\HP\OneDrive\Desktop\gdg-grp-task(ml)\data\synthetic_raw\PlantVillage\Tomato___Late_blight\sample_002.jpg,Tomato___Late_blight,PlantVillage,lab
-C:\Users\HP\OneDrive\Desktop\gdg-grp-task(ml)\data\synthetic_raw\PlantVillage\Tomato___Leaf_Mold\sample_002.jpg,Tomato___Leaf_Mold,PlantVillage,lab
-C:\Users\HP\OneDrive\Desktop\gdg-grp-task(ml)\data\synthetic_raw\PlantVillage\Tomato___Septoria_leaf_spot\sample_002.jpg,Tomato___Septoria_leaf_spot,PlantVillage,lab
-C:\Users\HP\OneDrive\Desktop\gdg-grp-task(ml)\data\synthetic_raw\PlantVillage\Tomato___Yellow_Leaf_Curl_Virus\sample_002.jpg,Tomato___Yellow_Leaf_Curl_Virus,PlantVillage,lab
+path,label,source,type,_eval_only
+C:\Users\HP\OneDrive\Desktop\gdg-grp-task(ml)\data\processed\synthetic_raw\PlantVillage\Apple___Apple_scab\sample_008.jpg,Apple___Apple_scab,PlantVillage,lab,False
+C:\Users\HP\OneDrive\Desktop\gdg-grp-task(ml)\data\processed\synthetic_raw\PlantVillage\Apple___Black_rot\sample_008.jpg,Apple___Black_rot,PlantVillage,lab,False
+C:\Users\HP\OneDrive\Desktop\gdg-grp-task(ml)\data\processed\synthetic_raw\PlantVillage\Apple___Cedar_apple_rust\sample_008.jpg,Apple___Cedar_apple_rust,PlantVillage,lab,False
+C:\Users\HP\OneDrive\Desktop\gdg-grp-task(ml)\data\processed\synthetic_raw\PlantVillage\Apple___Healthy\sample_000.jpg,Apple___Healthy,PlantVillage,lab,False
+C:\Users\HP\OneDrive\Desktop\gdg-grp-task(ml)\data\raw\PlantVillage\PlantVillage\Pepper__bell___Bacterial_spot\e96d2d14-4400-4c28-894e-be7c071743f4___NREC_B.Spot 9175.JPG,Bell_Pepper___Bacterial_spot,PlantVillage,lab,False
+C:\Users\HP\OneDrive\Desktop\gdg-grp-task(ml)\data\raw\PlantVillage\PlantVillage\Pepper__bell___Bacterial_spot\82b9fdcc-3000-46fe-b955-063e77dd5968___JR_B.Spot 3324.JPG,Bell_Pepper___Bacterial_spot,PlantVillage,lab,False
+C:\Users\HP\OneDrive\Desktop\gdg-grp-task(ml)\data\raw\PlantVillage\PlantVillage\Pepper__bell___Bacterial_spot\9023d324-f287-41ab-801b-27cc9a4ee9d5___JR_B.Spot 8981.JPG,Bell_Pepper___Bacterial_spot,PlantVillage,lab,False
+C:\Users\HP\OneDrive\Desktop\gdg-grp-task(ml)\data\raw\PlantVillage\PlantVillage\Pepper__bell___Bacterial_spot\a6dc1321-f6f9-48ae-be94-5ce894d15e89___NREC_B.Spot 9058.JPG,Bell_Pepper___Bacterial_spot,PlantVillage,lab,False
+C:\Users\HP\OneDrive\Desktop\gdg-grp-task(ml)\data\raw\PlantVillage\PlantVillage\Pepper__bell___Bacterial_spot\a1e9e014-6dba-4e27-9990-bff1cb95c5d5___JR_B.Spot 9026.JPG,Bell_Pepper___Bacterial_spot,PlantVillage,lab,False
+C:\Users\HP\OneDrive\Desktop\gdg-grp-task(ml)\data\raw\PlantVillage\PlantVillage\Pepper__bell___healthy\d15d99e1-1f77-4c74-ae6a-4db663e00f39___JR_HL 5959.JPG,Bell_Pepper___Healthy,PlantVillage,lab,False
+C:\Users\HP\OneDrive\Desktop\gdg-grp-task(ml)\data\raw\PlantVillage\PlantVillage\Pepper__bell___healthy\206fc5a6-80c8-4e7f-8673-2a80b4593b76___JR_HL 8170.JPG,Bell_Pepper___Healthy,PlantVillage,lab,False
+C:\Users\HP\OneDrive\Desktop\gdg-grp-task(ml)\data\raw\PlantVillage\PlantVillage\Pepper__bell___healthy\d59ef8c1-e6e7-44ea-8ada-36431c44c3c6___JR_HL 7648.JPG,Bell_Pepper___Healthy,PlantVillage,lab,False
+C:\Users\HP\OneDrive\Desktop\gdg-grp-task(ml)\data\raw\PlantVillage\PlantVillage\Pepper__bell___healthy\0e043e9a-7652-4e7a-aef1-0caa0c085f55___JR_HL 8479.JPG,Bell_Pepper___Healthy,PlantVillage,lab,False
+C:\Users\HP\OneDrive\Desktop\gdg-grp-task(ml)\data\raw\PlantVillage\PlantVillage\Pepper__bell___healthy\28e50a98-883a-418d-bbcb-01b8e44a11b5___JR_HL 8160.JPG,Bell_Pepper___Healthy,PlantVillage,lab,False
+C:\Users\HP\OneDrive\Desktop\gdg-grp-task(ml)\data\processed\synthetic_raw\PlantVillage\Grape___Black_rot\sample_008.jpg,Grape___Black_rot,PlantVillage,lab,False
+C:\Users\HP\OneDrive\Desktop\gdg-grp-task(ml)\data\processed\synthetic_raw\PlantVillage\Grape___Esca_Black_Measles\sample_007.jpg,Grape___Esca_Black_Measles,PlantVillage,lab,False
+C:\Users\HP\OneDrive\Desktop\gdg-grp-task(ml)\data\processed\synthetic_raw\PlantVillage\Grape___Healthy\sample_000.jpg,Grape___Healthy,PlantVillage,lab,False
+C:\Users\HP\OneDrive\Desktop\gdg-grp-task(ml)\data\processed\synthetic_raw\PlantVillage\Grape___Leaf_blight\sample_008.jpg,Grape___Leaf_blight,PlantVillage,lab,False
+C:\Users\HP\OneDrive\Desktop\gdg-grp-task(ml)\data\processed\synthetic_raw\PlantVillage\Maize___Common_rust\sample_008.jpg,Maize___Common_rust,PlantVillage,lab,False
+C:\Users\HP\OneDrive\Desktop\gdg-grp-task(ml)\data\processed\synthetic_raw\PlantVillage\Maize___Gray_leaf_spot\sample_008.jpg,Maize___Gray_leaf_spot,PlantVillage,lab,False
+C:\Users\HP\OneDrive\Desktop\gdg-grp-task(ml)\data\processed\synthetic_raw\PlantVillage\Maize___Healthy\sample_000.jpg,Maize___Healthy,PlantVillage,lab,False
+C:\Users\HP\OneDrive\Desktop\gdg-grp-task(ml)\data\processed\synthetic_raw\PlantVillage\Maize___Northern_Leaf_Blight\sample_008.jpg,Maize___Northern_Leaf_Blight,PlantVillage,lab,False
+C:\Users\HP\OneDrive\Desktop\gdg-grp-task(ml)\data\raw\PlantVillage\PlantVillage\PlantVillage\Potato___Early_blight\7795f733-eeb0-4353-bdb8-b2f4d8d622d4___RS_Early.B 6960.JPG,Potato___Early_blight,PlantVillage,lab,False
+C:\Users\HP\OneDrive\Desktop\gdg-grp-task(ml)\data\raw\PlantVillage\PlantVillage\PlantVillage\Potato___Early_blight\cea35641-b4f8-49cb-bbeb-c98cfc79870e___RS_Early.B 7189.JPG,Potato___Early_blight,PlantVillage,lab,False
+C:\Users\HP\OneDrive\Desktop\gdg-grp-task(ml)\data\raw\PlantVillage\PlantVillage\PlantVillage\Potato___Early_blight\37c72e1c-7981-4d84-9587-f5014b609230___RS_Early.B 7457.JPG,Potato___Early_blight,PlantVillage,lab,False
+C:\Users\HP\OneDrive\Desktop\gdg-grp-task(ml)\data\raw\PlantVillage\PlantVillage\PlantVillage\Potato___Early_blight\520475a1-5acf-433f-a306-cff6ec1a99ef___RS_Early.B 9159.JPG,Potato___Early_blight,PlantVillage,lab,False
+C:\Users\HP\OneDrive\Desktop\gdg-grp-task(ml)\data\raw\PlantVillage\PlantVillage\PlantVillage\Potato___Early_blight\c3ce9bae-e62a-4dd9-afa0-f020c48b87cc___RS_Early.B 6704.JPG,Potato___Early_blight,PlantVillage,lab,False
+C:\Users\HP\OneDrive\Desktop\gdg-grp-task(ml)\data\raw\PlantVillage\PlantVillage\PlantVillage\Potato___healthy\683b04ad-7941-4819-9965-ba32c725eb22___RS_HL 1861.JPG,Potato___Healthy,PlantVillage,lab,False
+C:\Users\HP\OneDrive\Desktop\gdg-grp-task(ml)\data\raw\PlantVillage\PlantVillage\PlantVillage\Potato___healthy\f4be3632-42a1-415a-9f7e-1d5ecb9f49d7___RS_HL 1783.JPG,Potato___Healthy,PlantVillage,lab,False
+C:\Users\HP\OneDrive\Desktop\gdg-grp-task(ml)\data\raw\PlantVillage\PlantVillage\PlantVillage\Potato___healthy\a02b6205-b40a-4178-8b34-3494f84b9d1f___RS_HL 1958.JPG,Potato___Healthy,PlantVillage,lab,False
+C:\Users\HP\OneDrive\Desktop\gdg-grp-task(ml)\data\raw\PlantVillage\PlantVillage\PlantVillage\Potato___healthy\8583c4ff-2d8b-4b6f-89a8-fcc98917ce9b___RS_HL 1961.JPG,Potato___Healthy,PlantVillage,lab,False
+C:\Users\HP\OneDrive\Desktop\gdg-grp-task(ml)\data\raw\PlantVillage\PlantVillage\PlantVillage\Potato___healthy\de9a8669-d437-40f0-aa56-fe2d8276a1e0___RS_HL 1910.JPG,Potato___Healthy,PlantVillage,lab,False
+C:\Users\HP\OneDrive\Desktop\gdg-grp-task(ml)\data\raw\PlantVillage\PlantVillage\PlantVillage\Potato___Late_blight\76bea797-306c-4fc5-a868-69394fed05d4___RS_LB 2900.JPG,Potato___Late_blight,PlantVillage,lab,False
+C:\Users\HP\OneDrive\Desktop\gdg-grp-task(ml)\data\raw\PlantVillage\PlantVillage\PlantVillage\Potato___Late_blight\d0262161-b887-4357-b707-cde01cf5726d___RS_LB 3044.JPG,Potato___Late_blight,PlantVillage,lab,False
+C:\Users\HP\OneDrive\Desktop\gdg-grp-task(ml)\data\raw\PlantVillage\PlantVillage\PlantVillage\Potato___Late_blight\357bfc61-bb46-4e77-b9eb-eafdd3af7f6f___RS_LB 3082.JPG,Potato___Late_blight,PlantVillage,lab,False
+C:\Users\HP\OneDrive\Desktop\gdg-grp-task(ml)\data\raw\PlantVillage\PlantVillage\PlantVillage\Potato___Late_blight\51eb7a7a-99b4-47c4-be2f-2de9f4e5e985___RS_LB 5182.JPG,Potato___Late_blight,PlantVillage,lab,False
+C:\Users\HP\OneDrive\Desktop\gdg-grp-task(ml)\data\raw\PlantVillage\PlantVillage\PlantVillage\Potato___Late_blight\c101232e-6487-495c-ad3a-27cd1e5fb2b9___RS_LB 2573.JPG,Potato___Late_blight,PlantVillage,lab,False
+C:\Users\HP\OneDrive\Desktop\gdg-grp-task(ml)\data\raw\PlantVillage\PlantVillage\PlantVillage\Tomato_Bacterial_spot\82aa438d-e17c-4756-8464-59d8c49497e9___GCREC_Bact.Sp 3245.JPG,Tomato___Bacterial_spot,PlantVillage,lab,False
+C:\Users\HP\OneDrive\Desktop\gdg-grp-task(ml)\data\raw\PlantVillage\PlantVillage\PlantVillage\Tomato_Bacterial_spot\a129e8eb-e2b4-4a8a-a509-f6625da6b11c___GCREC_Bact.Sp 3002.JPG,Tomato___Bacterial_spot,PlantVillage,lab,False
+C:\Users\HP\OneDrive\Desktop\gdg-grp-task(ml)\data\raw\PlantVillage\PlantVillage\PlantVillage\Tomato_Bacterial_spot\af8921c3-e3f5-434f-a391-cde9cb1fa956___GCREC_Bact.Sp 3384.JPG,Tomato___Bacterial_spot,PlantVillage,lab,False
+C:\Users\HP\OneDrive\Desktop\gdg-grp-task(ml)\data\raw\PlantVillage\PlantVillage\PlantVillage\Tomato_Bacterial_spot\b6b93fa0-be86-452b-86ff-dc7863af16ba___UF.GRC_BS_Lab Leaf 8785.JPG,Tomato___Bacterial_spot,PlantVillage,lab,False
+C:\Users\HP\OneDrive\Desktop\gdg-grp-task(ml)\data\raw\PlantVillage\PlantVillage\PlantVillage\Tomato_Bacterial_spot\65476dd0-6a5b-4623-b97d-96d74dcdbe03___GCREC_Bact.Sp 3842.JPG,Tomato___Bacterial_spot,PlantVillage,lab,False
+C:\Users\HP\OneDrive\Desktop\gdg-grp-task(ml)\data\raw\PlantVillage\PlantVillage\PlantVillage\Tomato__Target_Spot\14f4965f-3d48-49a6-9399-f6f3d7646630___Com.G_TgS_FL 7963.JPG,Tomato___Early_blight,PlantVillage,lab,False
+C:\Users\HP\OneDrive\Desktop\gdg-grp-task(ml)\data\raw\PlantVillage\PlantVillage\PlantVillage\Tomato__Target_Spot\49293c7e-61c1-48eb-947c-b3dd696ec699___Com.G_TgS_FL 9945.JPG,Tomato___Early_blight,PlantVillage,lab,False
+C:\Users\HP\OneDrive\Desktop\gdg-grp-task(ml)\data\raw\PlantVillage\PlantVillage\PlantVillage\Tomato_Early_blight\64fade29-cabf-4ec2-a5cf-8c7aeca19eea___RS_Erly.B 6427.JPG,Tomato___Early_blight,PlantVillage,lab,False
+C:\Users\HP\OneDrive\Desktop\gdg-grp-task(ml)\data\raw\PlantVillage\PlantVillage\PlantVillage\Tomato_Early_blight\62b8d81a-906b-4885-8b2d-e317d7bdd705___RS_Erly.B 7832.JPG,Tomato___Early_blight,PlantVillage,lab,False
+C:\Users\HP\OneDrive\Desktop\gdg-grp-task(ml)\data\raw\PlantVillage\PlantVillage\PlantVillage\Tomato_Early_blight\6c5baf51-ae97-41dd-9728-1995177e3b6a___RS_Erly.B 7723.JPG,Tomato___Early_blight,PlantVillage,lab,False
+C:\Users\HP\OneDrive\Desktop\gdg-grp-task(ml)\data\raw\PlantVillage\PlantVillage\PlantVillage\Tomato_healthy\d3d3e88a-265a-4d4d-8887-b2930272d549___RS_HL 9873.JPG,Tomato___Healthy,PlantVillage,lab,False
+C:\Users\HP\OneDrive\Desktop\gdg-grp-task(ml)\data\raw\PlantVillage\PlantVillage\PlantVillage\Tomato_healthy\8db2e3c6-c5d9-41ec-9977-7b1a71964f24___GH_HL Leaf 501.2.JPG,Tomato___Healthy,PlantVillage,lab,False
+C:\Users\HP\OneDrive\Desktop\gdg-grp-task(ml)\data\raw\PlantVillage\PlantVillage\PlantVillage\Tomato_healthy\45fc3f1c-6ccc-4ffd-a0a9-f53cbe4e71a1___GH_HL Leaf 206.1.JPG,Tomato___Healthy,PlantVillage,lab,False
+C:\Users\HP\OneDrive\Desktop\gdg-grp-task(ml)\data\raw\PlantVillage\PlantVillage\PlantVillage\Tomato_healthy\5785f4a6-39d9-40d9-bf57-2d41ed94518b___GH_HL Leaf 309.JPG,Tomato___Healthy,PlantVillage,lab,False
+C:\Users\HP\OneDrive\Desktop\gdg-grp-task(ml)\data\raw\PlantVillage\PlantVillage\PlantVillage\Tomato_healthy\452703f7-9106-4ed2-8f38-8ece42a32613___RS_HL 0248.JPG,Tomato___Healthy,PlantVillage,lab,False
+C:\Users\HP\OneDrive\Desktop\gdg-grp-task(ml)\data\raw\PlantVillage\PlantVillage\PlantVillage\Tomato_Late_blight\88d1ecf3-e03e-4ddf-9aa4-d9558f1ec2e2___RS_Late.B 7140.JPG,Tomato___Late_blight,PlantVillage,lab,False
+C:\Users\HP\OneDrive\Desktop\gdg-grp-task(ml)\data\raw\PlantVillage\PlantVillage\PlantVillage\Tomato_Late_blight\c3a5ec63-9d0d-48a2-898a-9bc31b4443a9___GHLB_PS Leaf 1.2 Day 16.jpg,Tomato___Late_blight,PlantVillage,lab,False
+C:\Users\HP\OneDrive\Desktop\gdg-grp-task(ml)\data\raw\PlantVillage\PlantVillage\PlantVillage\Tomato_Late_blight\a03417ff-445e-429e-aa3e-d90c23886f6e___RS_Late.B 6356.JPG,Tomato___Late_blight,PlantVillage,lab,False
+C:\Users\HP\OneDrive\Desktop\gdg-grp-task(ml)\data\raw\PlantVillage\PlantVillage\PlantVillage\Tomato_Late_blight\7a31833f-807e-4c54-951f-3c8c1d5b78d7___GHLB2 Leaf 8939.JPG,Tomato___Late_blight,PlantVillage,lab,False
+C:\Users\HP\OneDrive\Desktop\gdg-grp-task(ml)\data\raw\PlantVillage\PlantVillage\PlantVillage\Tomato_Late_blight\9cfd45ac-fe8d-4962-90e8-b78a85908892___RS_Late.B 6221.JPG,Tomato___Late_blight,PlantVillage,lab,False
+C:\Users\HP\OneDrive\Desktop\gdg-grp-task(ml)\data\raw\PlantVillage\PlantVillage\PlantVillage\Tomato_Leaf_Mold\3d203bd1-7814-4d66-a2eb-cf97193c1fbb___Crnl_L.Mold 8960.JPG,Tomato___Leaf_Mold,PlantVillage,lab,False
+C:\Users\HP\OneDrive\Desktop\gdg-grp-task(ml)\data\raw\PlantVillage\PlantVillage\PlantVillage\Tomato_Leaf_Mold\791aae0d-94d2-4d06-b696-6ffd297f2ccb___Crnl_L.Mold 8888.JPG,Tomato___Leaf_Mold,PlantVillage,lab,False
+C:\Users\HP\OneDrive\Desktop\gdg-grp-task(ml)\data\raw\PlantVillage\PlantVillage\PlantVillage\Tomato_Leaf_Mold\bca2a85b-7b2a-42b5-9b7d-cba2a6bc9a70___Crnl_L.Mold 7003.JPG,Tomato___Leaf_Mold,PlantVillage,lab,False
+C:\Users\HP\OneDrive\Desktop\gdg-grp-task(ml)\data\raw\PlantVillage\PlantVillage\PlantVillage\Tomato_Leaf_Mold\c9a5bad7-c42c-40e5-a8de-0631a5522018___Crnl_L.Mold 6872.JPG,Tomato___Leaf_Mold,PlantVillage,lab,False
+C:\Users\HP\OneDrive\Desktop\gdg-grp-task(ml)\data\raw\PlantVillage\PlantVillage\PlantVillage\Tomato_Leaf_Mold\8fcfbfee-f57a-49f7-9f68-19b4b1d5ca98___Crnl_L.Mold 6498.JPG,Tomato___Leaf_Mold,PlantVillage,lab,False
+C:\Users\HP\OneDrive\Desktop\gdg-grp-task(ml)\data\raw\PlantVillage\PlantVillage\PlantVillage\Tomato_Septoria_leaf_spot\a7ef1e20-bcbe-41b8-8148-a093ed765f09___Matt.S_CG 7780.JPG,Tomato___Septoria_leaf_spot,PlantVillage,lab,False
+C:\Users\HP\OneDrive\Desktop\gdg-grp-task(ml)\data\raw\PlantVillage\PlantVillage\PlantVillage\Tomato_Septoria_leaf_spot\c94c0c06-4d30-4c10-b2dc-eed7a658a0f2___JR_Sept.L.S 8514.JPG,Tomato___Septoria_leaf_spot,PlantVillage,lab,False
+C:\Users\HP\OneDrive\Desktop\gdg-grp-task(ml)\data\raw\PlantVillage\PlantVillage\PlantVillage\Tomato_Septoria_leaf_spot\40b13cf8-a4ca-4d0b-9e76-6f40f38ea063___Matt.S_CG 0773.JPG,Tomato___Septoria_leaf_spot,PlantVillage,lab,False
+C:\Users\HP\OneDrive\Desktop\gdg-grp-task(ml)\data\raw\PlantVillage\PlantVillage\PlantVillage\Tomato_Septoria_leaf_spot\3fc4d8fe-a68b-4d84-b987-be97052f0436___Matt.S_CG 6570.JPG,Tomato___Septoria_leaf_spot,PlantVillage,lab,False
+C:\Users\HP\OneDrive\Desktop\gdg-grp-task(ml)\data\raw\PlantVillage\PlantVillage\PlantVillage\Tomato_Septoria_leaf_spot\45c3dbbf-94eb-4e9e-9f09-b93609f6db7d___JR_Sept.L.S 2543.JPG,Tomato___Septoria_leaf_spot,PlantVillage,lab,False
+C:\Users\HP\OneDrive\Desktop\gdg-grp-task(ml)\data\raw\PlantVillage\PlantVillage\PlantVillage\Tomato__Tomato_YellowLeaf__Curl_Virus\1e903e25-34b2-4207-94ed-f862a632a88a___YLCV_NREC 2158.JPG,Tomato___Yellow_Leaf_Curl_Virus,PlantVillage,lab,False
+C:\Users\HP\OneDrive\Desktop\gdg-grp-task(ml)\data\raw\PlantVillage\PlantVillage\PlantVillage\Tomato__Tomato_YellowLeaf__Curl_Virus\2c6a74f2-1457-428e-87f0-5d7dc875a0f6___YLCV_NREC 0078.JPG,Tomato___Yellow_Leaf_Curl_Virus,PlantVillage,lab,False
+C:\Users\HP\OneDrive\Desktop\gdg-grp-task(ml)\data\raw\PlantVillage\PlantVillage\PlantVillage\Tomato__Tomato_YellowLeaf__Curl_Virus\300013e5-2a4b-412a-896a-45a1d0d4eece___YLCV_NREC 0061.JPG,Tomato___Yellow_Leaf_Curl_Virus,PlantVillage,lab,False
+C:\Users\HP\OneDrive\Desktop\gdg-grp-task(ml)\data\raw\PlantVillage\PlantVillage\PlantVillage\Tomato__Tomato_YellowLeaf__Curl_Virus\34986eb3-fe72-473a-8614-450a85f20c2c___UF.GRC_YLCV_Lab 03072.JPG,Tomato___Yellow_Leaf_Curl_Virus,PlantVillage,lab,False
+C:\Users\HP\OneDrive\Desktop\gdg-grp-task(ml)\data\raw\PlantVillage\PlantVillage\PlantVillage\Tomato__Tomato_YellowLeaf__Curl_Virus\13c86d01-0086-4a2a-8215-7a50f9bf4dfa___YLCV_GCREC 2075.JPG,Tomato___Yellow_Leaf_Curl_Virus,PlantVillage,lab,False

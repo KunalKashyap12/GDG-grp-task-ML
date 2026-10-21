@@ -4,7 +4,10 @@ FROM python:3.11-slim
 # Set environment variables
 ENV PYTHONDONTWRITEBYTECODE=1 \
     PYTHONUNBUFFERED=1 \
-    CONFIG_PATH="config.yaml"
+    CONFIG_PATH="config.yaml" \
+    MODEL_NAME="model/model.pt" \
+    MODEL_BACKEND="legacy" \
+    CONFIDENCE_THRESHOLD="0.60"
 
 # Install system dependencies required by OpenCV and PIL
 RUN apt-get update && apt-get install -y --no-install-recommends \

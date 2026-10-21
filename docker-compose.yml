@@ -11,6 +11,8 @@ services:
       - "8000:8000"
     environment:
       - CONFIG_PATH=config.yaml
+      - MODEL_BACKEND=legacy
+      - CONFIDENCE_THRESHOLD=0.60
     healthcheck:
       test: ["CMD", "curl", "-f", "http://localhost:8000/health"]
       interval: 15s

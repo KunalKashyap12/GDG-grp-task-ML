@@ -8,6 +8,7 @@ Performs transfer learning with MobileNetV3-Large on ImageNet weights:
 """
 
 import os
+import sys
 import copy
 import json
 import yaml
@@ -21,6 +22,11 @@ from torch.optim import AdamW
 from torch.optim.lr_scheduler import CosineAnnealingLR
 from torch.cuda.amp import autocast, GradScaler
 from torchvision.models import mobilenet_v3_large, MobileNet_V3_Large_Weights
+from PIL import Image
+
+_script_dir = os.path.dirname(os.path.abspath(__file__))
+if _script_dir not in sys.path:
+    sys.path.insert(0, _script_dir)
 
 from utils.augmentations import get_train_transforms, get_eval_transforms
 from utils.dataset import CropDiseaseDataset, compute_class_weights, create_dataloader
@@ -32,7 +38,43 @@ def parse_args():
     parser.add_argument("--epochs1", type=int, default=None, help="Override Stage 1 epochs")
     parser.add_argument("--epochs2", type=int, default=None, help="Override Stage 2 epochs")
     parser.add_argument("--batch-size", type=int, default=None, help="Override batch size")
+    parser.add_argument("--leave-out-source", type=str, default=None, help="Hold out a dataset source completely from training/validation (LOSO mode)")
     return parser.parse_args()
+
+
+def run_manifest_preflight_check(manifest_df: pd.DataFrame, split_name: str, max_reported: int = 10) -> List[Tuple[str, str]]:
+    """
+    Pre-flight integrity verification:
+    Attempts to open every image path in the manifest once before training begins.
+    Returns list of (path, error_reason) for any broken images.
+    """
+    print(f"[*] Running pre-flight integrity check on {split_name} manifest ({len(manifest_df)} paths)...")
+    broken_entries: List[Tuple[str, str]] = []
+
+    for idx, row in manifest_df.iterrows():
+        img_path = row["path"]
+        if not os.path.exists(img_path):
+            broken_entries.append((img_path, "File does not exist on disk"))
+            continue
+        try:
+            with Image.open(img_path) as img:
+                img.verify()
+        except Exception as e:
+            broken_entries.append((img_path, str(e)))
+
+    if broken_entries:
+        print(f"\n{'!'*70}\n[!] PRE-FLIGHT INTEGRITY CHECK FAILED FOR {split_name.upper()} MANIFEST!\n{'!'*70}")
+        print(f"[!] Total broken image paths found: {len(broken_entries)} / {len(manifest_df)} ({len(broken_entries)/len(manifest_df):.2%})")
+        print("[!] Sample broken paths:")
+        for path_str, reason in broken_entries[:max_reported]:
+            print(f"    - {path_str} -> {reason}")
+        if len(broken_entries) > max_reported:
+            print(f"    ... and {len(broken_entries) - max_reported} more unreadable paths.")
+        print(f"{'!'*70}\n")
+    else:
+        print(f"[+] Pre-flight check PASSED for {split_name} ({len(manifest_df)}/{len(manifest_df)} image paths verified).")
+
+    return broken_entries
 
 
 def build_model(num_classes: int, pretrained: bool = True) -> nn.Module:
@@ -157,18 +199,58 @@ def main():
     train_df = pd.read_csv(train_csv)
     val_df = pd.read_csv(val_csv)
 
-    print(f"[*] Dataset size - Train: {len(train_df)}, Val: {len(val_df)}")
+    if args.leave_out_source:
+        print(f"[*] Leave-One-Source-Out mode: Excluding source '{args.leave_out_source}' from training & validation...")
+        if "source" in train_df.columns:
+            n_tr = len(train_df)
+            train_df = train_df[train_df["source"] != args.leave_out_source].reset_index(drop=True)
+            print(f"    - Train set: {n_tr} -> {len(train_df)} images (removed {n_tr - len(train_df)} from {args.leave_out_source})")
+        if "source" in val_df.columns:
+            n_vl = len(val_df)
+            val_df = val_df[val_df["source"] != args.leave_out_source].reset_index(drop=True)
+            print(f"    - Val set: {n_vl} -> {len(val_df)} images (removed {n_vl - len(val_df)} from {args.leave_out_source})")
+
+    print(f"[*] Active dataset size - Train: {len(train_df)}, Val: {len(val_df)}")
+
+    # Pre-flight check: verify all image paths in train/val manifests before training
+    train_broken = run_manifest_preflight_check(train_df, "train")
+    val_broken = run_manifest_preflight_check(val_df, "val")
+    if train_broken or val_broken:
+        total_broken = len(train_broken) + len(val_broken)
+        raise RuntimeError(
+            f"Pre-flight integrity check aborted training! "
+            f"Found {total_broken} broken image paths ({len(train_broken)} in train, {len(val_broken)} in val). "
+            f"Please repair or regenerate dataset manifests before starting training."
+        )
 
     # Transforms & Loaders
     img_size = config["model"].get("img_size", 224)
     batch_size = args.batch_size or config["training"].get("batch_size", 64)
     num_workers = 0 if os.name == "nt" else config["training"].get("num_workers", 2)
+    max_failure_rate = float(config["data"].get("max_failure_rate", 0.005))
+    backgrounds_dir = config["data"].get("backgrounds_dir", "data/backgrounds")
 
-    train_transform = get_train_transforms(img_size)
+    train_transform = get_train_transforms(img_size, backgrounds_dir=backgrounds_dir)
     eval_transform = get_eval_transforms(img_size)
 
-    train_loader = create_dataloader(train_df, label_to_idx, train_transform, batch_size=batch_size, shuffle=True, num_workers=num_workers)
-    val_loader = create_dataloader(val_df, label_to_idx, eval_transform, batch_size=batch_size, shuffle=False, num_workers=num_workers)
+    train_loader = create_dataloader(
+        train_df,
+        label_to_idx,
+        train_transform,
+        batch_size=batch_size,
+        shuffle=True,
+        num_workers=num_workers,
+        max_failure_rate=max_failure_rate
+    )
+    val_loader = create_dataloader(
+        val_df,
+        label_to_idx,
+        eval_transform,
+        batch_size=batch_size,
+        shuffle=False,
+        num_workers=num_workers,
+        max_failure_rate=max_failure_rate
+    )
 
     # Compute balanced class weights
     class_weights = compute_class_weights(train_df["label"].tolist(), label_to_idx).to(device)

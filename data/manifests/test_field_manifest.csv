@@ -1,30 +1,60 @@
-path,label,source,type
-C:\Users\HP\OneDrive\Desktop\gdg-grp-task(ml)\data\synthetic_raw\PlantDoc\Apple___Apple_scab\sample_003.jpg,Apple___Apple_scab,PlantDoc,field
-C:\Users\HP\OneDrive\Desktop\gdg-grp-task(ml)\data\synthetic_raw\PlantDoc\Apple___Black_rot\sample_003.jpg,Apple___Black_rot,PlantDoc,field
-C:\Users\HP\OneDrive\Desktop\gdg-grp-task(ml)\data\synthetic_raw\PlantDoc\Apple___Cedar_apple_rust\sample_003.jpg,Apple___Cedar_apple_rust,PlantDoc,field
-C:\Users\HP\OneDrive\Desktop\gdg-grp-task(ml)\data\synthetic_raw\PlantDoc\Bell_Pepper___Bacterial_spot\sample_003.jpg,Bell_Pepper___Bacterial_spot,PlantDoc,field
-C:\Users\HP\OneDrive\Desktop\gdg-grp-task(ml)\data\synthetic_raw\Kaggle_Cotton\Cotton___Bacterial_blight\sample_008.jpg,Cotton___Bacterial_blight,Kaggle_Cotton,field
-C:\Users\HP\OneDrive\Desktop\gdg-grp-task(ml)\data\synthetic_raw\Kaggle_Cotton\Cotton___Curl_virus\sample_008.jpg,Cotton___Curl_virus,Kaggle_Cotton,field
-C:\Users\HP\OneDrive\Desktop\gdg-grp-task(ml)\data\synthetic_raw\Kaggle_Cotton\Cotton___Fusarium_wilt\sample_008.jpg,Cotton___Fusarium_wilt,Kaggle_Cotton,field
-C:\Users\HP\OneDrive\Desktop\gdg-grp-task(ml)\data\synthetic_raw\PlantDoc\Grape___Black_rot\sample_003.jpg,Grape___Black_rot,PlantDoc,field
-C:\Users\HP\OneDrive\Desktop\gdg-grp-task(ml)\data\synthetic_raw\PlantDoc\Grape___Esca_Black_Measles\sample_003.jpg,Grape___Esca_Black_Measles,PlantDoc,field
-C:\Users\HP\OneDrive\Desktop\gdg-grp-task(ml)\data\synthetic_raw\PlantDoc\Grape___Leaf_blight\sample_003.jpg,Grape___Leaf_blight,PlantDoc,field
-C:\Users\HP\OneDrive\Desktop\gdg-grp-task(ml)\data\synthetic_raw\PlantDoc\Maize___Common_rust\sample_003.jpg,Maize___Common_rust,PlantDoc,field
-C:\Users\HP\OneDrive\Desktop\gdg-grp-task(ml)\data\synthetic_raw\PlantDoc\Maize___Gray_leaf_spot\sample_003.jpg,Maize___Gray_leaf_spot,PlantDoc,field
-C:\Users\HP\OneDrive\Desktop\gdg-grp-task(ml)\data\synthetic_raw\PlantDoc\Maize___Northern_Leaf_Blight\sample_003.jpg,Maize___Northern_Leaf_Blight,PlantDoc,field
-C:\Users\HP\OneDrive\Desktop\gdg-grp-task(ml)\data\synthetic_raw\PlantDoc\Potato___Early_blight\sample_003.jpg,Potato___Early_blight,PlantDoc,field
-C:\Users\HP\OneDrive\Desktop\gdg-grp-task(ml)\data\synthetic_raw\PlantDoc\Potato___Late_blight\sample_003.jpg,Potato___Late_blight,PlantDoc,field
-C:\Users\HP\OneDrive\Desktop\gdg-grp-task(ml)\data\synthetic_raw\Kaggle_Rice\Rice___Bacterial_leaf_blight\sample_008.jpg,Rice___Bacterial_leaf_blight,Kaggle_Rice,field
-C:\Users\HP\OneDrive\Desktop\gdg-grp-task(ml)\data\synthetic_raw\Kaggle_Rice\Rice___Brown_spot\sample_008.jpg,Rice___Brown_spot,Kaggle_Rice,field
-C:\Users\HP\OneDrive\Desktop\gdg-grp-task(ml)\data\synthetic_raw\Kaggle_Rice\Rice___Leaf_blast\sample_008.jpg,Rice___Leaf_blast,Kaggle_Rice,field
-C:\Users\HP\OneDrive\Desktop\gdg-grp-task(ml)\data\synthetic_raw\Kaggle_Sugarcane\Sugarcane___Mosaic\sample_008.jpg,Sugarcane___Mosaic,Kaggle_Sugarcane,field
-C:\Users\HP\OneDrive\Desktop\gdg-grp-task(ml)\data\synthetic_raw\Kaggle_Sugarcane\Sugarcane___Red_rot\sample_008.jpg,Sugarcane___Red_rot,Kaggle_Sugarcane,field
-C:\Users\HP\OneDrive\Desktop\gdg-grp-task(ml)\data\synthetic_raw\PlantDoc\Tomato___Bacterial_spot\sample_003.jpg,Tomato___Bacterial_spot,PlantDoc,field
-C:\Users\HP\OneDrive\Desktop\gdg-grp-task(ml)\data\synthetic_raw\PlantDoc\Tomato___Early_blight\sample_003.jpg,Tomato___Early_blight,PlantDoc,field
-C:\Users\HP\OneDrive\Desktop\gdg-grp-task(ml)\data\synthetic_raw\PlantDoc\Tomato___Late_blight\sample_003.jpg,Tomato___Late_blight,PlantDoc,field
-C:\Users\HP\OneDrive\Desktop\gdg-grp-task(ml)\data\synthetic_raw\PlantDoc\Tomato___Leaf_Mold\sample_003.jpg,Tomato___Leaf_Mold,PlantDoc,field
-C:\Users\HP\OneDrive\Desktop\gdg-grp-task(ml)\data\synthetic_raw\PlantDoc\Tomato___Septoria_leaf_spot\sample_003.jpg,Tomato___Septoria_leaf_spot,PlantDoc,field
-C:\Users\HP\OneDrive\Desktop\gdg-grp-task(ml)\data\synthetic_raw\PlantDoc\Tomato___Yellow_Leaf_Curl_Virus\sample_003.jpg,Tomato___Yellow_Leaf_Curl_Virus,PlantDoc,field
-C:\Users\HP\OneDrive\Desktop\gdg-grp-task(ml)\data\synthetic_raw\Kaggle_Wheat\Wheat___Brown_rust\sample_008.jpg,Wheat___Brown_rust,Kaggle_Wheat,field
-C:\Users\HP\OneDrive\Desktop\gdg-grp-task(ml)\data\synthetic_raw\Kaggle_Wheat\Wheat___Septoria\sample_008.jpg,Wheat___Septoria,Kaggle_Wheat,field
-C:\Users\HP\OneDrive\Desktop\gdg-grp-task(ml)\data\synthetic_raw\Kaggle_Wheat\Wheat___Yellow_rust\sample_008.jpg,Wheat___Yellow_rust,Kaggle_Wheat,field
+path,label,source,type,_eval_only
+C:\Users\HP\OneDrive\Desktop\gdg-grp-task(ml)\data\raw\Kaggle_Cotton\cotton\bacterial_blight\bact379.png,Cotton___Bacterial_blight,Kaggle_Cotton,field,False
+C:\Users\HP\OneDrive\Desktop\gdg-grp-task(ml)\data\raw\Kaggle_Cotton\cotton\bacterial_blight\bact264.jpg,Cotton___Bacterial_blight,Kaggle_Cotton,field,False
+C:\Users\HP\OneDrive\Desktop\gdg-grp-task(ml)\data\raw\Kaggle_Cotton\cotton\bacterial_blight\bact89.jpg,Cotton___Bacterial_blight,Kaggle_Cotton,field,False
+C:\Users\HP\OneDrive\Desktop\gdg-grp-task(ml)\data\raw\Kaggle_Cotton\cotton\bacterial_blight\bact94.jpg,Cotton___Bacterial_blight,Kaggle_Cotton,field,False
+C:\Users\HP\OneDrive\Desktop\gdg-grp-task(ml)\data\raw\Kaggle_Cotton\cotton\bacterial_blight\bact118.jpg,Cotton___Bacterial_blight,Kaggle_Cotton,field,False
+C:\Users\HP\OneDrive\Desktop\gdg-grp-task(ml)\data\raw\Kaggle_Cotton\cotton\curl_virus\curl206.jpg,Cotton___Curl_virus,Kaggle_Cotton,field,False
+C:\Users\HP\OneDrive\Desktop\gdg-grp-task(ml)\data\raw\Kaggle_Cotton\cotton\curl_virus\curl425.jpg,Cotton___Curl_virus,Kaggle_Cotton,field,False
+C:\Users\HP\OneDrive\Desktop\gdg-grp-task(ml)\data\raw\Kaggle_Cotton\cotton\curl_virus\curl396.jpg,Cotton___Curl_virus,Kaggle_Cotton,field,False
+C:\Users\HP\OneDrive\Desktop\gdg-grp-task(ml)\data\raw\Kaggle_Cotton\cotton\curl_virus\curl102.jpg,Cotton___Curl_virus,Kaggle_Cotton,field,False
+C:\Users\HP\OneDrive\Desktop\gdg-grp-task(ml)\data\raw\Kaggle_Cotton\cotton\curl_virus\curl283.jpg,Cotton___Curl_virus,Kaggle_Cotton,field,False
+C:\Users\HP\OneDrive\Desktop\gdg-grp-task(ml)\data\processed\synthetic_raw\Kaggle_Cotton\Cotton___Fusarium_wilt\sample_008.jpg,Cotton___Fusarium_wilt,Kaggle_Cotton,field,False
+C:\Users\HP\OneDrive\Desktop\gdg-grp-task(ml)\data\raw\Kaggle_Cotton\cotton\healthy\h408.jpg,Cotton___Healthy,Kaggle_Cotton,field,False
+C:\Users\HP\OneDrive\Desktop\gdg-grp-task(ml)\data\raw\Kaggle_Cotton\cotton\healthy\h373.jpg,Cotton___Healthy,Kaggle_Cotton,field,False
+C:\Users\HP\OneDrive\Desktop\gdg-grp-task(ml)\data\raw\Kaggle_Cotton\cotton\healthy\h403.jpg,Cotton___Healthy,Kaggle_Cotton,field,False
+C:\Users\HP\OneDrive\Desktop\gdg-grp-task(ml)\data\raw\Kaggle_Cotton\cotton\healthy\h226.jpg,Cotton___Healthy,Kaggle_Cotton,field,False
+C:\Users\HP\OneDrive\Desktop\gdg-grp-task(ml)\data\raw\Kaggle_Cotton\cotton\healthy\h322.jpg,Cotton___Healthy,Kaggle_Cotton,field,False
+C:\Users\HP\OneDrive\Desktop\gdg-grp-task(ml)\data\raw\Kaggle_Rice\rice_leaf_diseases\Bacterial leaf blight\DSC_0388.JPG,Rice___Bacterial_leaf_blight,Kaggle_Rice,field,False
+C:\Users\HP\OneDrive\Desktop\gdg-grp-task(ml)\data\raw\Kaggle_Rice\rice_leaf_diseases\Bacterial leaf blight\DSC_0384.JPG,Rice___Bacterial_leaf_blight,Kaggle_Rice,field,False
+C:\Users\HP\OneDrive\Desktop\gdg-grp-task(ml)\data\raw\Kaggle_Rice\rice_leaf_diseases\Bacterial leaf blight\DSC_0383.JPG,Rice___Bacterial_leaf_blight,Kaggle_Rice,field,False
+C:\Users\HP\OneDrive\Desktop\gdg-grp-task(ml)\data\raw\Kaggle_Rice\rice_leaf_diseases\Bacterial leaf blight\DSC_0397.JPG,Rice___Bacterial_leaf_blight,Kaggle_Rice,field,False
+C:\Users\HP\OneDrive\Desktop\gdg-grp-task(ml)\data\raw\Kaggle_Rice\rice_leaf_diseases\Bacterial leaf blight\DSC_0372.JPG,Rice___Bacterial_leaf_blight,Kaggle_Rice,field,False
+C:\Users\HP\OneDrive\Desktop\gdg-grp-task(ml)\data\raw\Kaggle_Rice\rice_leaf_diseases\Brown spot\DSC_0292.JPG,Rice___Brown_spot,Kaggle_Rice,field,False
+C:\Users\HP\OneDrive\Desktop\gdg-grp-task(ml)\data\raw\Kaggle_Rice\rice_leaf_diseases\Brown spot\DSC_0118.jpg,Rice___Brown_spot,Kaggle_Rice,field,False
+C:\Users\HP\OneDrive\Desktop\gdg-grp-task(ml)\data\raw\Kaggle_Rice\rice_leaf_diseases\Brown spot\DSC_0117.jpg,Rice___Brown_spot,Kaggle_Rice,field,False
+C:\Users\HP\OneDrive\Desktop\gdg-grp-task(ml)\data\raw\Kaggle_Rice\rice_leaf_diseases\Brown spot\DSC_0303.JPG,Rice___Brown_spot,Kaggle_Rice,field,False
+C:\Users\HP\OneDrive\Desktop\gdg-grp-task(ml)\data\raw\Kaggle_Rice\rice_leaf_diseases\Brown spot\DSC_0106.jpg,Rice___Brown_spot,Kaggle_Rice,field,False
+C:\Users\HP\OneDrive\Desktop\gdg-grp-task(ml)\data\processed\synthetic_raw\Kaggle_Rice\Rice___Healthy\sample_000.jpg,Rice___Healthy,Kaggle_Rice,field,False
+C:\Users\HP\OneDrive\Desktop\gdg-grp-task(ml)\data\processed\synthetic_raw\Kaggle_Rice\Rice___Leaf_blast\sample_008.jpg,Rice___Leaf_blast,Kaggle_Rice,field,False
+C:\Users\HP\OneDrive\Desktop\gdg-grp-task(ml)\data\raw\Kaggle_Sugarcane\Healthy\healthy (149).jpeg,Sugarcane___Healthy,Kaggle_Sugarcane,field,False
+C:\Users\HP\OneDrive\Desktop\gdg-grp-task(ml)\data\raw\Kaggle_Sugarcane\Healthy\healthy (165).jpeg,Sugarcane___Healthy,Kaggle_Sugarcane,field,False
+C:\Users\HP\OneDrive\Desktop\gdg-grp-task(ml)\data\raw\Kaggle_Sugarcane\Healthy\healthy (129).jpeg,Sugarcane___Healthy,Kaggle_Sugarcane,field,False
+C:\Users\HP\OneDrive\Desktop\gdg-grp-task(ml)\data\raw\Kaggle_Sugarcane\Healthy\healthy (369).jpeg,Sugarcane___Healthy,Kaggle_Sugarcane,field,False
+C:\Users\HP\OneDrive\Desktop\gdg-grp-task(ml)\data\raw\Kaggle_Sugarcane\Healthy\healthy (338).jpeg,Sugarcane___Healthy,Kaggle_Sugarcane,field,False
+C:\Users\HP\OneDrive\Desktop\gdg-grp-task(ml)\data\raw\Kaggle_Sugarcane\Mosaic\mosaic (380).jpeg,Sugarcane___Mosaic,Kaggle_Sugarcane,field,False
+C:\Users\HP\OneDrive\Desktop\gdg-grp-task(ml)\data\raw\Kaggle_Sugarcane\Mosaic\mosaic (81).jpeg,Sugarcane___Mosaic,Kaggle_Sugarcane,field,False
+C:\Users\HP\OneDrive\Desktop\gdg-grp-task(ml)\data\raw\Kaggle_Sugarcane\Mosaic\mosaic (337).jpeg,Sugarcane___Mosaic,Kaggle_Sugarcane,field,False
+C:\Users\HP\OneDrive\Desktop\gdg-grp-task(ml)\data\raw\Kaggle_Sugarcane\Mosaic\mosaic (243).jpeg,Sugarcane___Mosaic,Kaggle_Sugarcane,field,False
+C:\Users\HP\OneDrive\Desktop\gdg-grp-task(ml)\data\raw\Kaggle_Sugarcane\Mosaic\mosaic (23).jpeg,Sugarcane___Mosaic,Kaggle_Sugarcane,field,False
+C:\Users\HP\OneDrive\Desktop\gdg-grp-task(ml)\data\raw\Kaggle_Sugarcane\RedRot\redrot (264).jpeg,Sugarcane___Red_rot,Kaggle_Sugarcane,field,False
+C:\Users\HP\OneDrive\Desktop\gdg-grp-task(ml)\data\raw\Kaggle_Sugarcane\RedRot\redrot (355).jpeg,Sugarcane___Red_rot,Kaggle_Sugarcane,field,False
+C:\Users\HP\OneDrive\Desktop\gdg-grp-task(ml)\data\raw\Kaggle_Sugarcane\RedRot\redrot (86).jpeg,Sugarcane___Red_rot,Kaggle_Sugarcane,field,False
+C:\Users\HP\OneDrive\Desktop\gdg-grp-task(ml)\data\raw\Kaggle_Sugarcane\RedRot\redrot (164).jpeg,Sugarcane___Red_rot,Kaggle_Sugarcane,field,False
+C:\Users\HP\OneDrive\Desktop\gdg-grp-task(ml)\data\raw\Kaggle_Sugarcane\RedRot\redrot (516).jpeg,Sugarcane___Red_rot,Kaggle_Sugarcane,field,False
+C:\Users\HP\OneDrive\Desktop\gdg-grp-task(ml)\data\processed\synthetic_raw\Kaggle_Wheat\Wheat___Brown_rust\sample_008.jpg,Wheat___Brown_rust,Kaggle_Wheat,field,False
+C:\Users\HP\OneDrive\Desktop\gdg-grp-task(ml)\data\raw\Kaggle_Wheat\wheat_leaf\Healthy\loh(83).JPG,Wheat___Healthy,Kaggle_Wheat,field,False
+C:\Users\HP\OneDrive\Desktop\gdg-grp-task(ml)\data\raw\Kaggle_Wheat\wheat_leaf\Healthy\loh(57).JPG,Wheat___Healthy,Kaggle_Wheat,field,False
+C:\Users\HP\OneDrive\Desktop\gdg-grp-task(ml)\data\raw\Kaggle_Wheat\wheat_leaf\Healthy\loh(67).JPG,Wheat___Healthy,Kaggle_Wheat,field,False
+C:\Users\HP\OneDrive\Desktop\gdg-grp-task(ml)\data\raw\Kaggle_Wheat\wheat_leaf\Healthy\loh(68).JPG,Wheat___Healthy,Kaggle_Wheat,field,False
+C:\Users\HP\OneDrive\Desktop\gdg-grp-task(ml)\data\raw\Kaggle_Wheat\wheat_leaf\Healthy\loh(48).JPG,Wheat___Healthy,Kaggle_Wheat,field,False
+C:\Users\HP\OneDrive\Desktop\gdg-grp-task(ml)\data\raw\Kaggle_Wheat\wheat_leaf\septoria\los(66).JPG,Wheat___Septoria,Kaggle_Wheat,field,False
+C:\Users\HP\OneDrive\Desktop\gdg-grp-task(ml)\data\raw\Kaggle_Wheat\wheat_leaf\septoria\los(46).JPG,Wheat___Septoria,Kaggle_Wheat,field,False
+C:\Users\HP\OneDrive\Desktop\gdg-grp-task(ml)\data\raw\Kaggle_Wheat\wheat_leaf\septoria\los(94).JPG,Wheat___Septoria,Kaggle_Wheat,field,False
+C:\Users\HP\OneDrive\Desktop\gdg-grp-task(ml)\data\raw\Kaggle_Wheat\wheat_leaf\septoria\los(26).JPG,Wheat___Septoria,Kaggle_Wheat,field,False
+C:\Users\HP\OneDrive\Desktop\gdg-grp-task(ml)\data\raw\Kaggle_Wheat\wheat_leaf\septoria\los(83).JPG,Wheat___Septoria,Kaggle_Wheat,field,False
+C:\Users\HP\OneDrive\Desktop\gdg-grp-task(ml)\data\raw\Kaggle_Wheat\wheat_leaf\stripe_rust\lolr(58).JPG,Wheat___Yellow_rust,Kaggle_Wheat,field,False
+C:\Users\HP\OneDrive\Desktop\gdg-grp-task(ml)\data\raw\Kaggle_Wheat\wheat_leaf\stripe_rust\lolr(112).JPG,Wheat___Yellow_rust,Kaggle_Wheat,field,False
+C:\Users\HP\OneDrive\Desktop\gdg-grp-task(ml)\data\raw\Kaggle_Wheat\wheat_leaf\stripe_rust\lolr(165).JPG,Wheat___Yellow_rust,Kaggle_Wheat,field,False
+C:\Users\HP\OneDrive\Desktop\gdg-grp-task(ml)\data\raw\Kaggle_Wheat\wheat_leaf\stripe_rust\lolr(186).JPG,Wheat___Yellow_rust,Kaggle_Wheat,field,False
+C:\Users\HP\OneDrive\Desktop\gdg-grp-task(ml)\data\raw\Kaggle_Wheat\wheat_leaf\stripe_rust\lolr(62).JPG,Wheat___Yellow_rust,Kaggle_Wheat,field,False

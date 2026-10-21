@@ -16,11 +16,17 @@ class CropDiseaseDataset(Dataset):
         self,
         dataframe: pd.DataFrame,
         label_to_idx: Dict[str, int],
-        transform: Optional[Callable] = None
+        transform: Optional[Callable] = None,
+        max_failure_rate: float = 0.005,
+        max_logged_failures: int = 5
     ):
         self.df = dataframe.reset_index(drop=True)
         self.label_to_idx = label_to_idx
         self.transform = transform
+        self.max_failure_rate = float(max_failure_rate)
+        self.max_logged_failures = int(max_logged_failures)
+        self.failure_count = 0
+        self.failed_paths: List[str] = []
 
     def __len__(self) -> int:
         return len(self.df)
@@ -34,7 +40,20 @@ class CropDiseaseDataset(Dataset):
         try:
             image = Image.open(img_path).convert("RGB")
         except Exception as e:
-            # Fallback for damaged file: create a blank image to avoid training crash
+            self.failure_count += 1
+            if len(self.failed_paths) < self.max_logged_failures:
+                self.failed_paths.append(img_path)
+                print(f"[!] Warning: Failed to open image at '{img_path}': {e}")
+
+            failure_rate = self.failure_count / max(len(self.df), 1)
+            if failure_rate > self.max_failure_rate:
+                raise RuntimeError(
+                    f"Dataset loading failure rate exceeded limit ({failure_rate:.2%} > {self.max_failure_rate:.2%})! "
+                    f"Total failed images: {self.failure_count}/{len(self.df)}. "
+                    f"Sample broken paths: {self.failed_paths[:self.max_logged_failures]}"
+                )
+
+            # Fallback for occasional corrupt image under threshold
             image = Image.new("RGB", (224, 224), color=(0, 0, 0))
 
         if self.transform:
@@ -81,10 +100,16 @@ def create_dataloader(
     transform: Callable,
     batch_size: int = 64,
     shuffle: bool = True,
-    num_workers: int = 2
+    num_workers: int = 2,
+    max_failure_rate: float = 0.005
 ) -> DataLoader:
     """Helper to build standard PyTorch DataLoader."""
-    dataset = CropDiseaseDataset(df, label_to_idx, transform=transform)
+    dataset = CropDiseaseDataset(
+        df,
+        label_to_idx,
+        transform=transform,
+        max_failure_rate=max_failure_rate
+    )
     return DataLoader(
         dataset,
         batch_size=batch_size,

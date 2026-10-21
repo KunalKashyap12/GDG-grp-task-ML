@@ -6,21 +6,41 @@ server:
   max_upload_size_mb: 5
 
 model:
-  path: "model/model.pt"
+  path: "model/model.pt"  # Active model checkpoint loaded by service
+  onnx_path: "model/model.onnx"
   labels_path: "model/labels.json"
   calibration_path: "model/calibration.json"
+  device: "cpu"
+
+preprocessing:
   img_size: 224
-  device: "cpu"  # Force CPU inference for predictable lightweight latency < 1s
+  mean: [0.485, 0.456, 0.406]
+  std: [0.229, 0.224, 0.225]
+
+huggingface:
+  model_name: "linkanjarad/mobilenet_v2_1.0_224-plant-disease-identification"
+  backend: "legacy"  # "legacy" (custom PyTorch MobileNetV3 39-class model, 94.4% accuracy) or "huggingface"
+  confidence_threshold: 0.60
+
+inference:
+  use_morphology_priors: true   # Enable botanical morphology priors to guide crop classification
+  tta: false                    # Test-time augmentation (average with horizontal flip)
+  mismatch_threshold: 0.05     # Threshold below which crop_mass for hinted crop triggers species_mismatch
+
+foliage:
+  min_foliage_ratio: 0.06       # Minimum vegetative pixel ratio to accept as leaf
+  max_neutral_ratio: 0.70       # Max neutral gray/white ratio before flagging document/screenshot
+  min_contour_area_ratio: 0.03  # Min connected organic leaf area ratio
 
 uncertainty:
   confidence_thresholds:
-    high: 0.85
-    medium: 0.60
+    high: 0.75
+    medium: 0.50
   ood:
-    energy_threshold: -5.0 # Max allowable energy score E(x)
-    min_leaf_max_prob: 0.22 # Fallback check for unconstrained max probability
+    energy_threshold: -3.0      # Free energy threshold E(x) = -T * logsumexp(z/T); E > threshold rejects as not_a_leaf
+    min_leaf_max_prob: 0.06     # Fallback check for unconstrained max probability
 
 quality:
-  blur_threshold: 100.0   # Variance of Laplacian
-  min_brightness: 40.0   # Average pixel intensity
+  blur_threshold: 80.0          # Variance of Laplacian at 512px resolution
+  min_brightness: 40.0          # Average pixel intensity
   max_brightness: 225.0
