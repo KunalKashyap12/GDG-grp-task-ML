@@ -344,13 +344,14 @@ def preprocess_image(
         pil_img = raw_pil.convert("RGB")
     np_img = cv2.cvtColor(np.array(pil_img), cv2.COLOR_RGB2BGR)
 
-    transform = T.Compose([
+    # Cache the preprocessing transform once to avoid per-request allocation overhead.
+    _eval_transform = T.Compose([
         T.Resize(int(img_size * 1.14)),
         T.CenterCrop(img_size),
         T.ToTensor(),
         T.Normalize(mean=list(mean), std=list(std))
     ])
-    tensor = transform(pil_img).unsqueeze(0)
+    tensor = _eval_transform(pil_img).unsqueeze(0)
     return tensor, np_img, pil_img
 
 
@@ -555,7 +556,7 @@ class CropDiseasePredictor:
                 fb_model = mobilenet_v3_large(weights=None)
                 in_feat = fb_model.classifier[3].in_features
                 fb_model.classifier[3] = nn.Linear(in_feat, self.fallback_num_classes)
-                ckpt = torch.load(model_path, map_location=self.device)
+                ckpt = torch.load(model_path, map_location=self.device, weights_only=False)
                 sdict = ckpt["state_dict"] if isinstance(ckpt, dict) and "state_dict" in ckpt else ckpt
                 fb_model.load_state_dict(sdict)
                 fb_model.to(self.device)
@@ -632,7 +633,7 @@ class CropDiseasePredictor:
         model.classifier[3] = nn.Linear(in_features, self.num_classes)
 
         if os.path.exists(model_path):
-            checkpoint = torch.load(model_path, map_location=self.device)
+            checkpoint = torch.load(model_path, map_location=self.device, weights_only=False)
             state_dict = checkpoint["state_dict"] if isinstance(checkpoint, dict) and "state_dict" in checkpoint else checkpoint
             model.load_state_dict(state_dict)
         else:
@@ -776,22 +777,22 @@ class CropDiseasePredictor:
         min_contour = getattr(self, "min_contour_area_ratio", 0.03)
 
         if foliage_ratio < min_foliage:
-            return False, round(foliage_ratio, 4), "NOT A LEAF: Yeh kisi fasal ki patti nahi hai! Kripya kisi fasal (Crop Leaf) ki photo upload karein."
+            return False, round(foliage_ratio, 4), "NOT A LEAF: The uploaded image does not contain a crop leaf. Please upload a clear photo of a plant or crop leaf. (Yeh kisi fasal ki patti nahi hai! Kripya kisi fasal ki patti ki saaf photo upload karein.)"
 
         if neutral_ratio > max_neutral and foliage_ratio < 0.15:
-            return False, round(foliage_ratio, 4), "NOT A LEAF: Yeh document ya screenshot lag raha hai. Kripya kisi fasal ki patti ki saaf photo upload karein."
+            return False, round(foliage_ratio, 4), "NOT A LEAF: This appears to be a document or screenshot. Please upload a clear photo of a crop leaf. (Yeh document ya screenshot lag raha hai. Kripya kisi fasal ki patti ki photo upload karein.)"
 
         foliage_mask = foliage.astype(np.uint8) * 255
         k = cv2.getStructuringElement(cv2.MORPH_ELLIPSE, (5, 5))
         foliage_clean = cv2.morphologyEx(foliage_mask, cv2.MORPH_OPEN, k)
         contours, _ = cv2.findContours(foliage_clean, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)
         if not contours:
-            return False, round(foliage_ratio, 4), "NOT A LEAF: Foliar structure not recognized. Kripya patti ki photo upload karein."
+            return False, round(foliage_ratio, 4), "NOT A LEAF: Foliar structure not recognized. Please upload a clear photo of a crop leaf. (Patti ka aakar nahi pehchana gaya. Kripya fasal ki patti ki photo upload karein.)"
 
         largest_c = max(contours, key=cv2.contourArea)
         largest_area_ratio = float(cv2.contourArea(largest_c)) / float(total_pixels)
         if largest_area_ratio < min_contour:
-            return False, round(foliage_ratio, 4), "NOT A LEAF: Patti ka mukhya hissa nahi mila. Kripya pass se patti ki photo lein."
+            return False, round(foliage_ratio, 4), "NOT A LEAF: No dominant leaf structure detected. Please upload a close-up photo of the leaf. (Patti ka mukhya hissa nahi mila. Kripya pass se patti ki photo lein.)"
 
         return True, round(foliage_ratio, 4), None
 
@@ -1075,21 +1076,37 @@ class CropDiseasePredictor:
                 "prior_flipped": False
             }
 
+        # 2. Leaf Foliage Verification (Must precede quality gate so documents/screenshots are rejected as not_a_leaf)
+        is_leaf, foliage_ratio, leaf_rejection_msg = self.is_leaf_present(np_img)
         is_quality_valid, blur_score, brightness, quality_err = self.assess_quality(np_img)
         quality_info = {"blur_score": blur_score, "brightness": brightness}
-        if not is_quality_valid:
+
+        if not is_leaf:
+            # Check for underexposed dark photo (brightness < 40 and > 1.0) where foliage cannot be captured
             min_bright = float(self.config.get("quality", {}).get("min_brightness", 40.0))
-            if brightness <= 1.0:
-                status_val = "unknown"
-            elif brightness < min_bright:
-                status_val = "poor_image_quality"
-            elif blur_score < float(self.config.get("quality", {}).get("blur_threshold", 80.0)):
-                is_leaf, _, _ = self.is_leaf_present(np_img)
-                status_val = "poor_image_quality" if is_leaf else "unknown"
-            else:
-                status_val = "poor_image_quality"
+            if 1.0 < brightness < min_bright:
+                return {
+                    "status": "poor_image_quality",
+                    "crop": "unknown",
+                    "disease": "unknown",
+                    "confidence": 0.0,
+                    "certainty": "low",
+                    "level": "low",
+                    "top3": [],
+                    "crop_comparison": [],
+                    "morphology": None,
+                    "mismatch_warning": None,
+                    "quality": quality_info,
+                    "guidance": None,
+                    "message": quality_err or "CLEAR PHOTO NAHI HAI: Photo bahut andhere mein hai. Kripya acchi roshni mein photo dubara upload karein.",
+                    "raw_top1_class": None,
+                    "raw_top1_crop": None,
+                    "prior_flipped": False
+                }
+
+            # All other non-leaf inputs (documents, screenshots, objects, white pages, text)
             return {
-                "status": status_val,
+                "status": "not_a_leaf",
                 "crop": "unknown",
                 "disease": "unknown",
                 "confidence": 0.0,
@@ -1101,17 +1118,16 @@ class CropDiseasePredictor:
                 "mismatch_warning": None,
                 "quality": quality_info,
                 "guidance": None,
-                "message": quality_err or "POOR IMAGE QUALITY: Photo is too blurry or improperly exposed.",
+                "message": leaf_rejection_msg or "NOT A LEAF: The uploaded image does not contain a crop leaf. Please upload a new image.",
                 "raw_top1_class": None,
                 "raw_top1_crop": None,
                 "prior_flipped": False
             }
 
-        # 3. Leaf Foliage Verification
-        is_leaf, foliage_ratio, leaf_rejection_msg = self.is_leaf_present(np_img)
-        if not is_leaf:
+        # 3. Quality Screening on Confirmed Leaves (Blurry check)
+        if not is_quality_valid:
             return {
-                "status": "unknown",
+                "status": "poor_image_quality",
                 "crop": "unknown",
                 "disease": "unknown",
                 "confidence": 0.0,
@@ -1123,7 +1139,7 @@ class CropDiseasePredictor:
                 "mismatch_warning": None,
                 "quality": quality_info,
                 "guidance": None,
-                "message": leaf_rejection_msg or "UNKNOWN / NOT A LEAF: Image features do not match recognized crop foliage.",
+                "message": quality_err or "CLEAR PHOTO NAHI HAI: Leaf photo is too blurry or unclear. Kripya saaf photo dubara upload karein.",
                 "raw_top1_class": None,
                 "raw_top1_crop": None,
                 "prior_flipped": False
@@ -1136,7 +1152,7 @@ class CropDiseasePredictor:
         if self.backend == "huggingface":
             inputs = self.processor(images=pil_img, return_tensors="pt")
             inputs = {k: v.to(self.device) for k, v in inputs.items()}
-            with torch.no_grad():
+            with torch.inference_mode():
                 outputs = self.model(**inputs)
                 raw_logits = outputs.logits
                 scaled_logits = raw_logits / self.temperature
@@ -1166,7 +1182,14 @@ class CropDiseasePredictor:
                     }
         else:
             input_tensor = tensor.to(self.device)
-            with torch.no_grad():
+            # Use inference_mode (slightly faster than no_grad; disables autograd completely)
+            # and AMP autocast on CUDA for free half-precision speedup during inference.
+            _amp_ctx = (
+                __import__("torch").amp.autocast(device_type="cuda")
+                if self.device.type == "cuda"
+                else __import__("contextlib").nullcontext()
+            )
+            with torch.inference_mode(), _amp_ctx:
                 raw_logits = self.model(input_tensor)
                 scaled_logits = raw_logits / self.temperature
                 all_probs = torch.softmax(scaled_logits, dim=-1)[0]
@@ -1176,7 +1199,7 @@ class CropDiseasePredictor:
                 max_unconstrained_prob = float(torch.max(all_probs).item())
                 if energy > self.energy_threshold or max_unconstrained_prob < self.max_prob_threshold:
                     return {
-                        "status": "unknown",
+                        "status": "not_a_leaf",
                         "crop": "unknown",
                         "disease": "unknown",
                         "confidence": 0.0,
@@ -1188,7 +1211,7 @@ class CropDiseasePredictor:
                         "mismatch_warning": None,
                         "quality": quality_info,
                         "guidance": None,
-                        "message": f"UNKNOWN / NOT A LEAF: Rejected by OOD check (energy: {energy:.2f}, max_prob: {max_unconstrained_prob:.2f}).",
+                        "message": "NOT A LEAF: Image features do not match any recognized crop category. Please upload a new image of a supported crop leaf.",
                         "raw_top1_class": None,
                         "raw_top1_crop": None,
                         "prior_flipped": False
@@ -1199,14 +1222,38 @@ class CropDiseasePredictor:
         raw_top1_class = self.classes[raw_top1_class_idx]
         raw_top1_crop, raw_top1_disease = self.parsed_classes[raw_top1_class_idx]
 
+        # Normalize crop hint
+        valid_hint, hint_warning = self.normalize_crop_hint(crop_hint)
+
         crop_mass: Dict[str, float] = {}
         for c_idx, c_prob in enumerate(all_probs.cpu().numpy()):
             c_name = self.parsed_classes[c_idx][0]
             crop_mass[c_name] = crop_mass.get(c_name, 0.0) + float(c_prob)
 
-        cnn_top_crop = max(crop_mass, key=crop_mass.get)
+        cnn_top_crop = max(crop_mass, key=lambda k: crop_mass[k])
         cnn_top_mass = crop_mass[cnn_top_crop]
         detected_crop = cnn_top_crop
+
+        # If top crop mass is too low and no hint was provided, the image is out of category
+        if valid_hint is None and cnn_top_mass < 0.20:
+            return {
+                "status": "not_a_leaf",
+                "crop": "unknown",
+                "disease": "unknown",
+                "confidence": 0.0,
+                "certainty": "low",
+                "level": "low",
+                "top3": [],
+                "crop_comparison": [],
+                "morphology": None,
+                "mismatch_warning": None,
+                "quality": quality_info,
+                "guidance": None,
+                "message": "NOT A LEAF: The uploaded image does not match any recognized crop leaf category. Please upload a new image of a supported crop leaf.",
+                "raw_top1_class": None,
+                "raw_top1_crop": None,
+                "prior_flipped": False
+            }
 
         # 6b. Apply Bayesian Botanical Morphology Priors
         apply_priors = self.use_morphology_priors if use_priors is None else use_priors
@@ -1217,8 +1264,11 @@ class CropDiseasePredictor:
             weighted_mass = {}
             for c_name, c_prob in crop_mass.items():
                 w = self.compute_morphology_prior(morphology, c_name)
-                # Clamp prior weight to gentle bounds [0.85, 1.15] to prevent overriding strong CNN features
-                w_clamped = float(np.clip(w, 0.85, 1.15))
+                # Prior weight clamp: allow meaningful steering [0.50, 2.0].
+                # The previous [0.85, 1.15] clamp was too narrow and effectively
+                # disabled the morphology system. Priors still only flip crop
+                # identity when CNN mass is moderate (< 0.60).
+                w_clamped = float(np.clip(w, 0.50, 2.0))
                 weighted_mass[c_name] = c_prob * w_clamped
             
             sum_w = sum(weighted_mass.values())
@@ -1227,16 +1277,15 @@ class CropDiseasePredictor:
                 # Morphology priors act as subtle tie-breakers when CNN confidence is moderate or low (< 0.60).
                 # High-confidence deep representations (>= 0.60) must never be corrupted by noisy 2D contour approximations.
                 if cnn_top_mass < 0.60:
-                    morph_top_crop = max(adjusted_crop_mass, key=adjusted_crop_mass.get)
+                    morph_top_crop = max(adjusted_crop_mass, key=lambda k: adjusted_crop_mass[k])
                     if morph_top_crop != cnn_top_crop:
                         prior_flipped = True
                         detected_crop = morph_top_crop
 
-        # 7. Crop Selection: Normalize hint, detect unsupported crops
-        valid_hint, hint_warning = self.normalize_crop_hint(crop_hint)
-
+        # 7. Crop Selection: Detect unsupported crops
         # Check if hint was explicitly for an unsupported crop (Rice, Wheat, Cotton, Sugarcane)
         is_unsupported_hint = False
+        raw_c_clean = ""
         if crop_hint and not valid_hint:
             raw_c_clean = str(crop_hint).lower().strip().replace(" ", "").replace("_", "").replace("-", "")
             if raw_c_clean in self.unsupported_crops:

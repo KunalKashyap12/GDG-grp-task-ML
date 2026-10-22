@@ -474,6 +474,58 @@ def index_page():
       opacity: 0.3;
     }
 
+    /* Alert Cards for Rejection States */
+    .alert-card {
+      border-radius: 16px;
+      padding: 28px 24px;
+      text-align: center;
+      margin-bottom: 20px;
+      animation: fadeIn 0.35s ease-in-out;
+    }
+    .alert-not-a-leaf {
+      background: rgba(239, 68, 68, 0.12);
+      border: 2px solid rgba(239, 68, 68, 0.75);
+      box-shadow: 0 10px 30px rgba(239, 68, 68, 0.2);
+    }
+    .alert-blurry {
+      background: rgba(245, 158, 11, 0.12);
+      border: 2px solid rgba(245, 158, 11, 0.75);
+      box-shadow: 0 10px 30px rgba(245, 158, 11, 0.2);
+    }
+    .alert-icon {
+      font-size: 52px;
+      margin-bottom: 14px;
+      line-height: 1;
+    }
+    .alert-title-danger {
+      font-size: 24px;
+      font-weight: 800;
+      color: #ef4444;
+      letter-spacing: 0.8px;
+      text-transform: uppercase;
+      margin-bottom: 8px;
+    }
+    .alert-title-warning {
+      font-size: 24px;
+      font-weight: 800;
+      color: #f59e0b;
+      letter-spacing: 0.8px;
+      text-transform: uppercase;
+      margin-bottom: 8px;
+    }
+    .alert-subtitle {
+      font-size: 16px;
+      font-weight: 700;
+      margin-bottom: 12px;
+    }
+    .alert-text {
+      font-size: 14px;
+      line-height: 1.6;
+      color: #e5e7eb;
+      max-width: 520px;
+      margin: 0 auto;
+    }
+
     /* Mismatch Alert Box */
     .mismatch-alert {
       background: rgba(239, 68, 68, 0.12);
@@ -1114,19 +1166,31 @@ def index_page():
       const alertBlurry = document.getElementById('alertBlurry');
       const resultContent = document.getElementById('resultContent');
 
-      // 1. Rejection: Not A Leaf
-      if (data.status === 'not_a_leaf') {
+      // 1. Rejection: Not A Leaf / Non-Crop Object / Unrecognized Image (Priority #1)
+      const isNotLeaf = (
+        data.status === 'not_a_leaf' ||
+        data.status === 'unknown' ||
+        data.crop === 'unknown' ||
+        data.disease === 'unknown' ||
+        (data.confidence === 0.0 && data.status !== 'ok')
+      );
+
+      if (isNotLeaf) {
         alertNotALeaf.style.display = 'block';
         alertBlurry.style.display = 'none';
         resultContent.style.display = 'none';
-        if (data.message) {
-          const alertDesc = alertNotALeaf.querySelector('.alert-text');
-          if (alertDesc) alertDesc.innerText = data.message;
+        const alertDesc = alertNotALeaf.querySelector('.alert-text');
+        if (alertDesc) {
+          alertDesc.innerText = data.message || "Not a leaf. Please upload a new image of a crop leaf. (Yeh kisi fasal ki patti nahi hai! Kripya fasal ki patti ki saaf photo upload karein.)";
+        }
+        const alertSub = alertNotALeaf.querySelector('.alert-subtitle');
+        if (alertSub) {
+          alertSub.innerText = "Please upload a new image of a crop leaf! (Kripya nayi photo upload karein)";
         }
         return;
       }
 
-      // 2. Rejection: Poor Image Quality
+      // 2. Rejection: Poor Image Quality on a confirmed leaf photo
       if (data.status === 'poor_image_quality') {
         alertBlurry.style.display = 'block';
         alertNotALeaf.style.display = 'none';

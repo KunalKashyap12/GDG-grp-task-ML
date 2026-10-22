@@ -7,6 +7,9 @@ import torch
 import torchvision.transforms as T
 from PIL import Image
 
+# Pillow 10+ moved resampling filters — provide backward-compatible alias.
+_BILINEAR = Image.Resampling.BILINEAR if hasattr(Image, "Resampling") else Image.BILINEAR
+
 
 class RandomRotationWithFill:
     """
@@ -30,7 +33,7 @@ class RandomRotationWithFill:
             pad_x = (diag - w) // 2 + 2
             padded = np.pad(arr, ((pad_y, pad_y), (pad_x, pad_x), (0, 0)), mode="reflect")
             pad_img = Image.fromarray(padded)
-            rotated = pad_img.rotate(angle, resample=Image.BILINEAR)
+            rotated = pad_img.rotate(angle, resample=_BILINEAR)
             rw, rh = rotated.size
             cx, cy = rw // 2, rh // 2
             return rotated.crop((cx - w // 2, cy - h // 2, cx - w // 2 + w, cy - h // 2 + h))
@@ -38,7 +41,7 @@ class RandomRotationWithFill:
             # Mean color fill
             arr = np.array(img)
             mean_color = tuple(int(round(c)) for c in np.mean(arr, axis=(0, 1))[:3])
-            return img.rotate(angle, resample=Image.BILINEAR, fillcolor=mean_color)
+            return img.rotate(angle, resample=_BILINEAR, fillcolor=mean_color)
 
 
 class FieldBackgroundVariation:

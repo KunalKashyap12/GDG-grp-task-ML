@@ -101,7 +101,8 @@ def create_dataloader(
     batch_size: int = 64,
     shuffle: bool = True,
     num_workers: int = 2,
-    max_failure_rate: float = 0.005
+    max_failure_rate: float = 0.005,
+    persistent_workers: bool = False
 ) -> DataLoader:
     """Helper to build standard PyTorch DataLoader."""
     dataset = CropDiseaseDataset(
@@ -116,5 +117,8 @@ def create_dataloader(
         shuffle=shuffle,
         num_workers=num_workers,
         pin_memory=torch.cuda.is_available(),
-        drop_last=False
+        drop_last=False,
+        # Avoid re-spawning workers every epoch when num_workers > 0 (significant
+        # startup overhead on Windows and Linux with many classes).
+        persistent_workers=persistent_workers and num_workers > 0
     )

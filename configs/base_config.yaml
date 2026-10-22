@@ -1,0 +1,54 @@
+# ==============================================================================
+# Crop Disease Deep Learning - Base Configuration
+# ==============================================================================
+
+data:
+  raw_dir: "data/raw"
+  manifest_path: "data/manifests/manifest.csv"
+  processed_dir: "data/processed"
+  train_dir: "data/processed/train"
+  val_dir: "data/processed/val"
+  test_dir: "data/processed/test_lab"
+  sample_leaves_dir: "data/sample_real_leaves"
+  max_images_per_class: 1500
+  val_split: 0.15
+  test_split: 0.15
+  img_size: 224
+
+model:
+  architecture: "mobilenet_v3_large"
+  pretrained: true
+  num_classes: 39
+  dropout_rate: 0.3
+  hidden_dim: 512
+
+training:
+  seed: 42
+  batch_size: 64
+  num_workers: 4
+  pin_memory: true
+  use_amp: true
+  weight_decay: 0.0001
+  label_smoothing: 0.1
+  grad_clip_norm: 1.0
+  stage1:
+    epochs: 5
+    lr: 0.001
+    freeze_backbone: true
+  stage2:
+    epochs: 15
+    lr: 0.0001
+    freeze_backbone: false
+
+calibration:
+  temperature: 1.0
+  method: "temperature_scaling"
+  max_iter: 100
+  lr: 0.01
+
+artifacts:
+  model_dir: "ml_service/model"
+  model_path: "ml_service/model/model.pt"
+  labels_path: "ml_service/model/labels.json"
+  calibration_path: "ml_service/model/calibration.json"
+  metrics_report: "ml_training/evaluation_report.json"

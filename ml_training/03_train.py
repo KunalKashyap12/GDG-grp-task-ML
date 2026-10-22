@@ -20,7 +20,7 @@ import torch
 import torch.nn as nn
 from torch.optim import AdamW
 from torch.optim.lr_scheduler import CosineAnnealingLR
-from torch.cuda.amp import autocast, GradScaler
+from torch.amp import autocast, GradScaler
 from torchvision.models import mobilenet_v3_large, MobileNet_V3_Large_Weights
 from PIL import Image
 
@@ -113,7 +113,7 @@ def train_one_epoch(
 
         optimizer.zero_grad(set_to_none=True)
 
-        with autocast(enabled=use_amp):
+        with autocast(device_type="cuda", enabled=use_amp):
             outputs = model(images)
             loss = criterion(outputs, targets)
 
@@ -177,7 +177,8 @@ def main():
         torch.cuda.manual_seed_all(seed)
 
     device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
-    use_amp = config["training"].get("use_amp", True) and torch.cuda.is_available()
+    # AMP only valid on CUDA — forcibly disabled on CPU to prevent GradScaler runtime errors
+    use_amp = config["training"].get("use_amp", True) and (device.type == "cuda")
     print(f"[*] Training on device: {device} (Mixed Precision AMP: {use_amp})")
 
     # Load labels
@@ -226,7 +227,10 @@ def main():
     # Transforms & Loaders
     img_size = config["model"].get("img_size", 224)
     batch_size = args.batch_size or config["training"].get("batch_size", 64)
+    # num_workers > 0 requires spawn start method on Windows — keep 0 for safety, but
+    # enable persistent_workers when workers > 0 to avoid per-epoch fork overhead.
     num_workers = 0 if os.name == "nt" else config["training"].get("num_workers", 2)
+    use_persistent_workers = (num_workers > 0)
     max_failure_rate = float(config["data"].get("max_failure_rate", 0.005))
     backgrounds_dir = config["data"].get("backgrounds_dir", "data/backgrounds")
 
@@ -240,7 +244,8 @@ def main():
         batch_size=batch_size,
         shuffle=True,
         num_workers=num_workers,
-        max_failure_rate=max_failure_rate
+        max_failure_rate=max_failure_rate,
+        persistent_workers=use_persistent_workers
     )
     val_loader = create_dataloader(
         val_df,
@@ -249,7 +254,8 @@ def main():
         batch_size=batch_size,
         shuffle=False,
         num_workers=num_workers,
-        max_failure_rate=max_failure_rate
+        max_failure_rate=max_failure_rate,
+        persistent_workers=use_persistent_workers
     )
 
     # Compute balanced class weights
@@ -259,7 +265,8 @@ def main():
 
     # Build model
     model = build_model(num_classes=num_classes, pretrained=config["model"].get("pretrained", True)).to(device)
-    scaler = GradScaler(enabled=use_amp)
+    # Use the new torch.amp.GradScaler API (torch.cuda.amp.GradScaler is deprecated in PyTorch 2.x)
+    scaler = GradScaler(device="cuda", enabled=use_amp) if use_amp else GradScaler(device="cpu", enabled=False)
 
     best_model_weights = copy.deepcopy(model.state_dict())
     best_val_f1 = 0.0
@@ -281,6 +288,7 @@ def main():
     optimizer_s1 = AdamW(filter(lambda p: p.requires_grad, model.parameters()), lr=lr_s1, weight_decay=1e-4)
     scheduler_s1 = CosineAnnealingLR(optimizer_s1, T_max=epochs_s1, eta_min=1e-6)
 
+    patience_counter_s1 = 0
     for epoch in range(1, epochs_s1 + 1):
         tr_loss, tr_acc = train_one_epoch(model, train_loader, criterion, optimizer_s1, scaler, device, use_amp)
         val_loss, metrics = evaluate_epoch(model, val_loader, criterion, device, class_names)
@@ -290,9 +298,15 @@ def main():
         val_f1 = metrics["macro_f1"]
         print(f"[Stage 1 | Epoch {epoch:02d}/{epochs_s1:02d}] Train Loss: {tr_loss:.4f} | Val Loss: {val_loss:.4f} | Val Acc: {val_acc:.4f} | Val Macro-F1: {val_f1:.4f}")
 
-        if val_f1 > best_val_f1:
+        if val_f1 > best_val_f1 + 0.001:
             best_val_f1 = val_f1
             best_model_weights = copy.deepcopy(model.state_dict())
+            patience_counter_s1 = 0
+        else:
+            patience_counter_s1 += 1
+            if patience_counter_s1 >= patience:
+                print(f"[!] Stage 1 early stopping triggered after {patience} epochs without improvement.")
+                break
 
     # -------------------------------------------------------------
     # STAGE 2: Fine-tune entire network with lower LR

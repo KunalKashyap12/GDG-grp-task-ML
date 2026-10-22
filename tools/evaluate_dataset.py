@@ -12,8 +12,14 @@ import argparse
 from collections import defaultdict
 from typing import Dict, Tuple, List
 
-# Ensure predict can be imported
-sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
+# Ensure ml_service and repo root are in path
+BASE_DIR = os.path.dirname(os.path.abspath(__file__))
+REPO_ROOT = os.path.normpath(os.path.join(BASE_DIR, ".."))
+ML_SERVICE_DIR = os.path.join(REPO_ROOT, "ml_service")
+for p in (BASE_DIR, REPO_ROOT, ML_SERVICE_DIR):
+    if p not in sys.path:
+        sys.path.insert(0, p)
+
 from predict import CropDiseasePredictor, preprocess_image, clean_token
 
 

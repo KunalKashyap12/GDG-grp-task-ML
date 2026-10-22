@@ -154,7 +154,7 @@ def main():
     in_features = base_model.classifier[3].in_features
     base_model.classifier[3] = nn.Linear(in_features, len(class_names))
 
-    checkpoint = torch.load(model_path, map_location=device)
+    checkpoint = torch.load(model_path, map_location=device, weights_only=False)
     state_dict = checkpoint["state_dict"] if "state_dict" in checkpoint else checkpoint
     base_model.load_state_dict(state_dict)
 
@@ -165,7 +165,15 @@ def main():
     val_df = pd.read_csv(val_csv)
     eval_transform = get_eval_transforms(config["model"].get("img_size", 224))
     dataset = CropDiseaseDataset(val_df, label_to_idx, transform=eval_transform)
-    val_loader = torch.utils.data.DataLoader(dataset, batch_size=32, shuffle=False)
+    # Use num_workers=0 on Windows, pin_memory on CUDA — significantly faster calibration pass.
+    _num_workers = 0 if os.name == "nt" else 2
+    val_loader = torch.utils.data.DataLoader(
+        dataset,
+        batch_size=64,
+        shuffle=False,
+        num_workers=_num_workers,
+        pin_memory=torch.cuda.is_available()
+    )
 
     print("[*] Calibrating temperature on validation logits...")
     calibrated_model = ModelWithTemperature(base_model)

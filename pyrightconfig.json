@@ -1,0 +1,20 @@
+{
+  "include": [
+    "src",
+    "ml_service",
+    "ml_training",
+    "scratch",
+    "tests",
+    "backend"
+  ],
+  "extraPaths": [
+    "C:/Users/HP/AppData/Roaming/Python/Python313/site-packages",
+    "C:/Python313/Lib/site-packages",
+    "./src",
+    "./ml_service",
+    "./ml_training"
+  ],
+  "venvPath": ".",
+  "venv": ".venv",
+  "reportMissingImports": "none"
+}

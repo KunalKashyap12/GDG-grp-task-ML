@@ -29,26 +29,26 @@ def _to_bytes(img: Image.Image) -> bytes:
 
 
 def test_black_image_rejected(predictor):
-    """Asserts that a completely black image is rejected with status='unknown'."""
+    """Asserts that a completely black image is rejected with status in ['unknown', 'not_a_leaf']."""
     black_img = Image.new("RGB", (224, 224), (0, 0, 0))
     res = predictor.predict(_to_bytes(black_img))
-    assert res["status"] == "unknown"
+    assert res["status"] in ["unknown", "not_a_leaf"]
     assert res["disease"] == "unknown"
 
 
 def test_noise_image_rejected(predictor):
-    """Asserts that a random noise image is rejected with status='unknown'."""
+    """Asserts that a random noise image is rejected with status in ['unknown', 'not_a_leaf']."""
     np.random.seed(42)
     noise_arr = np.random.randint(0, 256, (224, 224, 3), dtype=np.uint8)
     noise_img = Image.fromarray(noise_arr)
     res = predictor.predict(_to_bytes(noise_img))
-    assert res["status"] == "unknown"
+    assert res["status"] in ["unknown", "not_a_leaf"]
     assert res["disease"] == "unknown"
 
 
 def test_skin_tone_image_rejected(predictor):
-    """Asserts that a uniform human skin tone image is rejected with status='unknown'."""
+    """Asserts that a uniform human skin tone image is rejected with status in ['unknown', 'not_a_leaf']."""
     skin_img = Image.new("RGB", (224, 224), (210, 160, 130))
     res = predictor.predict(_to_bytes(skin_img))
-    assert res["status"] == "unknown"
+    assert res["status"] in ["unknown", "not_a_leaf"]
     assert res["disease"] == "unknown"

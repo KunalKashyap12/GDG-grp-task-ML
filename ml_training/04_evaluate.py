@@ -47,7 +47,7 @@ def load_model_for_eval(checkpoint_path: str, num_classes: int, device: torch.de
     in_features = model.classifier[3].in_features
     model.classifier[3] = nn.Linear(in_features, num_classes)
 
-    checkpoint = torch.load(checkpoint_path, map_location=device)
+    checkpoint = torch.load(checkpoint_path, map_location=device, weights_only=False)
     state_dict = checkpoint["state_dict"] if "state_dict" in checkpoint else checkpoint
     model.load_state_dict(state_dict)
     model.to(device)
@@ -70,7 +70,15 @@ def run_evaluation_on_split(
 
     eval_transform = get_eval_transforms(img_size)
     dataset = CropDiseaseDataset(df, label_to_idx, transform=eval_transform)
-    loader = torch.utils.data.DataLoader(dataset, batch_size=32, shuffle=False)
+    # Use num_workers=0 on Windows; pin_memory speeds up GPU eval significantly.
+    _num_workers = 0 if os.name == "nt" else 4
+    loader = torch.utils.data.DataLoader(
+        dataset,
+        batch_size=64,
+        shuffle=False,
+        num_workers=_num_workers,
+        pin_memory=torch.cuda.is_available()
+    )
 
     all_targets = []
     all_preds = []
