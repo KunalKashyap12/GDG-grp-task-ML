@@ -364,40 +364,6 @@ def index_page():
       display: block;
     }
 
-    .samples-row {
-      margin-top: 14px;
-    }
-    .samples-label {
-      font-size: 12px;
-      font-weight: 600;
-      color: var(--text-muted);
-      text-transform: uppercase;
-      letter-spacing: 0.5px;
-      margin-bottom: 7px;
-    }
-    .sample-chips {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 6px;
-    }
-    .sample-chip {
-      background: rgba(255, 255, 255, 0.05);
-      border: 1px solid rgba(52, 211, 153, 0.25);
-      color: #e5e7eb;
-      padding: 5px 10px;
-      border-radius: 8px;
-      font-size: 12px;
-      font-weight: 500;
-      cursor: pointer;
-      transition: all 0.2s ease;
-    }
-    .sample-chip:hover {
-      background: rgba(16, 185, 129, 0.2);
-      border-color: var(--accent-mint);
-      color: #ffffff;
-      transform: translateY(-1px);
-    }
-
     .form-group {
       margin-top: 18px;
     }
@@ -866,23 +832,6 @@ def index_page():
           <input type="file" id="fileInput" accept="image/jpeg,image/png">
         </div>
 
-        <!-- Quick-load sample leaves -->
-        <div class="samples-row">
-          <div class="samples-label">Quick Test Sample Leaves (1-Click):</div>
-          <div class="sample-chips">
-            <button class="sample-chip" type="button" onclick="loadSample('bell-pepper-bacterial-spot')">🫑 Bell Pepper (Bacterial Spot)</button>
-            <button class="sample-chip" type="button" onclick="loadSample('wheat-rust')">🌾 Wheat (Rust Pustules)</button>
-            <button class="sample-chip" type="button" onclick="loadSample('apple-scab')">🍎 Apple (Scab)</button>
-            <button class="sample-chip" type="button" onclick="loadSample('tomato-early-blight')">🍅 Tomato (Early Blight)</button>
-            <button class="sample-chip" type="button" onclick="loadSample('potato-early-blight')">🥔 Potato (Early Blight)</button>
-            <button class="sample-chip" type="button" onclick="loadSample('grape-measles')">🍇 Grape (Esca/Measles)</button>
-            <button class="sample-chip" type="button" onclick="loadSample('maize-leaf-spot')">🌽 Maize (Leaf Spot)</button>
-            <button class="sample-chip" type="button" onclick="loadSample('cotton-blight')">🌱 Cotton (Blight)</button>
-            <button class="sample-chip" type="button" onclick="loadSample('rice-brown-spot')">🌾 Rice (Brown Spot)</button>
-            <button class="sample-chip" type="button" onclick="loadSample('sugarcane-red-rot')">🎋 Sugarcane (Red Rot)</button>
-          </div>
-        </div>
-
         <div class="preview-wrapper" id="previewWrapper">
           <img id="imagePreview" src="" alt="Selected leaf preview">
         </div>
@@ -920,7 +869,7 @@ def index_page():
 
         <div class="empty-state" id="emptyState">
           <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M9 17v-2m3 2v-4m3 4v-6m2 10H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path></svg>
-          <p>Please select or click a sample leaf photo on the left, then click <strong>"Diagnose Leaf Disease"</strong> to see the full botanical report.</p>
+          <p>Please upload a crop leaf photo on the left, then click <strong>"Diagnose Leaf Disease"</strong> to see the full botanical report.</p>
         </div>
 
         <!-- Alert Card: NOT A LEAF -->
@@ -1087,38 +1036,6 @@ def index_page():
         submitBtn.disabled = false;
       };
       reader.readAsDataURL(file);
-    }
-
-    const SAMPLE_CROPS = {
-      'bell-pepper-bacterial-spot': 'Bell_Pepper',
-      'wheat-rust': 'Wheat',
-      'apple-scab': 'Apple',
-      'tomato-early-blight': 'Tomato',
-      'potato-early-blight': 'Potato',
-      'grape-measles': 'Grape',
-      'maize-leaf-spot': 'Maize',
-      'cotton-blight': 'Cotton',
-      'rice-brown-spot': 'Rice',
-      'sugarcane-red-rot': 'Sugarcane',
-      'wheat-yellow-rust': 'Wheat',
-      'apple-cedar-rust': 'Apple',
-      'bell-pepper-healthy': 'Bell_Pepper'
-    };
-
-    async function loadSample(sampleName) {
-      try {
-        const res = await fetch('/samples/' + sampleName);
-        if (!res.ok) throw new Error('Sample not available');
-        const blob = await res.blob();
-        const ext = (blob.type === 'image/png') ? '.png' : '.jpg';
-        const file = new File([blob], sampleName + ext, { type: blob.type || 'image/jpeg' });
-        handleFile(file);
-        if (SAMPLE_CROPS[sampleName]) {
-          document.getElementById('cropSelect').value = SAMPLE_CROPS[sampleName];
-        }
-      } catch (err) {
-        alert('Could not load sample: ' + err.message);
-      }
     }
 
     async function runPrediction() {
