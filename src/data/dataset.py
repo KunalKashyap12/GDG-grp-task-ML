@@ -3,7 +3,7 @@ Custom PyTorch Datasets for Agricultural Pathology Classification.
 """
 
 from pathlib import Path
-from typing import Callable, Dict, List, Optional, Tuple, Union
+from typing import Any, Callable, Dict, List, Optional, Tuple, Union
 import numpy as np
 import pandas as pd
 from PIL import Image
@@ -39,12 +39,26 @@ class CropDiseaseDataset(Dataset):
         else:
             raise ValueError(f"Invalid data_source: {data_source}. Expected directory or CSV manifest.")
 
-    def _load_from_dataframe(self, df: pd.DataFrame, classes: Optional[List[str]] = None) -> None:
-        if "image_path" not in df.columns or "label" not in df.columns:
-            raise ValueError("Manifest DataFrame must contain 'image_path' and 'label' columns.")
+    def _load_from_dataframe(self, df: pd.DataFrame, classes: Optional[Union[List[str], Dict[str, Any]]] = None) -> None:
+        path_col = None
+        for candidate in ["path", "image_path", "filepath", "file_path"]:
+            if candidate in df.columns:
+                path_col = candidate
+                break
+
+        if path_col is None or "label" not in df.columns:
+            raise ValueError(
+                f"Manifest DataFrame must contain an image path column ('path' or 'image_path') and 'label' column. "
+                f"Found columns: {list(df.columns)}"
+            )
 
         if classes is not None:
-            self.classes = sorted(list(classes))
+            if isinstance(classes, dict) and "classes" in classes:
+                self.classes = sorted(list(classes["classes"]))
+            elif isinstance(classes, dict):
+                self.classes = sorted(list(classes.keys()))
+            else:
+                self.classes = sorted(list(classes))
         else:
             self.classes = sorted(df["label"].unique().tolist())
 
@@ -53,26 +67,48 @@ class CropDiseaseDataset(Dataset):
         for _, row in df.iterrows():
             lbl = str(row["label"])
             if lbl in self.class_to_idx:
-                self.samples.append((str(row["image_path"]), self.class_to_idx[lbl]))
+                self.samples.append((str(row[path_col]), self.class_to_idx[lbl]))
 
-    def _load_from_directory(self, root_dir: Path, classes: Optional[List[str]] = None) -> None:
+    def _load_from_directory(self, root_dir: Path, classes: Optional[Union[List[str], Dict[str, Any]]] = None) -> None:
         valid_extensions = {".jpg", ".jpeg", ".png", ".bmp", ".webp"}
 
         if classes is not None:
-            self.classes = sorted(list(classes))
+            if isinstance(classes, dict) and "classes" in classes:
+                self.classes = sorted(list(classes["classes"]))
+            elif isinstance(classes, dict):
+                self.classes = sorted(list(classes.keys()))
+            else:
+                self.classes = sorted(list(classes))
         else:
-            self.classes = sorted([d.name for d in root_dir.iterdir() if d.is_dir()])
+            subdirs = sorted([d.name for d in root_dir.iterdir() if d.is_dir()])
+            self.classes = subdirs if subdirs else []
 
         self.class_to_idx = {cls_name: i for i, cls_name in enumerate(self.classes)}
 
-        for cls_name in self.classes:
-            cls_dir = root_dir / cls_name
-            if not cls_dir.is_dir():
-                continue
-            idx = self.class_to_idx[cls_name]
-            for img_path in cls_dir.iterdir():
-                if img_path.suffix.lower() in valid_extensions:
-                    self.samples.append((str(img_path), idx))
+        # Check if subdirectories matching classes exist
+        has_subdirs = any((root_dir / cls_name).is_dir() for cls_name in self.classes)
+        if has_subdirs:
+            for cls_name in self.classes:
+                cls_dir = root_dir / cls_name
+                if not cls_dir.is_dir():
+                    continue
+                idx = self.class_to_idx[cls_name]
+                for img_path in cls_dir.iterdir():
+                    if img_path.suffix.lower() in valid_extensions:
+                        self.samples.append((str(img_path), idx))
+        else:
+            # Fallback for flat directories (e.g. sample_real_leaves with files named Tomato___Early_blight_0.jpg)
+            for img_path in root_dir.iterdir():
+                if not img_path.is_file() or img_path.suffix.lower() not in valid_extensions:
+                    continue
+                fname = img_path.stem
+                matched_cls = None
+                for cls_name in self.classes:
+                    if fname == cls_name or fname.startswith(f"{cls_name}_") or fname.startswith(f"{cls_name} ") or cls_name in fname:
+                        matched_cls = cls_name
+                        break
+                if matched_cls is not None:
+                    self.samples.append((str(img_path), self.class_to_idx[matched_cls]))
 
     def __len__(self) -> int:
         return len(self.samples)

@@ -55,8 +55,9 @@ class ModularCropClassifier(BaseModel):
         num_classes: int = 39,
         architecture: str = "mobilenet_v3_large",
         pretrained: bool = True,
-        hidden_dim: int = 512,
+        hidden_dim: int = 1280,
         dropout_rate: float = 0.3,
+        use_custom_head: bool = False,
     ) -> None:
         super().__init__()
         self.num_classes = num_classes
@@ -67,23 +68,34 @@ class ModularCropClassifier(BaseModel):
             weights = MobileNet_V3_Large_Weights.DEFAULT if pretrained else None
             base_model = mobilenet_v3_large(weights=weights)
             in_features = 960
+            head_dim = hidden_dim if (hidden_dim not in (512, 0)) else 1280
         elif architecture == "mobilenet_v3_small":
             weights = MobileNet_V3_Small_Weights.DEFAULT if pretrained else None
             base_model = mobilenet_v3_small(weights=weights)
             in_features = 576
+            head_dim = hidden_dim if (hidden_dim not in (512, 0)) else 1024
         else:
             raise ValueError(f"Unsupported architecture: {architecture}")
 
         self.features: nn.Module = base_model.features
         self.pool = nn.AdaptiveAvgPool2d((1, 1))
 
-        # 2. Modular Classification Head
-        self.classifier = ClassificationHead(
-            in_features=in_features,
-            num_classes=num_classes,
-            hidden_dim=hidden_dim,
-            dropout_rate=dropout_rate,
-        )
+        # 2. Classification Head
+        # Standard MobileNetV3 head (0: Linear, 1: Hardswish, 2: Dropout, 3: Linear) matches model.pt checkpoint
+        if use_custom_head:
+            self.classifier = ClassificationHead(
+                in_features=in_features,
+                num_classes=num_classes,
+                hidden_dim=hidden_dim,
+                dropout_rate=dropout_rate,
+            )
+        else:
+            self.classifier = nn.Sequential(
+                nn.Linear(in_features, head_dim),
+                nn.Hardswish(inplace=True),
+                nn.Dropout(p=dropout_rate),
+                nn.Linear(head_dim, num_classes),
+            )
 
     def set_backbone_frozen(self, freeze: bool = True) -> None:
         """Freezes or unfreezes backbone parameters for progressive warm-up."""

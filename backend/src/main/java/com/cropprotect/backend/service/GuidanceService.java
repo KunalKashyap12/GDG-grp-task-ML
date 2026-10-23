@@ -46,24 +46,36 @@ public class GuidanceService {
             return Optional.empty();
         }
 
-        String key = crop.trim() + "___" + disease.trim();
+        String rawCrop = crop.trim();
+        String rawDisease = disease.trim();
+        String key = rawCrop + "___" + rawDisease;
+        String keyUnderscore = rawCrop.replace(" ", "_") + "___" + rawDisease.replace(" ", "_");
 
         // 1. Exact match lookup
         if (guidanceCache.containsKey(key)) {
             return Optional.of(guidanceCache.get(key));
         }
+        if (guidanceCache.containsKey(keyUnderscore)) {
+            return Optional.of(guidanceCache.get(keyUnderscore));
+        }
 
-        // 2. Case-insensitive search
+        // 2. Case-insensitive and normalized lookup (handles spaces vs underscores)
+        String normKey = key.toLowerCase().replace(" ", "").replace("_", "");
         for (Map.Entry<String, GuidanceInfo> entry : guidanceCache.entrySet()) {
-            if (entry.getKey().equalsIgnoreCase(key)) {
+            String entryKey = entry.getKey();
+            if (entryKey.equalsIgnoreCase(key) || entryKey.equalsIgnoreCase(keyUnderscore)) {
+                return Optional.of(entry.getValue());
+            }
+            String entryNorm = entryKey.toLowerCase().replace(" ", "").replace("_", "");
+            if (entryNorm.equals(normKey)) {
                 return Optional.of(entry.getValue());
             }
         }
 
         // 3. Fallback for general healthy classification
-        if ("healthy".equalsIgnoreCase(disease)) {
+        if ("healthy".equalsIgnoreCase(rawDisease)) {
             return Optional.of(new GuidanceInfo(
-                    crop + " Healthy Foliage",
+                    rawCrop + " Healthy Foliage",
                     "Healthy",
                     "None",
                     List.of("Maintain regular soil moisture and fertility balance.", "Monitor weekly for early pest ingress."),

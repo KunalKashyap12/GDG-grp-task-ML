@@ -158,4 +158,34 @@ class PredictControllerTest {
                 .andExpect(jsonPath("$.total_classes", is(3)))
                 .andExpect(jsonPath("$.crops.Tomato", hasSize(3)));
     }
+
+    @Test
+    @DisplayName("POST /api/predict resolves guidance when disease has spaces (e.g. 'Early blight' -> 'Tomato___Early_blight')")
+    void testSpacedDiseaseNameResolvesGuidance() throws Exception {
+        MlPredictionResponse mockMlResponse = new MlPredictionResponse();
+        mockMlResponse.setStatus("ok");
+        mockMlResponse.setCrop("Tomato");
+        mockMlResponse.setDisease("Early blight");
+        mockMlResponse.setConfidence(0.92);
+        mockMlResponse.setCertainty("high");
+        mockMlResponse.setMessage("High confidence prediction.");
+        mockMlResponse.setQuality(new QualityInfo(150.0, 120.0));
+        mockMlResponse.setTop3(List.of(new TopPrediction("Tomato___Early_blight", 0.92)));
+
+        when(mlClientService.predict(any(), eq("Tomato"))).thenReturn(mockMlResponse);
+
+        MockMultipartFile imageFile = new MockMultipartFile(
+                "image", "leaf.jpg", MediaType.IMAGE_JPEG_VALUE, "fake-bytes".getBytes()
+        );
+
+        mockMvc.perform(multipart("/api/predict")
+                        .file(imageFile)
+                        .param("crop", "Tomato"))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.status", is("ok")))
+                .andExpect(jsonPath("$.crop", is("Tomato")))
+                .andExpect(jsonPath("$.disease", is("Early blight")))
+                .andExpect(jsonPath("$.guidance.disease_name", containsString("Early Blight")))
+                .andExpect(jsonPath("$.guidance.preventive_measures", hasSize(greaterThan(0))));
+    }
 }

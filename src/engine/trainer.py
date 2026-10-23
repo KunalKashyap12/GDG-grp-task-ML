@@ -94,8 +94,8 @@ class ModelTrainer:
             self.scheduler.step()
 
         return EpochMetrics(
-            loss=total_loss / total_samples,
-            accuracy=correct_predictions / total_samples,
+            loss=(total_loss / total_samples) if total_samples > 0 else 0.0,
+            accuracy=(correct_predictions / total_samples) if total_samples > 0 else 0.0,
         )
 
     @torch.inference_mode()
@@ -125,6 +125,6 @@ class ModelTrainer:
             total_samples += batch_size
 
         return EpochMetrics(
-            loss=total_loss / total_samples,
-            accuracy=correct_predictions / total_samples,
+            loss=(total_loss / total_samples) if total_samples > 0 else 0.0,
+            accuracy=(correct_predictions / total_samples) if total_samples > 0 else 0.0,
         )

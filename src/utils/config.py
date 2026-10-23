@@ -30,7 +30,7 @@ class ModelConfig:
     pretrained: bool = True
     num_classes: int = 39
     dropout_rate: float = 0.3
-    hidden_dim: int = 512
+    hidden_dim: int = 1280
 
 
 @dataclass

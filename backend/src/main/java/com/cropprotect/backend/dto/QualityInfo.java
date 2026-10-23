@@ -1,7 +1,9 @@
 package com.cropprotect.backend.dto;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
+@JsonIgnoreProperties(ignoreUnknown = true)
 public class QualityInfo {
 
     @JsonProperty("blur_score")

@@ -20,7 +20,7 @@ model:
   pretrained: true
   num_classes: 39
   dropout_rate: 0.3
-  hidden_dim: 512
+  hidden_dim: 1280
 
 training:
   seed: 42
@@ -43,7 +43,7 @@ training:
 calibration:
   temperature: 1.0
   method: "temperature_scaling"
-  max_iter: 100
+  max_iter: 25
   lr: 0.01
 
 artifacts:

@@ -15,6 +15,12 @@ def compute_classification_metrics(
     """
     Computes top-level classification metrics: accuracy, macro-F1, weighted-F1.
     """
+    if len(y_true) == 0:
+        return {
+            "accuracy": 0.0,
+            "macro_f1": 0.0,
+            "weighted_f1": 0.0,
+        }
     zero_div: Any = 0
     acc = float(accuracy_score(y_true, y_pred))
     macro_f1 = float(f1_score(y_true, y_pred, average="macro", zero_division=zero_div))
@@ -36,6 +42,9 @@ def compute_expected_calibration_error(
     Computes Expected Calibration Error (ECE) across confidence bins:
     ECE = sum_m (|B_m| / N) * |acc(B_m) - conf(B_m)|
     """
+    if len(labels) == 0 or len(probabilities) == 0:
+        return 0.0
+
     confidences = np.max(probabilities, axis=1)
     predictions = np.argmax(probabilities, axis=1)
     accuracies = (predictions == labels).astype(float)

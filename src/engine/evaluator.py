@@ -48,6 +48,10 @@ class ModelEvaluator:
             targets_list.append(targets.numpy())
             probs_list.append(probs.cpu().numpy())
 
+        if not preds_list:
+            empty_metrics = {"accuracy": 0.0, "macro_f1": 0.0, "weighted_f1": 0.0, "ece": 0.0}
+            return empty_metrics, np.array([], dtype=int), np.array([], dtype=int), np.array([])
+
         all_preds = np.concatenate(preds_list, axis=0)
         all_targets = np.concatenate(targets_list, axis=0)
         all_probs = np.concatenate(probs_list, axis=0)
@@ -59,10 +63,14 @@ class ModelEvaluator:
 
     def generate_report_string(self, y_true: np.ndarray, y_pred: np.ndarray) -> str:
         """Generates detailed text summary via sklearn classification_report."""
+        if len(y_true) == 0:
+            return "No samples evaluated (dataset was empty)."
         zero_div: Any = 0
+        labels_param = list(range(len(self.classes))) if self.classes else None
         report = classification_report(
             y_true,
             y_pred,
+            labels=labels_param,
             target_names=self.classes,
             zero_division=zero_div,
             digits=4,

@@ -1,7 +1,9 @@
 package com.cropprotect.backend.dto;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
+@JsonIgnoreProperties(ignoreUnknown = true)
 public class TopPrediction {
 
     @JsonProperty("label")
@@ -9,6 +11,9 @@ public class TopPrediction {
 
     @JsonProperty("score")
     private Double score;
+
+    @JsonProperty("level")
+    private String level;
 
     public TopPrediction() {
     }
@@ -32,5 +37,13 @@ public class TopPrediction {
 
     public void setScore(Double score) {
         this.score = score;
+    }
+
+    public String getLevel() {
+        return level;
+    }
+
+    public void setLevel(String level) {
+        this.level = level;
     }
 }

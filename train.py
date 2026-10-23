@@ -50,15 +50,31 @@ def main() -> None:
 
     # 1. Dataset & DataLoader Construction
     data_dir = Path(cfg.data.train_dir)
-    if not data_dir.exists():
-        # Fallback to sample real leaves if processed directory not yet generated
-        data_dir = Path(cfg.data.sample_leaves_dir)
-        logger.warning("Train directory '%s' not found. Falling back to '%s'", cfg.data.train_dir, data_dir)
+    train_manifest = Path("data/manifests/train_manifest.csv")
+    if data_dir.exists():
+        dataset_source = data_dir
+    elif train_manifest.exists():
+        dataset_source = train_manifest
+        logger.info("Train directory not found; using manifest: %s", train_manifest)
+    else:
+        dataset_source = Path(cfg.data.sample_leaves_dir)
+        logger.warning("Train directory not found. Falling back to '%s'", dataset_source)
+
+    # Check for pre-existing labels to preserve exact class order if available
+    labels_path = Path(cfg.artifacts.labels_path)
+    initial_classes = None
+    if labels_path.exists():
+        try:
+            with open(labels_path, "r", encoding="utf-8") as f:
+                meta = json.load(f)
+            initial_classes = meta["classes"] if (isinstance(meta, dict) and "classes" in meta) else meta
+        except Exception as e:
+            logger.warning("Could not read existing labels from %s: %s", labels_path, e)
 
     train_tf = build_train_transforms(img_size=cfg.data.img_size)
     val_tf = build_val_transforms(img_size=cfg.data.img_size)
 
-    full_dataset = CropDiseaseDataset(data_dir, transform=train_tf)
+    full_dataset = CropDiseaseDataset(dataset_source, transform=train_tf, classes=initial_classes)
     classes = full_dataset.classes
     num_classes = len(classes)
     logger.info("Loaded %d samples across %d classes.", len(full_dataset), num_classes)
@@ -66,12 +82,16 @@ def main() -> None:
     # 80/20 train/val split
     val_size = int(len(full_dataset) * cfg.data.val_split)
     train_size = len(full_dataset) - val_size
+    if val_size == 0 and len(full_dataset) > 1:
+        val_size = 1
+        train_size = len(full_dataset) - 1
+
     train_subset, val_subset = torch.utils.data.random_split(
         full_dataset, [train_size, val_size], generator=torch.Generator().manual_seed(cfg.training.seed)
     )
 
     # Apply deterministic validation transforms to val_subset
-    val_dataset = CropDiseaseDataset(data_dir, transform=val_tf, classes=classes)
+    val_dataset = CropDiseaseDataset(dataset_source, transform=val_tf, classes=classes)
     val_subset = torch.utils.data.Subset(val_dataset, val_subset.indices)
 
     train_loader = build_dataloader(train_subset, batch_size=cfg.training.batch_size, shuffle=True, num_workers=cfg.training.num_workers)
@@ -136,7 +156,14 @@ def main() -> None:
 
     # 7. Save Production Artifacts
     model_path = Path(cfg.artifacts.model_path)
-    model.save_weights(model_path)
+    model_path.parent.mkdir(parents=True, exist_ok=True)
+    torch.save({
+        "state_dict": model.state_dict(),
+        "architecture": cfg.model.architecture,
+        "num_classes": num_classes,
+        "classes": classes,
+        "best_val_f1": eval_metrics.get("macro_f1", 0.0),
+    }, model_path)
     logger.info("Saved model weights to %s", model_path)
 
     calibrator.save_calibration(calib_res, cfg.artifacts.calibration_path)
@@ -144,8 +171,12 @@ def main() -> None:
 
     labels_path = Path(cfg.artifacts.labels_path)
     labels_path.parent.mkdir(parents=True, exist_ok=True)
+    labels_payload = {
+        "classes": classes,
+        "label_to_idx": {cls_name: i for i, cls_name in enumerate(classes)}
+    }
     with open(labels_path, "w", encoding="utf-8") as f:
-        json.dump(classes, f, indent=2)
+        json.dump(labels_payload, f, indent=2)
     logger.info("Saved class labels (%d classes) to %s", len(classes), labels_path)
 
 

@@ -55,6 +55,13 @@ class TemperatureScalingCalibrator:
                 logits_list.append(logits)
                 labels_list.append(targets.to(self.device))
 
+        if not logits_list:
+            return {
+                "temperature": 1.0,
+                "pre_ece": 0.0,
+                "post_ece": 0.0,
+            }
+
         logits_all = torch.cat(logits_list, dim=0)
         labels_all = torch.cat(labels_list, dim=0)
 

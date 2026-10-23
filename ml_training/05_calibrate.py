@@ -18,7 +18,10 @@ import torch.nn as nn
 from torch.optim import LBFGS
 from torchvision.models import mobilenet_v3_large
 import matplotlib.pyplot as plt
-from typing import Tuple
+import sys
+_script_dir = os.path.dirname(os.path.abspath(__file__))
+if _script_dir not in sys.path:
+    sys.path.insert(0, _script_dir)
 
 from utils.augmentations import get_eval_transforms
 from utils.dataset import CropDiseaseDataset
