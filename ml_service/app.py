@@ -1219,4 +1219,5 @@ if __name__ == "__main__":
     app_dir = os.path.dirname(os.path.abspath(__file__))
     if app_dir not in sys.path:
         sys.path.insert(0, app_dir)
-    uvicorn.run("app:app", host="0.0.0.0", port=8000, reload=False, app_dir=app_dir)
+    port = int(os.environ.get("PORT", 8000))
+    uvicorn.run("app:app", host="0.0.0.0", port=port, reload=False, app_dir=app_dir)

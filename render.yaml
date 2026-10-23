@@ -1,0 +1,37 @@
+services:
+  # Fast CPU-optimized ML Inference Engine (FastAPI + PyTorch)
+  - type: web
+    name: gdg-ml-service
+    runtime: docker
+    dockerfilePath: ml_service/Dockerfile
+    dockerContext: ml_service
+    plan: free
+    healthCheckPath: /health
+    envVars:
+      - key: PORT
+        value: 8000
+      - key: MODEL_BACKEND
+        value: legacy
+      - key: CONFIDENCE_THRESHOLD
+        value: "0.60"
+      - key: WEB_CONCURRENCY
+        value: "1"
+
+  # Decision Support Backend (Spring Boot 3 + Java 17)
+  - type: web
+    name: gdg-spring-backend
+    runtime: docker
+    dockerfilePath: backend/Dockerfile
+    dockerContext: backend
+    plan: free
+    healthCheckPath: /actuator/health
+    envVars:
+      - key: PORT
+        value: 8080
+      - key: SPRING_PROFILES_ACTIVE
+        value: prod
+      - key: ML_SERVICE_URL
+        fromService:
+          type: web
+          name: gdg-ml-service
+          property: host
