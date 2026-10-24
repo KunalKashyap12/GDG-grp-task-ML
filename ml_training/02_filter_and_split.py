@@ -23,7 +23,7 @@ import numpy as np
 from PIL import Image
 import imagehash
 from concurrent.futures import ThreadPoolExecutor, as_completed
-from typing import Dict, List, Set, Tuple
+from typing import Dict, List, Optional, Set, Tuple
 
 EVAL_ONLY_DIRS = [
     "data/sample_real_leaves",
@@ -45,7 +45,7 @@ def compute_phash_single(path: str) -> Tuple[str, Optional[np.ndarray]]:
             # Multi-orientation perceptual hashing (original, horizontal flip, 90, 180, 270 deg)
             # Guarantees zero leakage of rotated or mirrored duplicate photos across splits
             h0 = imagehash.phash(rgb).hash.flatten()
-            h_flip = imagehash.phash(rgb.transpose(Image.FLIP_LEFT_RIGHT)).hash.flatten()
+            h_flip = imagehash.phash(rgb.transpose(Image.Transpose.FLIP_LEFT_RIGHT)).hash.flatten()
             h_90 = imagehash.phash(rgb.rotate(90)).hash.flatten()
             h_180 = imagehash.phash(rgb.rotate(180)).hash.flatten()
             h_270 = imagehash.phash(rgb.rotate(270)).hash.flatten()
@@ -89,23 +89,23 @@ def main():
 
     df = pd.read_csv(manifest_path)
     # Ensure all manifest paths are normalized and resolve relative/stale paths
-    rebased_paths = []
-    for p in df["path"]:
+    def _rebase_path(p: str) -> str:
         p_str = str(p)
         if not os.path.exists(p_str):
             norm = p_str.replace("\\", "/")
             if "data/" in norm:
                 rel = norm[norm.index("data/"):]
                 if os.path.exists(rel):
-                    p_str = os.path.normpath(rel)
-        rebased_paths.append(p_str)
-    df["path"] = rebased_paths
+                    return os.path.normpath(rel)
+        return p_str
+
+    df["path"] = df["path"].map(_rebase_path)
 
     phash_threshold = config["data"].get("phash_threshold", 4)
     print(f"[*] Loaded manifest with {len(df)} rows. pHash threshold: {phash_threshold}", flush=True)
 
     # Step 0: Quarantine evaluation-only images
-    df["_eval_only"] = df["path"].apply(is_eval_only)
+    df["_eval_only"] = df["path"].map(is_eval_only)
     eval_only_df = df[df["_eval_only"]].copy()
     df = df[~df["_eval_only"]].copy()
     print(f"[*] Excluded {len(eval_only_df)} eval-only images (sample_real_leaves) from training consideration.", flush=True)

@@ -8,6 +8,7 @@ and writes data/manifests/manifest.csv.
 import os
 import re
 import glob
+import random
 import yaml
 import argparse
 import pandas as pd
@@ -42,8 +43,8 @@ def create_synthetic_image(output_path: str, label: str, source: str, idx: int):
     draw.ellipse([40, 40, 216, 216], fill=base_color, outline=(20, 80, 20))
     if not is_healthy:
         for _ in range(8):
-            rx = int(np.random.randint(60, 190))
-            ry = int(np.random.randint(60, 190))
+            rx = random.randint(60, 190)
+            ry = random.randint(60, 190)
             draw.ellipse([rx, ry, rx + 14, ry + 14], fill=(139, 69, 19))
 
     img.save(output_path)

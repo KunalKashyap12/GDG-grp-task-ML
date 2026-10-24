@@ -275,7 +275,7 @@ def parse_label(raw: str) -> Tuple[str, str]:
        - Normalizes "healthy" -> "Healthy"
     2. Natural language format (e.g. "Healthy Apple", "Corn (Maize) with Common Rust", "Bell Pepper with Bacterial Spot", etc.)
     """
-    raw_str = str(raw).strip()
+    raw_str = raw.strip()
 
     # 1. Standard "___" delimiter
     if "___" in raw_str:
@@ -670,9 +670,9 @@ class CropDiseasePredictor:
         Returns (canonical_crop, warning_msg).
         If unknown or unsupported, returns (None, warning_msg).
         """
-        if not crop_hint or not str(crop_hint).strip():
+        if not crop_hint or not crop_hint.strip():
             return None, None
-        raw = str(crop_hint).strip()
+        raw = crop_hint.strip()
         norm = raw.lower().strip()
         if norm in ["auto", "all", "none", "null", "any"]:
             return None, None
@@ -745,7 +745,7 @@ class CropDiseasePredictor:
             gray = eval_img
 
         blur_score = float(cv2.Laplacian(gray, cv2.CV_64F).var())
-        brightness = float(np.mean(gray))
+        brightness = float(cv2.mean(gray)[0])
 
         if brightness < min_bright:
             return False, round(blur_score, 2), round(brightness, 2), f"CLEAR PHOTO NAHI HAI: Photo bahut andhere mein hai (brightness: {brightness:.1f} < {min_bright:.1f}). Kripya acchi roshni mein photo dubara upload karein."
@@ -779,7 +779,7 @@ class CropDiseasePredictor:
         necrotic_spots = (hsv[:, :, 0] >= 10) & (hsv[:, :, 0] <= 35) & (hsv[:, :, 1] >= 30) & (hsv[:, :, 2] >= 30) & (hsv[:, :, 2] <= 160) & dilated_leaf
 
         foliage = chlorophyll_base | rust_foliage | necrotic_spots
-        foliage_pixels = int(np.count_nonzero(foliage))
+        foliage_pixels = np.count_nonzero(foliage)
         foliage_ratio = float(foliage_pixels) / float(total_pixels)
 
         neutral = (np.abs(r - g) < 14) & (np.abs(g - b) < 14) & (np.abs(r - b) < 14)
@@ -825,7 +825,7 @@ class CropDiseasePredictor:
             (hsv[:, :, 1] >= 95) &
             (hsv[:, :, 2] >= 90)
         ).astype(np.uint8) * 255
-        rust_pixels = int(np.count_nonzero(rust_mask))
+        rust_pixels = np.count_nonzero(rust_mask)
         rust_pct = round((float(rust_pixels) / total_pixels) * 100.0, 1)
         has_rust_pustules = (rust_pct >= 0.5)
 
@@ -903,7 +903,7 @@ class CropDiseasePredictor:
         blade_w = max(min(rw, rh), 1.0)
         rot_aspect = float(blade_len) / float(blade_w)
 
-        leaf_pixels_hsv = hsv[foliage_mask > 0]
+        leaf_pixels_hsv = hsv[foliage_mask > 0].astype(np.float64)
         if len(leaf_pixels_hsv) > 0:
             mean_hue = float(np.mean(leaf_pixels_hsv[:, 0]))
             mean_sat = float(np.mean(leaf_pixels_hsv[:, 1]))
@@ -921,7 +921,7 @@ class CropDiseasePredictor:
             color_tone = "Deep Forest Green"
 
         lesion_mask = (foliage_mask > 0) & ((g < r + 4) | (hsv[:, :, 0] < 22) | (hsv[:, :, 2] < 45))
-        lesion_count = int(np.count_nonzero(lesion_mask))
+        lesion_count = np.count_nonzero(lesion_mask)
         lesion_pct = round((float(lesion_count) / max(len(leaf_pixels_hsv), 1)) * 100.0, 1)
 
         is_frame_filling = (coverage_pct > 75.0) and (solidity > 0.94)
@@ -1300,13 +1300,13 @@ class CropDiseasePredictor:
         is_unsupported_hint = False
         raw_c_clean = ""
         if crop_hint and not valid_hint:
-            raw_c_clean = str(crop_hint).lower().strip().replace(" ", "").replace("_", "").replace("-", "")
+            raw_c_clean = crop_hint.lower().strip().replace(" ", "").replace("_", "").replace("-", "")
             if raw_c_clean in self.unsupported_crops:
                 is_unsupported_hint = True
 
         if is_unsupported_hint:
             # Gracefully fail unsupported crop with low_confidence status
-            unsupported_name = self.unsupported_crops.get(raw_c_clean, str(crop_hint))
+            unsupported_name = self.unsupported_crops.get(raw_c_clean, crop_hint or "")
             total_mass = sum(adjusted_crop_mass.values()) if sum(adjusted_crop_mass.values()) > 0 else 1.0
             crop_comparison = [
                 {

@@ -1,7 +1,7 @@
 {
-  "temperature": 0.9418,
-  "pre_ece": 0.1739,
-  "post_ece": 0.1425,
+  "temperature": 0.9843,
+  "pre_ece": 0.0922,
+  "post_ece": 0.087,
   "energy_threshold": -4.0,
   "max_prob_threshold": 0.1,
   "confidence_thresholds": {

@@ -24,21 +24,21 @@ class CropDiseaseDataset(Dataset):
         self.label_to_idx = label_to_idx
         self.transform = transform
         self.max_failure_rate = float(max_failure_rate)
-        self.max_logged_failures = int(max_logged_failures)
+        self.max_logged_failures = max_logged_failures
         self.failure_count = 0
         self.failed_paths: List[str] = []
 
     def __len__(self) -> int:
         return len(self.df)
 
-    def __getitem__(self, idx: int) -> Tuple[torch.Tensor, int, str, str]:
-        row = self.df.iloc[idx]
-        img_path = row["path"]
-        label_str = row["label"]
-        source = row.get("source", "unknown")
+    def __getitem__(self, index: int) -> Tuple[torch.Tensor, int, str, str]:
+        row = self.df.iloc[index]
+        img_path = str(row["path"])
+        label_str = str(row["label"])
+        source = str(row.get("source", "unknown"))
 
         if not os.path.exists(img_path):
-            norm = str(img_path).replace("\\", "/")
+            norm = img_path.replace("\\", "/")
             if "data/" in norm:
                 rel = norm[norm.index("data/"):]
                 if os.path.exists(rel):
@@ -63,11 +63,13 @@ class CropDiseaseDataset(Dataset):
             # Fallback for occasional corrupt image under threshold
             image = Image.new("RGB", (224, 224), color=(0, 0, 0))
 
-        if self.transform:
-            image = self.transform(image)
+        if self.transform is not None:
+            image_tensor = self.transform(image)
+        else:
+            image_tensor = torch.from_numpy(np.array(image)).permute(2, 0, 1).float() / 255.0
 
         label_idx = self.label_to_idx[label_str]
-        return image, label_idx, source, img_path
+        return image_tensor, label_idx, source, img_path
 
 
 def compute_class_weights(
