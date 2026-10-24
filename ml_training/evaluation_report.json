@@ -1,6 +1,6 @@
 {
-  "accuracy": 0.9194,
-  "macro_f1": 0.9264,
-  "weighted_f1": 0.906,
-  "ece": 0.0922
+  "accuracy": 0.7361,
+  "macro_f1": 0.3942,
+  "weighted_f1": 0.7117,
+  "ece": 0.1879
 }

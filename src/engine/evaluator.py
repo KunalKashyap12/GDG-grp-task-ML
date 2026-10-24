@@ -45,7 +45,7 @@ class ModelEvaluator:
 
             preds = torch.argmax(probs, dim=-1).cpu().numpy()
             preds_list.append(preds)
-            targets_list.append(targets.numpy())
+            targets_list.append(targets.cpu().numpy())
             probs_list.append(probs.cpu().numpy())
 
         if not preds_list:

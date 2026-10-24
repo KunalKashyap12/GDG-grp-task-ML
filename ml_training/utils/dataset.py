@@ -37,6 +37,13 @@ class CropDiseaseDataset(Dataset):
         label_str = row["label"]
         source = row.get("source", "unknown")
 
+        if not os.path.exists(img_path):
+            norm = str(img_path).replace("\\", "/")
+            if "data/" in norm:
+                rel = norm[norm.index("data/"):]
+                if os.path.exists(rel):
+                    img_path = os.path.normpath(rel)
+
         try:
             image = Image.open(img_path).convert("RGB")
         except Exception as e:

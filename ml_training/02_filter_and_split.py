@@ -38,11 +38,18 @@ def parse_args():
     return parser.parse_args()
 
 
-def compute_phash_single(path: str) -> Tuple[str, np.ndarray]:
+def compute_phash_single(path: str) -> Tuple[str, Optional[np.ndarray]]:
     try:
         with Image.open(path) as img:
-            h = imagehash.phash(img.convert("RGB"))
-            return path, h.hash.flatten()
+            rgb = img.convert("RGB")
+            # Multi-orientation perceptual hashing (original, horizontal flip, 90, 180, 270 deg)
+            # Guarantees zero leakage of rotated or mirrored duplicate photos across splits
+            h0 = imagehash.phash(rgb).hash.flatten()
+            h_flip = imagehash.phash(rgb.transpose(Image.FLIP_LEFT_RIGHT)).hash.flatten()
+            h_90 = imagehash.phash(rgb.rotate(90)).hash.flatten()
+            h_180 = imagehash.phash(rgb.rotate(180)).hash.flatten()
+            h_270 = imagehash.phash(rgb.rotate(270)).hash.flatten()
+            return path, np.array([h0, h_flip, h_90, h_180, h_270], dtype=bool)
     except Exception:
         return path, None
 
@@ -55,12 +62,20 @@ def is_eval_only(path: str) -> bool:
     return False
 
 
-def is_near_duplicate(db_matrix: np.ndarray, query_vec: np.ndarray, threshold: int) -> bool:
-    """Vectorized Hamming distance check in NumPy."""
+def is_near_duplicate(db_matrix: Optional[np.ndarray], query_vecs: np.ndarray, threshold: int) -> bool:
+    """
+    Vectorized Hamming distance check in NumPy comparing all query orientations
+    against all database orientations.
+    """
     if db_matrix is None or len(db_matrix) == 0:
         return False
-    diffs = np.count_nonzero(db_matrix != query_vec, axis=1)
-    return bool(np.any(diffs <= threshold))
+    if query_vecs.ndim == 1:
+        query_vecs = query_vecs.reshape(1, -1)
+    for q in query_vecs:
+        diffs = np.count_nonzero(db_matrix != q, axis=1)
+        if np.any(diffs <= threshold):
+            return True
+    return False
 
 
 def main():
@@ -73,6 +88,19 @@ def main():
         raise FileNotFoundError(f"Manifest not found at {manifest_path}. Run 01_merge_datasets.py first.")
 
     df = pd.read_csv(manifest_path)
+    # Ensure all manifest paths are normalized and resolve relative/stale paths
+    rebased_paths = []
+    for p in df["path"]:
+        p_str = str(p)
+        if not os.path.exists(p_str):
+            norm = p_str.replace("\\", "/")
+            if "data/" in norm:
+                rel = norm[norm.index("data/"):]
+                if os.path.exists(rel):
+                    p_str = os.path.normpath(rel)
+        rebased_paths.append(p_str)
+    df["path"] = rebased_paths
+
     phash_threshold = config["data"].get("phash_threshold", 4)
     print(f"[*] Loaded manifest with {len(df)} rows. pHash threshold: {phash_threshold}", flush=True)
 
@@ -135,14 +163,14 @@ def main():
 
     for _, row in df_valid.iterrows():
         label = row["label"]
-        h_vec = hashes[row["path"]]
+        h_vecs = hashes[row["path"]]
         seen_list = seen_hashes_by_class.setdefault(label, [])
         if seen_list:
             db_mat = np.array(seen_list, dtype=bool)
-            if is_near_duplicate(db_mat, h_vec, phash_threshold):
+            if is_near_duplicate(db_mat, h_vecs, phash_threshold):
                 dup_count += 1
                 continue
-        seen_list.append(h_vec)
+        seen_list.extend(h_vecs)
         dedupe_rows.append(row.to_dict())
 
     df_deduped = pd.DataFrame(dedupe_rows)
@@ -159,21 +187,21 @@ def main():
     val_rows: List[dict] = []
     test_val_hashes_list: List[np.ndarray] = []
 
-    # Assign test sets first
+    # Assign test sets first (stratified by source without artificial cap)
     for label, group in df_deduped.groupby("label"):
         group = group.sample(frac=1.0, random_state=42)
         lab_group = group[group["source"].str.contains("PlantVillage", case=False, na=False)]
         field_group = group[~group["source"].str.contains("PlantVillage", case=False, na=False)]
 
-        n_lab_test = min(5, max(1, int(len(lab_group) * test_ratio))) if len(lab_group) > 0 else 0
+        n_lab_test = max(1, int(len(lab_group) * test_ratio)) if len(lab_group) > 0 else 0
         for _, r in lab_group.iloc[:n_lab_test].iterrows():
             test_lab_rows.append(r.to_dict())
-            test_val_hashes_list.append(hashes[r["path"]])
+            test_val_hashes_list.extend(hashes[r["path"]])
 
-        n_field_test = min(5, max(1, int(len(field_group) * test_ratio))) if len(field_group) > 0 else 0
+        n_field_test = max(1, int(len(field_group) * test_ratio)) if len(field_group) > 0 else 0
         for _, r in field_group.iloc[:n_field_test].iterrows():
             test_field_rows.append(r.to_dict())
-            test_val_hashes_list.append(hashes[r["path"]])
+            test_val_hashes_list.extend(hashes[r["path"]])
 
     test_paths = set(r["path"] for r in test_lab_rows + test_field_rows)
     train_val_candidates = df_deduped[~df_deduped["path"].isin(test_paths)]
@@ -183,8 +211,8 @@ def main():
     clean_pool_rows = []
     cross_leak_removed = 0
     for _, row in train_val_candidates.iterrows():
-        h_vec = hashes[row["path"]]
-        if is_near_duplicate(test_mat, h_vec, phash_threshold):
+        h_vecs = hashes[row["path"]]
+        if is_near_duplicate(test_mat, h_vecs, phash_threshold):
             cross_leak_removed += 1
             continue
         clean_pool_rows.append(row.to_dict())
@@ -202,7 +230,7 @@ def main():
 
         for _, r in val_portion.iterrows():
             val_rows.append(r.to_dict())
-            val_hashes_list.append(hashes[r["path"]])
+            val_hashes_list.extend(hashes[r["path"]])
         for _, r in train_portion.iterrows():
             train_rows.append(r.to_dict())
 
@@ -211,8 +239,8 @@ def main():
     final_train = []
     leakage_train_removed = 0
     for r in train_rows:
-        h_vec = hashes.get(r["path"])
-        if h_vec is not None and is_near_duplicate(val_mat, h_vec, phash_threshold):
+        h_vecs = hashes.get(r["path"])
+        if h_vecs is not None and is_near_duplicate(val_mat, h_vecs, phash_threshold):
             leakage_train_removed += 1
             continue
         final_train.append(r)
@@ -223,7 +251,7 @@ def main():
     df_test_lab = pd.DataFrame(test_lab_rows)
     df_test_field = pd.DataFrame(test_field_rows)
 
-    # Step 5: Save labels.json and manifests
+    # Step 5: Save labels.json and manifests with portable relative paths
     mapping_path = "ml_training/mapping.yaml"
     if os.path.exists(mapping_path):
         with open(mapping_path, "r") as f:
@@ -243,12 +271,27 @@ def main():
         }, f, indent=2)
     print(f"[+] Saved {len(all_classes)} class labels -> {labels_path}", flush=True)
 
+    def _normalize_paths(df_split: pd.DataFrame) -> pd.DataFrame:
+        df_out = df_split.copy()
+        norm_paths = []
+        for p in df_out["path"]:
+            p_str = str(p)
+            if os.path.isabs(p_str):
+                try:
+                    norm_paths.append(os.path.normpath(os.path.relpath(p_str, start=os.getcwd())))
+                except ValueError:
+                    norm_paths.append(os.path.normpath(p_str))
+            else:
+                norm_paths.append(os.path.normpath(p_str))
+        df_out["path"] = norm_paths
+        return df_out
+
     manifest_dir = config["data"].get("manifest_dir", "data/manifests")
     os.makedirs(manifest_dir, exist_ok=True)
-    df_train.to_csv(os.path.join(manifest_dir, "train_manifest.csv"), index=False)
-    df_val.to_csv(os.path.join(manifest_dir, "val_manifest.csv"), index=False)
-    df_test_lab.to_csv(os.path.join(manifest_dir, "test_lab_manifest.csv"), index=False)
-    df_test_field.to_csv(os.path.join(manifest_dir, "test_field_manifest.csv"), index=False)
+    _normalize_paths(df_train).to_csv(os.path.join(manifest_dir, "train_manifest.csv"), index=False)
+    _normalize_paths(df_val).to_csv(os.path.join(manifest_dir, "val_manifest.csv"), index=False)
+    _normalize_paths(df_test_lab).to_csv(os.path.join(manifest_dir, "test_lab_manifest.csv"), index=False)
+    _normalize_paths(df_test_field).to_csv(os.path.join(manifest_dir, "test_field_manifest.csv"), index=False)
 
     print(f"\n{'='*50}", flush=True)
     print("SPLIT SUMMARY (Zero Data Leakage)", flush=True)

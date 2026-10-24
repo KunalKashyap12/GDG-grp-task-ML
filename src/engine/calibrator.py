@@ -48,7 +48,7 @@ class TemperatureScalingCalibrator:
         logits_list = []
         labels_list = []
 
-        with torch.inference_mode():
+        with torch.no_grad():
             for inputs, targets in val_loader:
                 inputs = inputs.to(self.device, non_blocking=True)
                 logits = self.model(inputs)
@@ -62,7 +62,7 @@ class TemperatureScalingCalibrator:
                 "post_ece": 0.0,
             }
 
-        logits_all = torch.cat(logits_list, dim=0)
+        logits_all = torch.cat(logits_list, dim=0).clone().detach()
         labels_all = torch.cat(labels_list, dim=0)
 
         # 1. Pre-calibration ECE

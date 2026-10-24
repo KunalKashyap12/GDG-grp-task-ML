@@ -2,6 +2,7 @@
 Custom PyTorch Datasets for Agricultural Pathology Classification.
 """
 
+import os
 from pathlib import Path
 from typing import Any, Callable, Dict, List, Optional, Tuple, Union
 import numpy as np
@@ -67,7 +68,14 @@ class CropDiseaseDataset(Dataset):
         for _, row in df.iterrows():
             lbl = str(row["label"])
             if lbl in self.class_to_idx:
-                self.samples.append((str(row[path_col]), self.class_to_idx[lbl]))
+                raw_path = str(row[path_col])
+                if not os.path.exists(raw_path):
+                    norm = raw_path.replace("\\", "/")
+                    if "data/" in norm:
+                        rel = norm[norm.index("data/"):]
+                        if os.path.exists(rel):
+                            raw_path = os.path.normpath(rel)
+                self.samples.append((raw_path, self.class_to_idx[lbl]))
 
     def _load_from_directory(self, root_dir: Path, classes: Optional[Union[List[str], Dict[str, Any]]] = None) -> None:
         valid_extensions = {".jpg", ".jpeg", ".png", ".bmp", ".webp"}
@@ -98,13 +106,19 @@ class CropDiseaseDataset(Dataset):
                         self.samples.append((str(img_path), idx))
         else:
             # Fallback for flat directories (e.g. sample_real_leaves with files named Tomato___Early_blight_0.jpg)
-            for img_path in root_dir.iterdir():
+            sorted_classes = sorted(self.classes, key=len, reverse=True)
+            for img_path in sorted(root_dir.iterdir()):
                 if not img_path.is_file() or img_path.suffix.lower() not in valid_extensions:
                     continue
                 fname = img_path.stem
                 matched_cls = None
-                for cls_name in self.classes:
-                    if fname == cls_name or fname.startswith(f"{cls_name}_") or fname.startswith(f"{cls_name} ") or cls_name in fname:
+                for cls_name in sorted_classes:
+                    if (
+                        fname == cls_name
+                        or fname.startswith(f"{cls_name}_")
+                        or fname.startswith(f"{cls_name} ")
+                        or fname.startswith(f"{cls_name}.")
+                    ):
                         matched_cls = cls_name
                         break
                 if matched_cls is not None:
@@ -123,12 +137,21 @@ class CropDiseaseDataset(Dataset):
         """
         img_path, label = self.samples[index]
 
+        # Resilient path resolution if path does not exist on disk
+        if not os.path.exists(img_path):
+            norm = img_path.replace("\\", "/")
+            if "data/" in norm:
+                rel = norm[norm.index("data/"):]
+                if os.path.exists(rel):
+                    img_path = os.path.normpath(rel)
+
         try:
             with Image.open(img_path) as img:
                 image_rgb = img.convert("RGB")
         except Exception:
-            # Fallback zero tensor for unreadable or corrupt file
-            return torch.zeros((3, 224, 224), dtype=torch.float32), label
+            # Fallback neutral image passed through self.transform to ensure
+            # consistent tensor dimensions (img_size) and normalization stats across batches
+            image_rgb = Image.new("RGB", (256, 256), color=(128, 128, 128))
 
         if self.transform is not None:
             image_tensor = self.transform(image_rgb)

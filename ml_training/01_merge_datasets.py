@@ -103,7 +103,8 @@ def main():
                         seen_filenames.add(dedup_key)
 
                         if class_counts[t_cls] < max_per_class:
-                            img_path = os.path.abspath(os.path.join(r, f))
+                            raw_file = os.path.join(r, f)
+                            img_path = os.path.normpath(os.path.relpath(raw_file, start=os.getcwd()))
                             records.append({
                                 "path": img_path,
                                 "label": t_cls,
@@ -127,7 +128,7 @@ def main():
                 out_file = os.path.join(synthetic_dir, s_name, cls, f"sample_{i:03d}.jpg")
                 create_synthetic_image(out_file, cls, s_name, i)
                 records.append({
-                    "path": os.path.abspath(out_file),
+                    "path": os.path.normpath(os.path.relpath(out_file, start=os.getcwd())),
                     "label": cls,
                     "source": s_name,
                     "type": s_type

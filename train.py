@@ -50,15 +50,12 @@ def main() -> None:
 
     # 1. Dataset & DataLoader Construction
     data_dir = Path(cfg.data.train_dir)
+    val_data_dir = Path(cfg.data.val_dir)
     train_manifest = Path("data/manifests/train_manifest.csv")
-    if data_dir.exists():
-        dataset_source = data_dir
-    elif train_manifest.exists():
-        dataset_source = train_manifest
-        logger.info("Train directory not found; using manifest: %s", train_manifest)
-    else:
-        dataset_source = Path(cfg.data.sample_leaves_dir)
-        logger.warning("Train directory not found. Falling back to '%s'", dataset_source)
+    val_manifest = Path("data/manifests/val_manifest.csv")
+
+    train_tf = build_train_transforms(img_size=cfg.data.img_size)
+    val_tf = build_val_transforms(img_size=cfg.data.img_size)
 
     # Check for pre-existing labels to preserve exact class order if available
     labels_path = Path(cfg.artifacts.labels_path)
@@ -71,31 +68,47 @@ def main() -> None:
         except Exception as e:
             logger.warning("Could not read existing labels from %s: %s", labels_path, e)
 
-    train_tf = build_train_transforms(img_size=cfg.data.img_size)
-    val_tf = build_val_transforms(img_size=cfg.data.img_size)
+    # Load separate train and val splits when available to prevent split leakage
+    if data_dir.exists() and val_data_dir.exists():
+        logger.info("Using directory-based splits: train=%s, val=%s", data_dir, val_data_dir)
+        train_dataset = CropDiseaseDataset(data_dir, transform=train_tf, classes=initial_classes)
+        classes = train_dataset.classes
+        val_dataset = CropDiseaseDataset(val_data_dir, transform=val_tf, classes=classes)
+    elif train_manifest.exists() and val_manifest.exists():
+        logger.info("Using manifest-based splits: train=%s, val=%s", train_manifest, val_manifest)
+        train_dataset = CropDiseaseDataset(train_manifest, transform=train_tf, classes=initial_classes)
+        classes = train_dataset.classes
+        val_dataset = CropDiseaseDataset(val_manifest, transform=val_tf, classes=classes)
+    else:
+        # Fallback to single directory/manifest with stratified split
+        if data_dir.exists():
+            dataset_source = data_dir
+        elif train_manifest.exists():
+            dataset_source = train_manifest
+        else:
+            dataset_source = Path(cfg.data.sample_leaves_dir)
+            logger.warning("Train directory/manifest not found. Falling back to '%s'", dataset_source)
 
-    full_dataset = CropDiseaseDataset(dataset_source, transform=train_tf, classes=initial_classes)
-    classes = full_dataset.classes
+        full_dataset = CropDiseaseDataset(dataset_source, transform=train_tf, classes=initial_classes)
+        classes = full_dataset.classes
+        val_size = int(len(full_dataset) * cfg.data.val_split)
+        train_size = len(full_dataset) - val_size
+        if val_size == 0 and len(full_dataset) > 1:
+            val_size = 1
+            train_size = len(full_dataset) - 1
+
+        train_subset, val_subset = torch.utils.data.random_split(
+            full_dataset, [train_size, val_size], generator=torch.Generator().manual_seed(cfg.training.seed)
+        )
+        val_dataset_base = CropDiseaseDataset(dataset_source, transform=val_tf, classes=classes)
+        val_dataset = torch.utils.data.Subset(val_dataset_base, val_subset.indices)
+        train_dataset = train_subset
+
     num_classes = len(classes)
-    logger.info("Loaded %d samples across %d classes.", len(full_dataset), num_classes)
+    logger.info("Dataset loaded across %d classes.", num_classes)
 
-    # 80/20 train/val split
-    val_size = int(len(full_dataset) * cfg.data.val_split)
-    train_size = len(full_dataset) - val_size
-    if val_size == 0 and len(full_dataset) > 1:
-        val_size = 1
-        train_size = len(full_dataset) - 1
-
-    train_subset, val_subset = torch.utils.data.random_split(
-        full_dataset, [train_size, val_size], generator=torch.Generator().manual_seed(cfg.training.seed)
-    )
-
-    # Apply deterministic validation transforms to val_subset
-    val_dataset = CropDiseaseDataset(dataset_source, transform=val_tf, classes=classes)
-    val_subset = torch.utils.data.Subset(val_dataset, val_subset.indices)
-
-    train_loader = build_dataloader(train_subset, batch_size=cfg.training.batch_size, shuffle=True, num_workers=cfg.training.num_workers)
-    val_loader = build_dataloader(val_subset, batch_size=cfg.training.batch_size, shuffle=False, num_workers=cfg.training.num_workers)
+    train_loader = build_dataloader(train_dataset, batch_size=cfg.training.batch_size, shuffle=True, num_workers=cfg.training.num_workers)
+    val_loader = build_dataloader(val_dataset, batch_size=cfg.training.batch_size, shuffle=False, num_workers=cfg.training.num_workers)
 
     # 2. Model Initialization
     cfg.model.num_classes = num_classes
@@ -103,7 +116,24 @@ def main() -> None:
     params_info = model.count_parameters()
     logger.info("Model: %s | Total Params: %d | Trainable: %d", cfg.model.architecture, params_info["total"], params_info["trainable"])
 
-    criterion = build_criterion(label_smoothing=cfg.training.label_smoothing)
+    # Compute balanced class weights to prevent minority class neglect
+    class_counts = np.zeros(num_classes, dtype=np.float32)
+    sample_items = getattr(train_dataset, "samples", None)
+    if sample_items is None and hasattr(train_dataset, "dataset"):
+        # Subset
+        underlying = train_dataset.dataset
+        sample_items = [underlying.samples[idx] for idx in train_dataset.indices]
+    if sample_items:
+        for _, lbl_idx in sample_items:
+            if 0 <= lbl_idx < num_classes:
+                class_counts[lbl_idx] += 1
+    class_counts = np.maximum(class_counts, 1.0)
+    w = len(train_dataset) / (num_classes * class_counts)
+    w = np.power(w, 0.85)  # Label smoothing exponent
+    w = w / np.mean(w)
+    class_weights_t = torch.tensor(w, dtype=torch.float32).to(device)
+
+    criterion = build_criterion(label_smoothing=cfg.training.label_smoothing, class_weights=class_weights_t)
 
     # 3. Stage 1: Frozen Backbone Warm-Up
     if cfg.training.stage1.epochs > 0:

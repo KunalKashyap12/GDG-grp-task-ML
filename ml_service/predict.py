@@ -324,6 +324,25 @@ def parse_label(raw: str) -> Tuple[str, str]:
     return "Unknown", clean_token(raw_str)
 
 
+_TRANSFORM_CACHE: Dict[Tuple[int, Tuple[float, ...], Tuple[float, ...]], T.Compose] = {}
+
+
+def get_cached_eval_transform(
+    img_size: int,
+    mean: Tuple[float, float, float],
+    std: Tuple[float, float, float]
+) -> T.Compose:
+    cache_key = (img_size, tuple(mean), tuple(std))
+    if cache_key not in _TRANSFORM_CACHE:
+        _TRANSFORM_CACHE[cache_key] = T.Compose([
+            T.Resize(int(img_size * 1.14)),
+            T.CenterCrop(img_size),
+            T.ToTensor(),
+            T.Normalize(mean=list(mean), std=list(std))
+        ])
+    return _TRANSFORM_CACHE[cache_key]
+
+
 def preprocess_image(
     image_bytes: bytes,
     img_size: int = 224,
@@ -344,14 +363,8 @@ def preprocess_image(
         pil_img = raw_pil.convert("RGB")
     np_img = cv2.cvtColor(np.array(pil_img), cv2.COLOR_RGB2BGR)
 
-    # Cache the preprocessing transform once to avoid per-request allocation overhead.
-    _eval_transform = T.Compose([
-        T.Resize(int(img_size * 1.14)),
-        T.CenterCrop(img_size),
-        T.ToTensor(),
-        T.Normalize(mean=list(mean), std=list(std))
-    ])
-    tensor = _eval_transform(pil_img).unsqueeze(0)
+    eval_transform = get_cached_eval_transform(img_size, mean, std)
+    tensor = eval_transform(pil_img).unsqueeze(0)
     return tensor, np_img, pil_img
 
 
